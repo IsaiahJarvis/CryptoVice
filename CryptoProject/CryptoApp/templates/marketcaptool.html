@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block content %}
+<div>
+  <h1>Crypto</h1>
+    <h2>Market Caps</h2>
+    <div class="dropdown" id="dropdown1">
+      <input onclick="dropsearch('myDropdown1')" type="text" placeholder="Search.." id="searchInput1" onkeyup="filterFunction('searchInput1', 'myDropdown1')">
+      <div id="myDropdown1" class="dropdown-content">
+        {% for coin in coins %}
+        <a href="#">{{ coin.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="dropdown" id="dropdown2">
+      <input onclick="dropsearch('myDropdown2')" type="text" placeholder="Search.." id="searchInput2" onkeyup="filterFunction('searchInput2', 'myDropdown2')">
+      <div id="myDropdown2" class="dropdown-content">
+        {% for coin in coins %}
+        <a href="#">{{ coin.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+
+</div>
+{% endblock %}
