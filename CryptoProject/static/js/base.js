@@ -29,4 +29,16 @@ function filterFunction(search, drop) {
   }
 }
 
-
+function coinSelect(event, search) {
+  event.preventDefault();
+  
+  const link = event.currentTarget;
+  const coinName = link.getAttribute("data-name");
+  const coinSymbol = link.getAttribute("data-symbol");
+  const coinImage = link.getAttribute("data-image_link");
+  const coinId = link.getAttribute("data-id");
+  const marketCap = link.getAttribute("data-market-cap");
+  const circSupply = link.getAttribute("data-circ-supply");
+  // to be changed
+  document.getElementById(search).value = coinSymbol + " " + marketCap + " " + circSupply;
+}

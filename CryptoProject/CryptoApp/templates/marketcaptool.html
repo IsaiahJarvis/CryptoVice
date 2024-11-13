@@ -6,7 +6,15 @@
       <input onclick="dropsearch('myDropdown1')" type="text" placeholder="Search.." id="searchInput1" onkeyup="filterFunction('searchInput1', 'myDropdown1')">
       <div id="myDropdown1" class="dropdown-content">
         {% for coin in coins %}
-        <a href="#">{{ coin.name }}</a>
+	<a href="#"
+	   data-name="{{ coin.name }}"
+	   data-id="{{ coin.crypto_id }}"
+	   data-symbol="{{ coin.symbol }}"
+	   data-market-cap="{{ coin.market_cap }}"
+	   data-circ-supply="{{ coin.circulating_supply }}"
+	   data-image_link="{{ coin.image_link }}"
+	   onclick="coinSelect(event, 'searchInput1')"
+	   ><img src="{{ coin.image_link }}" alt="{{ coin.name }} image " class="coin-image">{{ coin.name }}</a>
         {% endfor %}
       </div>
     </div>
@@ -15,8 +23,16 @@
       <input onclick="dropsearch('myDropdown2')" type="text" placeholder="Search.." id="searchInput2" onkeyup="filterFunction('searchInput2', 'myDropdown2')">
       <div id="myDropdown2" class="dropdown-content">
         {% for coin in coins %}
-        <a href="#">{{ coin.name }}</a>
-        {% endfor %}
+        <a href="#"
+	   data-name="{{ coin.name }}"
+           data-id="{{ coin.crypto_id }}"
+	   data-symbol="{{ coin.symbol }}"
+           data-market-cap="{{ coin.market_cap }}"
+           data-circ-supply="{{ coin.circulating_supply }}"
+	   data-image_link="{{ coin.image_link }}"
+           onclick="coinSelect(event, 'searchInput2')"
+	   ><img src="{{ coin.image_link }}" alt="{{ coin.name }} image " class="coin-image">{{ coin.name }}</a>
+	{% endfor %}
       </div>
     </div>
 
