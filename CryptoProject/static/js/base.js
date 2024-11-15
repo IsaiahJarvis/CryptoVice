@@ -1,3 +1,6 @@
+let selectedCoinA = null;
+let selectedCoinB = null;
+let USD = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'});
 
 function dropSearch(input) {
   if (input == 'my_dropdown_1') {
@@ -41,23 +44,34 @@ function coinSelect(event, search) {
   const circSupply = link.getAttribute("data-circ-supply");
   // to be changed
   
-  if (search == 'search_input_1') {
+  if (search == "search_input_1") {
+    selectedCoinA = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'circSupply': circSupply};
     document.getElementById("selected_img_1").src=coinImage;
     document.getElementById("symbol_wrapper_1").innerHTML = coinSymbol;
-    document.getElementById("mc_wrapper_1").innerHTML = marketCap;
+    document.getElementById("mc_wrapper_1").innerHTML = USD.format(marketCap);
     document.getElementById(search).classList.toggle("hide");
     document.getElementById("selected_box_1").classList.toggle("show-selected");
-    document.getElementById('my_dropdown_1').classList.toggle("show");
-  }
-  
-  if (search == 'search_input_2') {
+    document.getElementById("my_dropdown_1").classList.toggle("show");
+    if (document.getElementById("symbol_wrapper_2").innerHTML == coinSymbol) {
+      document.getElementById("selected_box_2").classList.toggle("show-selected");
+      document.getElementById("search_input_2").classList.toggle("hide");
+      document.getElementById("my_dropdown_2").classList.toggle("show");
+    }
+  } else if (search == "search_input_2") {
+    selectedCoinB = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'circSupply': circSupply};
     document.getElementById("selected_img_2").src=coinImage;
     document.getElementById("symbol_wrapper_2").innerHTML = coinSymbol;
-    document.getElementById("mc_wrapper_2").innerHTML = marketCap;
+    document.getElementById("mc_wrapper_2").innerHTML = USD.format(marketCap);
     document.getElementById(search).classList.toggle("hide");
     document.getElementById("selected_box_2").classList.toggle("show-selected");
-    document.getElementById('my_dropdown_2').classList.toggle("show");
+    document.getElementById("my_dropdown_2").classList.toggle("show");
+    if (document.getElementById("symbol_wrapper_1").innerHTML == coinSymbol) {
+      document.getElementById("selected_box_1").classList.toggle("show-selected");
+      document.getElementById("search_input_1").classList.toggle("hide");
+      document.getElementById("my_dropdown_1").classList.toggle("show");
+    }
   }
+  displayResult();
 }
 
 function hideSelected(search, select, dropdown) {
@@ -65,4 +79,21 @@ function hideSelected(search, select, dropdown) {
   document.getElementById(search).focus();
   document.getElementById(dropdown).classList.toggle("show");
   document.getElementById(select).classList.toggle("show-selected");
+  displayResult();
+}
+
+function displayResult() {
+  if (document.getElementById('selected_box_1').classList.contains("show-selected") === true && (document.getElementById('selected_box_2').classList.contains("show-selected") === true)) {
+    if (document.getElementById("results").classList.contains("show") != true) {
+      document.getElementById("results").classList.toggle("show");
+      hmc = parseFloat(selectedCoinB['marketCap']) * (parseFloat(selectedCoinB['circSupply']) / parseFloat(selectedCoinA['circSupply']))
+      display = `Market Cap of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
+      document.getElementById("result_text").innerHTML = display;
+      document.getElementById("result_MC").innerHTML = hmc;
+    }
+  } else {
+    if (document.getElementById("results").classList.contains("show")) {
+      document.getElementById("results").classList.toggle("show");
+    }
+  }
 }

@@ -18,9 +18,10 @@
 	   data-symbol="{{ coin.symbol }}"
 	   data-market-cap="{{ coin.market_cap }}"
 	   data-circ-supply="{{ coin.circulating_supply }}"
+	   data-price="{{ coin.price }}"
 	   data-image_link="{{ coin.image_link }}"
 	   onclick="coinSelect(event, 'search_input_1')"
-	   ><img src="{{ coin.image_link }}" alt="{{ coin.name }} image " class="coin-image">{{ coin.name }}</a>
+	   ><img src="{{ coin.image_link }}" loading="lazy" alt="{{ coin.name }} image " class="coin-image" height="15px", width="15px">{{ coin.name }}</a>
         {% endfor %}
       </div>
     </div>
@@ -40,11 +41,18 @@
 	   data-symbol="{{ coin.symbol }}"
            data-market-cap="{{ coin.market_cap }}"
            data-circ-supply="{{ coin.circulating_supply }}"
+	   data-price="{{ coin.price }}"
 	   data-image_link="{{ coin.image_link }}"
            onclick="coinSelect(event, 'search_input_2')"
-	   ><img src="{{ coin.image_link }}" alt="{{ coin.name }} image " class="coin-image">{{ coin.name }}</a>
+	   ><img src="{{ coin.image_link }}" loading="lazy" alt="{{ coin.name }} image " class="coin-image">{{ coin.name }}</a>
 	{% endfor %}
       </div>
+    </div>
+  </div>
+  <div class="result-div">
+    <div class="result-wrapper" id="results">
+      <div id="result_text"></div>
+      <div id="result_MC"></div>
     </div>
   </div>
 </div>
