@@ -2,50 +2,39 @@
 <div>
   <h1>Crypto</h1>
   <h2>Market Caps</h2>
+
+  <div id="my_dropdown" class="dropdown-content">
+    {% for coin in coins %}
+      <a href="#"
+        data-name="{{ coin.name }}"
+        data-id="{{ coin.crypto_id }}"
+        data-symbol="{{ coin.symbol }}"
+        data-market-cap="{{ coin.market_cap }}"
+        data-circ-supply="{{ coin.circulating_supply }}"
+        data-price="{{ coin.price }}"
+        data-image_link="{{ coin.image_link }}"
+        onclick="coinSelect(event)"
+    ><img src="{{ coin.image_link }}" loading="lazy" alt="{{ coin.name }} image " class="coin-image" height="15px", width="15px">{{ coin.name }}</a>
+    {% endfor %}
+  </div>
+
+
   <div class="tool-wrapper">
     <div class="dropdown" id="dropdown_1">
-      <input onclick="dropSearch('my_dropdown_1')" type="text" placeholder="Search.." id="search_input_1" onkeyup="filterFunction('search_input_1', 'my_dropdown_1')" class="search">
-      <div onclick="hideSelected('search_input_1', 'selected_box_1', 'my_dropdown_1')" class="selected-box" id="selected_box_1">
+      <input onclick="dropSearch('dropdown_1')" type="text" placeholder="Search.." id="search_input_1" onkeyup="filterFunction('search_input_1', 'my_dropdown')" class="search">
+      <div onclick="hideSelected('search_input_1', 'selected_box_1', 'dropdown_1')" class="selected-box" id="selected_box_1">
 	<div class="img-wrapper" id="img_wrapper_1"><img class="selected-img" id="selected_img_1"src="" alt="N/A"></div>
 	<div class="symbol-wrapper" id="symbol_wrapper_1"></div>
 	<div class="mc-wrapper" id="mc_wrapper_1"></div>
       </div>
-      <div id="my_dropdown_1" class="dropdown-content">
-        {% for coin in coins %}
-	<a href="#"
-	   data-name="{{ coin.name }}"
-	   data-id="{{ coin.crypto_id }}"
-	   data-symbol="{{ coin.symbol }}"
-	   data-market-cap="{{ coin.market_cap }}"
-	   data-circ-supply="{{ coin.circulating_supply }}"
-	   data-price="{{ coin.price }}"
-	   data-image_link="{{ coin.image_link }}"
-	   onclick="coinSelect(event, 'search_input_1')"
-	   ><img src="{{ coin.image_link }}" loading="lazy" alt="{{ coin.name }} image " class="coin-image" height="15px", width="15px">{{ coin.name }}</a>
-        {% endfor %}
-      </div>
     </div>
 
     <div class="dropdown" id="dropdown_2">
-      <input onclick="dropSearch('my_dropdown_2')" type="text" placeholder="Search.." id="search_input_2" onkeyup="filterFunction('search_input_2', 'my_dropdown_2')" class="search">
-      <div onclick="hideSelected('search_input_2', 'selected_box_2', 'my_dropdown_2')" class="selected-box" id="selected_box_2">
+      <input onclick="dropSearch('dropdown_2')" type="text" placeholder="Search.." id="search_input_2" onkeyup="filterFunction('search_input_2', 'my_dropdown')" class="search">
+      <div onclick="hideSelected('search_input_2', 'selected_box_2', 'dropdown_2')" class="selected-box" id="selected_box_2">
         <div class="img-wrapper" id="img_wrapper_2"><img class="selected-img" id="selected_img_2"src="" alt="N/A"></div>
         <div class="symbol-wrapper" id="symbol_wrapper_2"></div>
         <div class="mc-wrapper" id="mc_wrapper_2"></div>
-      </div>
-      <div id="my_dropdown_2" class="dropdown-content">
-        {% for coin in coins %}
-        <a href="#"
-	   data-name="{{ coin.name }}"
-           data-id="{{ coin.crypto_id }}"
-	   data-symbol="{{ coin.symbol }}"
-           data-market-cap="{{ coin.market_cap }}"
-           data-circ-supply="{{ coin.circulating_supply }}"
-	   data-price="{{ coin.price }}"
-	   data-image_link="{{ coin.image_link }}"
-           onclick="coinSelect(event, 'search_input_2')"
-	   ><img src="{{ coin.image_link }}" loading="lazy" alt="{{ coin.name }} image " class="coin-image">{{ coin.name }}</a>
-	{% endfor %}
       </div>
     </div>
   </div>

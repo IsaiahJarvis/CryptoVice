@@ -1,4 +1,5 @@
 from CryptoApp.models import Coin
+from django.conf import settings
 import requests
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
@@ -6,13 +7,14 @@ import json
 def call_api():
     page = 1
     all_coins_data = []
+    cg_key = settings.API_KEYS.get('coingecko')
 
     while True:
         try:
             url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=250&page=" + str(page)
             headers = {
                 "accept": "application/json",
-                "x-cg-demo-api-key": "CG-in2YGZGTF6muWi1GGjesxQ8p",
+                "x-cg-demo-api-key": cg_key,
             }
 
             response = requests.get(url, headers=headers)
