@@ -7,7 +7,7 @@ import json
 def call_api():
     page = 1
     all_coins_data = []
-    cg_key = settings.API_KEYS.get('coingecko')
+    cg_key = settings.API_KEYS.get('coingecko_api')
 
     while True:
         try:
