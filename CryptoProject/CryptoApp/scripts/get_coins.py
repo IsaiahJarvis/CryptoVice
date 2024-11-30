@@ -57,3 +57,5 @@ def run():
 
             c.save()
         print('done')
+        return True
+    return False

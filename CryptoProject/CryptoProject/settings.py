@@ -28,8 +28,6 @@ API_KEYS = {
     'coingecko_api': config('CG_API_KEY')
 }
 
-print(os.getenv('SECRET_KEY'))
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -45,7 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'CryptoApp'
+    'django_crontab',
+    'CryptoApp',
+    'bootstrap5',
+]
+
+CRONJOBS = [
+    ('0 */12 * * *', 'CryptoApp.tasks.update_coins'),
 ]
 
 MIDDLEWARE = [
@@ -87,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cryptocoins',
         'USER': 'postgres',
-        'PASSWORD': 'Isaiah123',
+        'PASSWORD': config('DB_KEY'),
         'HOST': 'localhost',
         'PORT': '5432'
     }

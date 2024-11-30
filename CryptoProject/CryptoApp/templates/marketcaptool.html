@@ -1,8 +1,9 @@
 {% extends "base.html" %} {% block content %}
 <div>
-  <h1>Crypto</h1>
-  <h2>Market Caps</h2>
-
+  <div class="header-wrapper">
+    <h1 class="header">Hypothetical Market Cap Calculator</h1>
+  </div>
+  
   <div id="my_dropdown" class="dropdown-content">
     {% for coin in coins %}
       <a href="#"
@@ -29,6 +30,10 @@
       </div>
     </div>
 
+    <div class="swap-wrapper">
+      SWAP
+    </div>
+
     <div class="dropdown" id="dropdown_2">
       <input onclick="dropSearch('dropdown_2')" type="text" placeholder="Search.." id="search_input_2" onkeyup="filterFunction('search_input_2', 'my_dropdown')" class="search">
       <div onclick="hideSelected('search_input_2', 'selected_box_2', 'dropdown_2')" class="selected-box" id="selected_box_2">
@@ -42,6 +47,8 @@
     <div class="result-wrapper" id="results">
       <div id="result_text"></div>
       <div id="result_MC"></div>
+      <div id="result_price_text"></div>
+      <div id="result_Price"></div>
     </div>
   </div>
 </div>

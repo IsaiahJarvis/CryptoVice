@@ -3,7 +3,6 @@ let selectedCoinB = null;
 let USD = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'});
 
 function dropSearch(input) {
-  console.log("dropSearch");
   if (document.getElementById("my_dropdown").classList.contains("show") === true) {
     if (document.getElementById(input).classList.contains("active") === true) {
       document.getElementById("my_dropdown").classList.toggle("show");
@@ -20,7 +19,6 @@ function dropSearch(input) {
 }
 
 function filterFunction(search, drop) {
-  console.log("filter");
   var input, filter, ul, li, a, i;
   input = document.getElementById(search);
   filter = input.value.toUpperCase();
@@ -37,7 +35,6 @@ function filterFunction(search, drop) {
 }
 
 function changeActive(to, from) {
-  console.log("changeActive");
   if (document.getElementById(from).classList.contains("active") === true) {
     document.getElementById(from).classList.toggle("active");
     document.getElementById(to).classList.toggle("active");
@@ -57,7 +54,6 @@ function coinSelect(event) {
   const coinId = link.getAttribute("data-id");
   const marketCap = link.getAttribute("data-market-cap");
   const circSupply = link.getAttribute("data-circ-supply");
-  // to be changed
   
   if (document.getElementById("dropdown_1").classList.contains("active") === true) {
     selectedCoinA = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'circSupply': circSupply};
@@ -70,7 +66,6 @@ function coinSelect(event) {
 }
 
 function select(div, coin, img, symbol, MC, search, selectedBox, swapSearch, swapBox, swapSymbol) {
-    console.log("select");
     document.getElementById(img).src=coin["imageLink"];
     document.getElementById(symbol).innerHTML = coin["symbol"];
     document.getElementById(MC).innerHTML = USD.format(coin["marketCap"]);
@@ -93,7 +88,6 @@ function select(div, coin, img, symbol, MC, search, selectedBox, swapSearch, swa
 }
 
 function hideSelected(search, select, dropdown) {
-  console.log("hideSelected");
   document.getElementById(search).classList.toggle("hide");
   document.getElementById(search).focus();
   if (document.getElementById("my_dropdown").classList.contains("show") === false) {
@@ -122,10 +116,14 @@ function clearSelected(dropdown) {
 
 function displayResult() {
   if (document.getElementById('selected_box_1').classList.contains("show-selected") === true && (document.getElementById('selected_box_2').classList.contains("show-selected") === true)) {
+    price = parseFloat(selectedCoinB['marketCap']) / parseFloat(selectedCoinA['circSupply'])
     hmc = parseFloat(selectedCoinB['marketCap']) * (parseFloat(selectedCoinB['circSupply']) / parseFloat(selectedCoinA['circSupply']))
-    display = `Market Cap of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
-    document.getElementById("result_text").innerHTML = display;
+    mcText = `Market Cap of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
+    priceText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
+    document.getElementById("result_text").innerHTML = mcText;
     document.getElementById("result_MC").innerHTML = USD.format(hmc);
+    document.getElementById("result_price_text").innerHTML = priceText;
+    document.getElementById("result_Price").innerHTML = USD.format(price);
   }
 
   if (document.getElementById("results").classList.contains("show") != true) {
@@ -134,7 +132,6 @@ function displayResult() {
 }
 
 function moveDropdown(destination) {
-    console.log("moveDropdown")
     dropdown = document.getElementById("my_dropdown");
     document.getElementById(destination).appendChild(dropdown);
 }

@@ -9,6 +9,19 @@
   align-items: center;
 }
 
+.header-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 50px 50px;
+}
+
+.swap-wrapper {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px
+}
+
 #myInput {
   box-sizing: border-box;
   background-position: 14px 12px;
@@ -48,6 +61,7 @@
   width: 230px;
   height: auto;
   overflow: auto;
+  overflow-x: hidden;
   max-height: 400px;
   border: 1px solid #ddd;
   z-index: 1;
@@ -55,6 +69,7 @@
 
 .dropdown-content a {
   color: black;
+  max-width: 230px;
   padding: 12px 16px;
   text-decoration: none;
   text-wrap: wrap;
@@ -94,3 +109,8 @@
 }
 
 .hide {display: none;}
+
+.navbar-wrapper {
+  display: flex;
+  justify-content: center; 
+}
