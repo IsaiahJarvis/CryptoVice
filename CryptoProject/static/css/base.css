@@ -54,6 +54,13 @@
   text-transform: uppercase;
 }
 
+.submit-link-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .dropdown-content {
   display: none;
   position: absolute;

@@ -116,7 +116,7 @@ function clearSelected(dropdown) {
 
 function displayResult() {
   if (document.getElementById('selected_box_1').classList.contains("show-selected") === true && (document.getElementById('selected_box_2').classList.contains("show-selected") === true)) {
-    price = parseFloat(selectedCoinB['marketCap']) / parseFloat(selectedCoinA['circSupply'])
+    price = parseFloat(selectedCoinB['marketCap']) * (parseFloat(selectedCoinB['circSupply']) / (parseFloat(selectedCoinA['circSupply']) ** 2))
     hmc = parseFloat(selectedCoinB['marketCap']) * (parseFloat(selectedCoinB['circSupply']) / parseFloat(selectedCoinA['circSupply']))
     mcText = `Market Cap of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
     priceText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
@@ -124,10 +124,9 @@ function displayResult() {
     document.getElementById("result_MC").innerHTML = USD.format(hmc);
     document.getElementById("result_price_text").innerHTML = priceText;
     document.getElementById("result_Price").innerHTML = USD.format(price);
-  }
-
-  if (document.getElementById("results").classList.contains("show") != true) {
+    if (document.getElementById("results").classList.contains("show") != true) {
       document.getElementById("results").classList.toggle("show");
+    }
   }
 }
 
