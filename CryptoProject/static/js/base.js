@@ -52,14 +52,16 @@ function coinSelect(event) {
   const coinSymbol = link.getAttribute("data-symbol");
   const coinImage = link.getAttribute("data-image_link");
   const coinId = link.getAttribute("data-id");
+  const price = link.getAttribute("data-price")
   const marketCap = link.getAttribute("data-market-cap");
+  const fdv = link.getAttribute("data-fdv");
   const circSupply = link.getAttribute("data-circ-supply");
   
   if (document.getElementById("dropdown_1").classList.contains("active") === true) {
-    selectedCoinA = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'circSupply': circSupply};
+    selectedCoinA = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
     select("dropdown_1", selectedCoinA, "selected_img_1", "symbol_wrapper_1", "mc_wrapper_1", "search_input_1", "selected_box_1", "search_input_2", "selected_box_2", "symbol_wrapper_2");
   } else if (document.getElementById("dropdown_2").classList.contains("active") === true) {
-    selectedCoinB = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'circSupply': circSupply};
+    selectedCoinB = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
     select("dropdown_2", selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", "search_input_1", "selected_box_1", "symbol_wrapper_1");
   }
   displayResult();
@@ -116,14 +118,18 @@ function clearSelected(dropdown) {
 
 function displayResult() {
   if (document.getElementById('selected_box_1').classList.contains("show-selected") === true && (document.getElementById('selected_box_2').classList.contains("show-selected") === true)) {
-    price = parseFloat(selectedCoinB['marketCap']) * (parseFloat(selectedCoinB['circSupply']) / (parseFloat(selectedCoinA['circSupply']) ** 2))
-    hmc = parseFloat(selectedCoinB['marketCap']) * (parseFloat(selectedCoinB['circSupply']) / parseFloat(selectedCoinA['circSupply']))
+    fdvPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['fdv']) / parseFloat(selectedCoinA['fdv']))
+    mcPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['marketCap']) / parseFloat(selectedCoinA['marketCap']))
+    priceText = `Base Price of ${selectedCoinA['name']}:`;
+    fdvText = `Fully Diluted Market Cap of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
     mcText = `Market Cap of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
-    priceText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
-    document.getElementById("result_text").innerHTML = mcText;
-    document.getElementById("result_MC").innerHTML = USD.format(hmc);
-    document.getElementById("result_price_text").innerHTML = priceText;
-    document.getElementById("result_Price").innerHTML = USD.format(price);
+
+    document.getElementById("price_text").innerHTML = priceText;
+    document.getElementById("price_of_a").innerHTML = USD.format(selectedCoinA['price']);
+    document.getElementById("result_fdv_text").innerHTML = fdvText;
+    document.getElementById("result_fdv").innerHTML = USD.format(fdvPrice);
+    document.getElementById("result_mc_text").innerHTML = mcText;
+    document.getElementById("result_mc").innerHTML = USD.format(mcPrice);
     if (document.getElementById("results").classList.contains("show") != true) {
       document.getElementById("results").classList.toggle("show");
     }

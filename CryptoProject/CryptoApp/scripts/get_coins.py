@@ -25,7 +25,7 @@ def call_api():
                 for x in data:
                     if x['circulating_supply'] is not None and x['market_cap'] is not None:
                         if int(x['circulating_supply']) != 0 and int(x['market_cap']) != 0:
-                            store_wanted_data.append({'crypto_id': x['id'], 'name': x['name'],'symbol': x['symbol'], 'image_link': x['image'] , 'market_cap': x['market_cap'], 'circ_supply': x['circulating_supply'], 'price': x['current_price']})
+                            store_wanted_data.append({'crypto_id': x['id'], 'name': x['name'],'symbol': x['symbol'], 'image_link': x['image'], 'market_cap': x['market_cap'], 'fdv': x['fully_diluted_valuation'], 'circ_supply': x['circulating_supply'], 'price': x['current_price']})
             else:
                 print("No data found in the response")
                 break
@@ -50,12 +50,14 @@ def run():
             cat_symbol = item['symbol']
             cat_image_link = item['image_link']
             cat_market_cap = item['market_cap']
+            cat_FDV = item['fdv']
             cat_circ_supp = item['circ_supply']
             cat_price = item['price']
 
-            c = Coin(name = cat_name, crypto_id = cat_id, symbol = cat_symbol, image_link = cat_image_link, market_cap = cat_market_cap, circulating_supply = cat_circ_supp, price = cat_price)
+            c = Coin(name = cat_name, crypto_id = cat_id, symbol = cat_symbol, image_link = cat_image_link, market_cap = cat_market_cap, fdv = cat_FDV, circulating_supply = cat_circ_supp, price = cat_price)
 
             c.save()
-        print('done')
+        print('Done')
         return True
     return False
+    print('Failed')

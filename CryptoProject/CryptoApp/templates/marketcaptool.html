@@ -11,6 +11,7 @@
         data-id="{{ coin.crypto_id }}"
         data-symbol="{{ coin.symbol }}"
         data-market-cap="{{ coin.market_cap }}"
+	data-fdv="{{ coin.fdv }}"
         data-circ-supply="{{ coin.circulating_supply }}"
         data-price="{{ coin.price }}"
         data-image_link="{{ coin.image_link }}"
@@ -45,10 +46,12 @@
   </div>
   <div class="result-div">
     <div class="result-wrapper" id="results">
-      <div id="result_text"></div>
-      <div id="result_MC"></div>
-      <div id="result_price_text"></div>
-      <div id="result_Price"></div>
+      <div id="price_text"></div>
+      <div id="price_of_a"></div>
+      <div id="result_fdv_text"></div>
+      <div id="result_fdv"></div>
+      <div id="result_mc_text"></div>
+      <div id="result_mc"></div>
     </div>
   </div>
 
