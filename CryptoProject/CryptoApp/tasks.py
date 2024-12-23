@@ -1,4 +1,4 @@
-from CryptoApp.scripts.get_coins import run, call_api
+from CryptoApp.scripts.get_coins import run
 
 def update_coins():
     if run() == True:

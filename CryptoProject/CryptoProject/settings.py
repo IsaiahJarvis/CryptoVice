@@ -25,7 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 API_KEYS = {
-    'coingecko_api': config('CG_API_KEY')
+    'coingecko_api': config('CG_API_KEY'),
+    'codex_api': config('CODEX_API_KEY')
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
