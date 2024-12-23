@@ -18,22 +18,6 @@ function dropSearch(input) {
   }
 }
 
-function filterFunction(search, drop) {
-  var input, filter, ul, li, a, i;
-  input = document.getElementById(search);
-  filter = input.value.toUpperCase();
-  div = document.getElementById(drop);
-  a = div.getElementsByTagName("a");
-  for (i = 0; i < a.length; i++) {
-    txtValue = a[i].textContent || a[i].innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      a[i].style.display = "";
-    } else {
-      a[i].style.display = "none";
-    }
-  }
-}
-
 function changeActive(to, from) {
   if (document.getElementById(from).classList.contains("active") === true) {
     document.getElementById(from).classList.toggle("active");
@@ -42,29 +26,6 @@ function changeActive(to, from) {
     document.getElementById(to).classList.toggle("active");
   }
   moveDropdown(to);
-}
-
-function coinSelect(event) {
-  event.preventDefault();
-  
-  const link = event.currentTarget;
-  const coinName = link.getAttribute("data-name");
-  const coinSymbol = link.getAttribute("data-symbol");
-  const coinImage = link.getAttribute("data-image_link");
-  const coinId = link.getAttribute("data-id");
-  const price = link.getAttribute("data-price")
-  const marketCap = link.getAttribute("data-market-cap");
-  const fdv = link.getAttribute("data-fdv");
-  const circSupply = link.getAttribute("data-circ-supply");
-  
-  if (document.getElementById("dropdown_1").classList.contains("active") === true) {
-    selectedCoinA = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
-    select("dropdown_1", selectedCoinA, "selected_img_1", "symbol_wrapper_1", "mc_wrapper_1", "search_input_1", "selected_box_1", "search_input_2", "selected_box_2", "symbol_wrapper_2");
-  } else if (document.getElementById("dropdown_2").classList.contains("active") === true) {
-    selectedCoinB = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
-    select("dropdown_2", selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", "search_input_1", "selected_box_1", "symbol_wrapper_1");
-  }
-  displayResult();
 }
 
 function select(div, coin, img, symbol, MC, search, selectedBox, swapSearch, swapBox, swapSymbol) {
@@ -139,4 +100,89 @@ function displayResult() {
 function moveDropdown(destination) {
     dropdown = document.getElementById("my_dropdown");
     document.getElementById(destination).appendChild(dropdown);
+    if (destination === "dropdown_1") {
+        filterFunction(document.getElementById("search_input_1"));
+    } else {
+        filterFunction(document.getElementById("search_input_2"));
+    }
 }
+
+let isLoading = false;  // To track loading state
+let nextPageUrl = null;  // To handle pagination
+
+async function filterFunction(inputElement) {
+  let query = inputElement.value.trim();  // Get the search query from input
+  const dropdownMenu = document.getElementById("my_dropdown");
+
+  if (query.length === 0) {
+    query = "";
+  }
+  // Clear previous dropdown results
+  dropdownMenu.innerHTML = "";
+  nextPageUrl = null;
+
+  // Fetch initial results from the API
+  const initialUrl = `/api/search/?q=${query}`;
+  await fetchResults(initialUrl, dropdownMenu);
+}
+
+async function fetchResults(url, dropdownMenu) {
+  // Prevent multiple simultaneous requests
+  if (isLoading) return;
+  isLoading = true;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    // Populate the dropdown with results
+    data.results.forEach((coin) => {
+      const item = document.createElement("div");
+      item.classList.add("dropdown-item");
+      item.setAttribute("data-name", coin.name);
+      item.setAttribute("data-symbol", coin.symbol);
+      item.setAttribute("data-id", coin.crypto_id);
+
+      item.innerHTML = `<strong>${coin.name}</strong> (${coin.symbol})`;
+      item.onclick = () => coinSelect(coin);  // Handle coin selection
+      dropdownMenu.appendChild(item);
+    });
+
+    // Update next page URL for pagination
+    nextPageUrl = data.next;
+  } catch (error) {
+    console.error("Error fetching search results:", error);
+  } finally {
+    isLoading = false;
+  }
+}
+
+function coinSelect(coin) {
+
+  const coinName = coin.name;
+  const coinSymbol = coin.symbol;
+  const coinImage = coin.image_link;
+  const coinId = coin.crypto_id;
+  const price = coin.price;
+  const marketCap = coin.market_cap;
+  const fdv = coin.fdv;
+  const circSupply = coin.circulating_supply;
+
+  if (document.getElementById("dropdown_1").classList.contains("active") === true) {
+    selectedCoinA = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
+    select("dropdown_1", selectedCoinA, "selected_img_1", "symbol_wrapper_1", "mc_wrapper_1", "search_input_1", "selected_box_1", "search_input_2", "selected_box_2", "symbol_wrapper_2");
+  } else if (document.getElementById("dropdown_2").classList.contains("active") === true) {
+    selectedCoinB = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
+    select("dropdown_2", selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", "search_input_1", "selected_box_1", "symbol_wrapper_1");
+  }
+  displayResult();
+}
+
+document.addEventListener('click', e => {
+  if (!document.getElementById("my_dropdown").contains(e.target) && !document.getElementById("dropdown_1").contains(e.target) && !document.getElementById("dropdown_2").contains(e.target)) {
+    console.log(e.target)
+    if (document.getElementById("my_dropdown").classList.contains("show") === true) {
+      document.getElementById("my_dropdown").classList.toggle("show");
+    }
+  }
+})

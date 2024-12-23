@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_crontab',
     'CryptoApp',
     'bootstrap5',
+    'rest_framework',
 ]
 
 CRONJOBS = [
