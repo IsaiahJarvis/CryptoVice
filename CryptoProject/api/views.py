@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
+from django.db.models import Q
 from CryptoApp.models import Coin
 from .serializers import CoinSerializer
 
@@ -12,7 +13,7 @@ def searchCoins(request):
     query = request.GET.get('q', '')
     paginator = CoinPagination()
     if query:
-        coins = Coin.objects.filter(name__icontains=query).order_by('-market_cap')
+        coins = Coin.objects.filter(Q(name__icontains=query) | Q(contract_address__icontains=query)).order_by('-market_cap')
         results = paginator.paginate_queryset(coins, request)
         serializer = CoinSerializer(results, many=True)
         return paginator.get_paginated_response(serializer.data)
@@ -21,5 +22,3 @@ def searchCoins(request):
         results = paginator.paginate_queryset(coins, request)
         serializer = CoinSerializer(results, many=True)
         return paginator.get_paginated_response(serializer.data)
-
-    return Response({'results': [], 'message': 'No query provided'}, status=400)

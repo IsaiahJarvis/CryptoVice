@@ -26,7 +26,7 @@ def call_cg_api():
                 for x in data:
                     if x['circulating_supply'] is not None and x['market_cap'] is not None:
                         if int(x['circulating_supply']) != 0 and int(x['market_cap']) != 0:
-                            store_wanted_data.append({'crypto_id': x['id'], 'name': x['name'],'symbol': x['symbol'], 'image_link': x['image'], 'market_cap': x['market_cap'], 'fdv': x['fully_diluted_valuation'], 'circ_supply': x['circulating_supply'], 'price': x['current_price']})
+                            store_wanted_data.append({'contract_address': "coingecko", 'crypto_id': x['id'], 'name': x['name'],'symbol': x['symbol'], 'image_link': x['image'], 'market_cap': x['market_cap'], 'fdv': x['fully_diluted_valuation'], 'circ_supply': x['circulating_supply'], 'price': x['current_price']})
             else:
                 print("No data found in the response")
                 break
@@ -55,6 +55,7 @@ def get_tokens_codex(network):
         page
         results {
           token {
+            address
             id
             name
             symbol
@@ -123,7 +124,8 @@ def get_tokens_codex(network):
         price = float(token.get("priceUSD", "N/A"))
         circulatingSupply = token.get("token", {}).get("info", {}).get("circulatingSupply", "N/A")
         market_cap = price * float(circulatingSupply)
-        final_list.append({'crypto_id': token.get("token", {}).get("id", "N/A"),
+        final_list.append({'contract_address': token.get("token", {}).get('address', "N/A"),
+                           'crypto_id': token.get("token", {}).get("id", "N/A"),
                            'name': token.get("token", {}).get("name", "N/A"),
                            'symbol': token.get("token", {}).get("symbol", "N/A"),
                            'image_link': token.get("token", {}).get("info", {}).get("imageThumbUrl", "N/A"),
@@ -157,8 +159,9 @@ def run():
             cat_FDV = item['fdv']
             cat_circ_supp = item['circ_supply']
             cat_price = item['price']
+            cat_address = item['contract_address']
 
-            c = Coin(name = cat_name, crypto_id = cat_id, symbol = cat_symbol, image_link = cat_image_link, market_cap = cat_market_cap, fdv = cat_FDV, circulating_supply = cat_circ_supp, price = cat_price)
+            c = Coin(name = cat_name, crypto_id = cat_id, symbol = cat_symbol, image_link = cat_image_link, market_cap = cat_market_cap, fdv = cat_FDV, circulating_supply = cat_circ_supp, price = cat_price, contract_address = cat_address)
 
             c.save()
         print('Done')

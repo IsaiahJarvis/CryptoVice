@@ -82,8 +82,8 @@ function displayResult() {
     fdvPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['fdv']) / parseFloat(selectedCoinA['fdv']))
     mcPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['marketCap']) / parseFloat(selectedCoinA['marketCap']))
     priceText = `Base Price of ${selectedCoinA['name']}:`;
-    fdvText = `Fully Diluted Market Cap of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
-    mcText = `Market Cap of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
+    fdvText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s fully diluted market cap:`;
+    mcText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
 
     document.getElementById("price_text").innerHTML = priceText;
     document.getElementById("price_of_a").innerHTML = USD.format(selectedCoinA['price']);
