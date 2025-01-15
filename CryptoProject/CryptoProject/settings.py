@@ -32,7 +32,7 @@ API_KEYS = {
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['191.101.14.71', 'localhost']
+ALLOWED_HOSTS = ['191.101.14.71', 'localhost', 'test.moonmath.io']
 
 
 # Application definition

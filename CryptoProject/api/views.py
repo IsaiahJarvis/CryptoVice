@@ -13,7 +13,7 @@ def searchCoins(request):
     query = request.GET.get('q', '')
     paginator = CoinPagination()
     if query:
-        coins = Coin.objects.filter(Q(name__icontains=query) | Q(contract_address__icontains=query)).order_by('-market_cap')
+        coins = Coin.objects.filter(Q(name__icontains=query) | Q(contract_address__icontains=query) | Q(symbol__icontains=query)).order_by('-market_cap')
         results = paginator.paginate_queryset(coins, request)
         serializer = CoinSerializer(results, many=True)
         return paginator.get_paginated_response(serializer.data)

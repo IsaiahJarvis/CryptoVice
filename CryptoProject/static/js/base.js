@@ -31,7 +31,7 @@ function changeActive(to, from) {
 function select(div, coin, img, symbol, MC, search, selectedBox, swapSearch, swapBox, swapSymbol) {
     document.getElementById(img).src=coin["imageLink"];
     document.getElementById(symbol).innerHTML = coin["symbol"];
-    document.getElementById(MC).innerHTML = USD.format(coin["marketCap"]);
+    document.getElementById(MC).innerHTML = "$" + String(coin["marketCap"] * 1);
     document.getElementById(search).classList.toggle("hide");
     document.getElementById(selectedBox).classList.toggle("show-selected");
     document.getElementById("my_dropdown").classList.toggle("show");
@@ -86,11 +86,11 @@ function displayResult() {
     mcText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
 
     document.getElementById("price_text").innerHTML = priceText;
-    document.getElementById("price_of_a").innerHTML = USD.format(selectedCoinA['price']);
+    document.getElementById("price_of_a").innerHTML = "$" + String(selectedCoinA['price'] * 1);
     document.getElementById("result_fdv_text").innerHTML = fdvText;
-    document.getElementById("result_fdv").innerHTML = USD.format(fdvPrice);
+    document.getElementById("result_fdv").innerHTML = "$" + String(fdvPrice * 1);
     document.getElementById("result_mc_text").innerHTML = mcText;
-    document.getElementById("result_mc").innerHTML = USD.format(mcPrice);
+    document.getElementById("result_mc").innerHTML = "$" + String(mcPrice * 1);
     if (document.getElementById("results").classList.contains("show") != true) {
       document.getElementById("results").classList.toggle("show");
     }
@@ -111,6 +111,11 @@ let isLoading = false;  // To track loading state
 let nextPageUrl = null;  // To handle pagination
 
 async function filterFunction(inputElement) {
+
+  if (document.getElementById("my_dropdown").classList.contains("show") === false) {
+    document.getElementById("my_dropdown").classList.toggle("show");
+  }
+
   let query = inputElement.value.trim();  // Get the search query from input
   const dropdownMenu = document.getElementById("my_dropdown");
 

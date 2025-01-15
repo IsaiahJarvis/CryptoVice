@@ -78,8 +78,8 @@ def get_tokens_codex(network):
 
     # Define the filter to exclude tokens with no marketCap
     filters = {
-        "marketCap": {"gt": 50000, "lt": 250000000},  # Only include tokens where marketCap > 0
-        "liquidity": {"gt": 30000},
+        "marketCap": {"gt": 20000, "lt": 250000000},  # Only include tokens where marketCap > 0
+        "liquidity": {"gt": 20000},
         "network": [network]
     }
 
@@ -139,15 +139,16 @@ def get_tokens_codex(network):
 
 def call_codex_api():
     tokens = []
-    networks = [1399811149, 42161]
+    networks = [1399811149, 42161, 8453]
     for x in networks:
         tokens.extend(get_tokens_codex(x))
     return tokens
 
 def run():
-    coin_data = call_cg_api()
-    coin_data.extend(call_codex_api())
-    
+    coin_data = call_codex_api()
+    coin_data.extend(call_cg_api())
+    address_list = []
+
     if coin_data:
         Coin.objects.all().delete()
         for item in coin_data:
@@ -161,9 +162,13 @@ def run():
             cat_price = item['price']
             cat_address = item['contract_address']
 
-            c = Coin(name = cat_name, crypto_id = cat_id, symbol = cat_symbol, image_link = cat_image_link, market_cap = cat_market_cap, fdv = cat_FDV, circulating_supply = cat_circ_supp, price = cat_price, contract_address = cat_address)
-
-            c.save()
+            if cat_address not in address_list and cat_address != "coingecko":
+                c = Coin(name = cat_name, crypto_id = cat_id, symbol = cat_symbol, image_link = cat_image_link, market_cap = cat_market_cap, fdv = cat_FDV, circulating_supply = cat_circ_supp, price = cat_price, contract_address = cat_address)
+                c.save()
+                address_list.append(cat_address)
+            elif cat_address == "coingecko":
+                c = Coin(name = cat_name, crypto_id = cat_id, symbol = cat_symbol, image_link = cat_image_link, market_cap = cat_market_cap, fdv = cat_FDV, circulating_supply = cat_circ_supp, price = cat_price, contract_address = cat_address)
+                c.save()
         print('Done')
         return True
     return False
