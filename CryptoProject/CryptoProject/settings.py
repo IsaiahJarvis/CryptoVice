@@ -30,9 +30,9 @@ API_KEYS = {
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['191.101.14.71', 'localhost', 'test.moonmath.io']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
 
 # Application definition
@@ -91,11 +91,11 @@ WSGI_APPLICATION = 'CryptoProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cryptocoins',
-        'USER': 'postgres',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
         'PASSWORD': config('DB_KEY'),
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT')
     }
 }
 
