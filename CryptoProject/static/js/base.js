@@ -2,6 +2,7 @@ let selectedCoinA = null;
 let selectedCoinB = null;
 let USD = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'});
 
+// changes the dropdown menu and focus to the clicked searchbox
 function dropSearch(input) {
   if (document.getElementById("my_dropdown").classList.contains("show") === true) {
     if (document.getElementById(input).classList.contains("active") === true) {
@@ -18,6 +19,7 @@ function dropSearch(input) {
   }
 }
 
+// change the active search
 function changeActive(to, from) {
   if (document.getElementById(from).classList.contains("active") === true) {
     document.getElementById(from).classList.toggle("active");
@@ -65,6 +67,12 @@ function hideSelected(search, select, dropdown) {
   }
 }
 
+// hide network dropdown
+function hideThis(target) {
+  document.getElementById(target).classList.toggle("show");
+}
+
+// clear both selected coins
 function clearSelected(dropdown) {
   if (dropdown === "dropdown_1") {
     document.getElementById("selected_img_1").src="";
@@ -77,11 +85,13 @@ function clearSelected(dropdown) {
   }
 }
 
+// calculate the results of the tool and display the results section if not already displayed
 function displayResult() {
+  // only update if both boxes are showing selected isntead of the search box
   if (document.getElementById('selected_box_1').classList.contains("show-selected") === true && (document.getElementById('selected_box_2').classList.contains("show-selected") === true)) {
     fdvPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['fdv']) / parseFloat(selectedCoinA['fdv']))
     mcPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['marketCap']) / parseFloat(selectedCoinA['marketCap']))
-    priceText = `Base Price of ${selectedCoinA['name']}:`;
+    priceText = `Current Price of ${selectedCoinA['name']}:`;
     fdvText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s fully diluted market cap:`;
     mcText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
 
@@ -147,8 +157,9 @@ async function fetchResults(url, dropdownMenu) {
       item.setAttribute("data-name", coin.name);
       item.setAttribute("data-symbol", coin.symbol);
       item.setAttribute("data-id", coin.crypto_id);
+      item.setAttribute("data-network", coin.network);
 
-      item.innerHTML = `<strong>${coin.name}</strong> (${coin.symbol})`;
+      item.innerHTML = `<strong>${coin.name}</strong> (${coin.network})`;
       item.onclick = () => coinSelect(coin);  // Handle coin selection
       dropdownMenu.appendChild(item);
     });

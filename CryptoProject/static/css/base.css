@@ -1,6 +1,6 @@
 .result-wrapper {
   display: none;
-  margin: 100px 100px;
+  margin: 50px 100px;
 }
 
 .result-div .show {
@@ -13,13 +13,6 @@
   display: flex;
   justify-content: center;
   margin: 50px 50px;
-}
-
-.swap-wrapper {
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  font-size: 20px
 }
 
 #myInput {
@@ -37,6 +30,8 @@
 .dropdown {
   position: relative;
   display: inline-block;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .search {
@@ -44,21 +39,36 @@
   height: 40px;
 }
 
+.body-wrapper {
+  display: flex;
+}
+
 .tool-wrapper {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   flex-wrap: wrap;
+}
+
+.holder-wrapper {
+  display: flex;
+  flex: 1;
+  justify-content: center;
 }
 
 .symbol-wrapper {
   text-transform: uppercase;
 }
 
-.submit-link-wrapper {
+.selector-wrapper {
   display: flex;
+  flex: 1;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
+}
+
+.news-wrapper {
+  display: flex;
+  flex: 1;
+  justify-content: center;
 }
 
 .dropdown-content {

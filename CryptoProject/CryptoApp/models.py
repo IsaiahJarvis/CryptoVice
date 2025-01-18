@@ -12,3 +12,4 @@ class Coin(models.Model):
     circulating_supply = models.CharField(null=True, blank=True)
     price = models.DecimalField(null=True, blank=True, max_digits=100, decimal_places=10)
     contract_address = models.CharField(null=True, blank=True)
+    network = models.CharField(null=True, blank=True)

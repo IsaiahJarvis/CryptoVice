@@ -1,48 +1,51 @@
 {% extends "base.html" %} {% block content %}
-<div>
-  <div class="header-wrapper">
-    <h1 class="header">Hypothetical Market Cap Calculator</h1>
-  </div>
 
+  <div class="header-wrapper">
+    <h1 class="header">MoonMath</h1>
+  </div>
+<div class="body-wrapper">
   <div id="my_dropdown" class="dropdown-content">
   </div>
+  <div class="news-wrapper">
+    
+  </div>
   <div class="tool-wrapper">
-    <div class="dropdown" id="dropdown_1">
-      <input onclick="dropSearch('dropdown_1')" type="text" placeholder="Search.." id="search_input_1" onkeyup="filterFunction(this)" class="search">
-      <div onclick="hideSelected('search_input_1', 'selected_box_1', 'dropdown_1')" class="selected-box" id="selected_box_1">
-	<div class="img-wrapper" id="img_wrapper_1"><img class="selected-img" id="selected_img_1"src="" alt="N/A"></div>
-	<div class="symbol-wrapper" id="symbol_wrapper_1"></div>
-	<div class="mc-wrapper" id="mc_wrapper_1"></div>
+    <div class="selector-wrapper">
+      <div class="dropdown" id="dropdown_1">
+        <input onclick="dropSearch('dropdown_1')" type="text" placeholder="Enter name or contract address" id="search_input_1" onkeyup="filterFunction(this)" class="search">
+        <div onclick="hideSelected('search_input_1', 'selected_box_1', 'dropdown_1')" class="selected-box" id="selected_box_1">
+	  <div class="img-wrapper" id="img_wrapper_1"><img class="selected-img" id="selected_img_1"src="" alt="N/A"></div>
+	  <div class="symbol-wrapper" id="symbol_wrapper_1"></div>
+	  <div class="mc-wrapper" id="mc_wrapper_1"></div>
+        </div>
+      </div>
+
+      <div class="dropdown" id="dropdown_2">
+        <input onclick="dropSearch('dropdown_2')" type="text" placeholder="Enter name or contract address" id="search_input_2" onkeyup="filterFunction(this)" class="search">
+        <div onclick="hideSelected('search_input_2', 'selected_box_2', 'dropdown_2')" class="selected-box" id="selected_box_2">
+          <div class="img-wrapper" id="img_wrapper_2"><img class="selected-img" id="selected_img_2"src="" alt="N/A"></div>
+          <div class="symbol-wrapper" id="symbol_wrapper_2"></div>
+          <div class="mc-wrapper" id="mc_wrapper_2"></div>
+        </div>
       </div>
     </div>
 
-    <div class="swap-wrapper">
-      SWAP
-    </div>
-
-    <div class="dropdown" id="dropdown_2">
-      <input onclick="dropSearch('dropdown_2')" type="text" placeholder="Search.." id="search_input_2" onkeyup="filterFunction(this)" class="search">
-      <div onclick="hideSelected('search_input_2', 'selected_box_2', 'dropdown_2')" class="selected-box" id="selected_box_2">
-        <div class="img-wrapper" id="img_wrapper_2"><img class="selected-img" id="selected_img_2"src="" alt="N/A"></div>
-        <div class="symbol-wrapper" id="symbol_wrapper_2"></div>
-        <div class="mc-wrapper" id="mc_wrapper_2"></div>
+    <div class="result-div">
+      <div class="result-wrapper" id="results">
+        <div id="price_text"></div>
+        <div id="price_of_a"></div>
+        <div id="result_fdv_text"></div>
+        <div id="result_fdv"></div>
+        <div id="result_mc_text"></div>
+        <div id="result_mc"></div>
       </div>
     </div>
   </div>
-  <div class="result-div">
-    <div class="result-wrapper" id="results">
-      <div id="price_text"></div>
-      <div id="price_of_a"></div>
-      <div id="result_fdv_text"></div>
-      <div id="result_fdv"></div>
-      <div id="result_mc_text"></div>
-      <div id="result_mc"></div>
-    </div>
-  </div>
 
-  <div class="submit-link-wrapper">
-    <h2>Want to submit a coin?</h2>
-    <a href="/submitcoin">Submission form</a>
+  <div class="holder-wrapper">
+    <h3>Holder Tool</h3>
+    <div>
+    </div>
   </div>
 
 </div>

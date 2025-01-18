@@ -26,7 +26,16 @@ def call_cg_api():
                 for x in data:
                     if x['circulating_supply'] is not None and x['market_cap'] is not None:
                         if int(x['circulating_supply']) != 0 and int(x['market_cap']) != 0:
-                            store_wanted_data.append({'contract_address': "coingecko", 'crypto_id': x['id'], 'name': x['name'],'symbol': x['symbol'], 'image_link': x['image'], 'market_cap': x['market_cap'], 'fdv': x['fully_diluted_valuation'], 'circ_supply': x['circulating_supply'], 'price': x['current_price']})
+                            store_wanted_data.append({'contract_address': "coingecko",
+                                                      'crypto_id': x['id'],
+                                                      'name': x['name'],
+                                                      'symbol': x['symbol'],
+                                                      'image_link': x['image'],
+                                                      'market_cap': x['market_cap'],
+                                                      'fdv': x['fully_diluted_valuation'],
+                                                      'circ_supply': x['circulating_supply'],
+                                                      'price': x['current_price'],
+                                                      'network': "temp"})
             else:
                 print("No data found in the response")
                 break
@@ -41,6 +50,7 @@ def call_cg_api():
     return all_coins_data
 
 def get_tokens_codex(network):
+    network_names = {'1399811149': 'Solana', '8453': 'Base', '42161': 'Arbitrum'}
     url = "https://graph.codex.io/graphql"
 
     headers = {
@@ -59,6 +69,7 @@ def get_tokens_codex(network):
             id
             name
             symbol
+            networkId
             info {
               circulatingSupply
               imageThumbUrl
@@ -132,7 +143,8 @@ def get_tokens_codex(network):
                            'market_cap': market_cap,
                            'fdv': fdv,
                            'circ_supply': circulatingSupply,
-                           'price': price})
+                           'price': price,
+                           'network': network_names[str(token.get("token", {}).get("networkId", "N/A"))]})
     print("BREAK")
     print(counter)
     return final_list
@@ -161,13 +173,32 @@ def run():
             cat_circ_supp = item['circ_supply']
             cat_price = item['price']
             cat_address = item['contract_address']
+            cat_networkId = item['network']
 
             if cat_address not in address_list and cat_address != "coingecko":
-                c = Coin(name = cat_name, crypto_id = cat_id, symbol = cat_symbol, image_link = cat_image_link, market_cap = cat_market_cap, fdv = cat_FDV, circulating_supply = cat_circ_supp, price = cat_price, contract_address = cat_address)
+                c = Coin(name = cat_name,
+                         crypto_id = cat_id,
+                         symbol = cat_symbol,
+                         image_link = cat_image_link,
+                         market_cap = cat_market_cap,
+                         fdv = cat_FDV,
+                         circulating_supply = cat_circ_supp,
+                         price = cat_price,
+                         contract_address = cat_address,
+                         network = cat_networkId)
                 c.save()
                 address_list.append(cat_address)
             elif cat_address == "coingecko":
-                c = Coin(name = cat_name, crypto_id = cat_id, symbol = cat_symbol, image_link = cat_image_link, market_cap = cat_market_cap, fdv = cat_FDV, circulating_supply = cat_circ_supp, price = cat_price, contract_address = cat_address)
+                c = Coin(name = cat_name,
+                         crypto_id = cat_id,
+                         symbol = cat_symbol,
+                         image_link = cat_image_link,
+                         market_cap = cat_market_cap,
+                         fdv = cat_FDV,
+                         circulating_supply = cat_circ_supp,
+                         price = cat_price,
+                         contract_address = cat_address,
+                         network = cat_networkId)
                 c.save()
         print('Done')
         return True
