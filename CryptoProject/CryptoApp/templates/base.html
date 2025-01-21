@@ -31,11 +31,11 @@
 	  {% if user.is_authenticated %}
 	  <form action="{% url 'logout' %}" method="post">
   	    {% csrf_token %}
-  	    <button class="log-button" type="submit">Log Out</button>
+	    <a><button class="log-button" type="submit">Log Out</button></a>
 	  </form>
 	  {% else %}
           <a href="{% url 'signup' %}">
-            <button class="log-button">Sign Up</a>
+            <button class="log-button">Sign Up</button>
           </a>
 	  {% endif %}
         </div>

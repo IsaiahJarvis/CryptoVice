@@ -98,7 +98,6 @@
 }
 
 .log-button {
-  display: flex;
   margin: 5px;
 }
 
@@ -131,6 +130,10 @@
 .dropdown a:hover {background-color: #ddd;}
 
 .show {display: block;}
+
+.container {
+  max-width: 100%;
+}
 
 .show-selected {
   display: flex;
