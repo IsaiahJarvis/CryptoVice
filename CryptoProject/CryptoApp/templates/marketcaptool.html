@@ -1,19 +1,17 @@
 {% extends "base.html" %} {% block content %}
 
-  <div class="header-wrapper">
-    <h1 class="header">MoonMath</h1>
-  </div>
 <div class="body-wrapper">
-  <div id="my_dropdown" class="dropdown-content">
-  </div>
   <div class="news-wrapper">
-    
   </div>
+
   <div class="tool-wrapper">
+    <h3>Temp</h3>
     <div class="selector-wrapper">
       <div class="dropdown" id="dropdown_1">
-        <input onclick="dropSearch('dropdown_1')" type="text" placeholder="Enter name or contract address" id="search_input_1" onkeyup="filterFunction(this)" class="search">
-        <div onclick="hideSelected('search_input_1', 'selected_box_1', 'dropdown_1')" class="selected-box" id="selected_box_1">
+        <input onclick="dropSearch('dropdown_1', 'my_dropdown_1', this)" type="text" placeholder="Enter name or contract address" id="search_input_1" onkeyup="filterFunction(this, 'my_dropdown_1')" class="search">
+	<div id="my_dropdown_1" class="dropdown-content">
+        </div>
+        <div onclick="hideSelected('search_input_1', 'selected_box_1', 'dropdown_1', 'my_dropdown_1')" class="selected-box" id="selected_box_1">
 	  <div class="img-wrapper" id="img_wrapper_1"><img class="selected-img" id="selected_img_1"src="" alt="N/A"></div>
 	  <div class="symbol-wrapper" id="symbol_wrapper_1"></div>
 	  <div class="mc-wrapper" id="mc_wrapper_1"></div>
@@ -21,8 +19,10 @@
       </div>
 
       <div class="dropdown" id="dropdown_2">
-        <input onclick="dropSearch('dropdown_2')" type="text" placeholder="Enter name or contract address" id="search_input_2" onkeyup="filterFunction(this)" class="search">
-        <div onclick="hideSelected('search_input_2', 'selected_box_2', 'dropdown_2')" class="selected-box" id="selected_box_2">
+        <input onclick="dropSearch('dropdown_2', 'my_dropdown_2', this)" type="text" placeholder="Enter name or contract address" id="search_input_2" onkeyup="filterFunction(this, 'my_dropdown_2')" class="search">
+	<div id="my_dropdown_2" class="dropdown-content">
+        </div>
+        <div onclick="hideSelected('search_input_2', 'selected_box_2', 'dropdown_2', 'my_dropdown_2')" class="selected-box" id="selected_box_2">
           <div class="img-wrapper" id="img_wrapper_2"><img class="selected-img" id="selected_img_2"src="" alt="N/A"></div>
           <div class="symbol-wrapper" id="symbol_wrapper_2"></div>
           <div class="mc-wrapper" id="mc_wrapper_2"></div>
@@ -44,7 +44,15 @@
 
   <div class="holder-wrapper">
     <h3>Holder Tool</h3>
-    <div>
+    <div class="dropdown" id="dropdown_3">
+      <input onclick="dropSearch('dropdown_3', 'my_dropdown_3', this)" type="text" placeholder="Enter name or contract address" id="search_input_3" onkeyup="filterFunction(this, 'my_dropdown_3')" class="search">
+      <div id="my_dropdown_3" class="dropdown-content">
+      </div>
+      <div onclick="hideSelected('search_input_3', 'selected_box_3', 'dropdown_3', 'my_dropdown_3')" class="selected-box" id="selected_box_3">
+        <div class="img-wrapper" id="img_wrapper_3"><img class="selected-img" id="selected_img_3"src="" alt="N/A"></div>
+        <div class="symbol-wrapper" id="symbol_wrapper_3"></div>
+        <div class="mc-wrapper" id="mc_wrapper_3"></div>
+      </div>
     </div>
   </div>
 

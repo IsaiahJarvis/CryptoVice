@@ -1,22 +1,18 @@
 let selectedCoinA = null;
 let selectedCoinB = null;
+let selectedCoinC = null;
 let USD = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'});
 
 // changes the dropdown menu and focus to the clicked searchbox
-function dropSearch(input) {
-  if (document.getElementById("my_dropdown").classList.contains("show") === true) {
-    if (document.getElementById(input).classList.contains("active") === true) {
-      document.getElementById("my_dropdown").classList.toggle("show");
+function dropSearch(section, dropdown, input) {
+  if (document.getElementById(dropdown).classList.contains("show") === true) {
+    if (document.getElementById(section).classList.contains("active") === true) {
+      document.getElementById(dropdown).classList.toggle("show");
     }
-  } else if (document.getElementById("my_dropdown").classList.contains("show") === false) {
-    document.getElementById("my_dropdown").classList.toggle("show");
+  } else if (document.getElementById(dropdown).classList.contains("show") === false) {
+    document.getElementById(dropdown).classList.toggle("show");
   }
-
-  if (input === "dropdown_1") {
-    changeActive("dropdown_1", "dropdown_2");
-  } else {
-    changeActive("dropdown_2", "dropdown_1");
-  }
+  filterFunction(input, dropdown);
 }
 
 // change the active search
@@ -30,46 +26,24 @@ function changeActive(to, from) {
   moveDropdown(to);
 }
 
-function select(div, coin, img, symbol, MC, search, selectedBox, swapSearch, swapBox, swapSymbol) {
+function select(coin, img, symbol, MC, search, selectedBox, dropdown) {
+    console.log(coin, img, symbol, MC, search, selectedBox, dropdown);
     document.getElementById(img).src=coin["imageLink"];
     document.getElementById(symbol).innerHTML = coin["symbol"];
     document.getElementById(MC).innerHTML = "$" + String(coin["marketCap"] * 1);
     document.getElementById(search).classList.toggle("hide");
     document.getElementById(selectedBox).classList.toggle("show-selected");
-    document.getElementById("my_dropdown").classList.toggle("show");
-    if (document.getElementById(swapSymbol).innerHTML == coin['symbol']) {
-      document.getElementById(swapBox).classList.toggle("show-selected");
-      document.getElementById(swapSearch).classList.toggle("hide");
-      if (div === "dropdown_1") {
-	changeActive("dropdown_2", div);
-	document.getElementById(search).focus();
-        document.getElementById("my_dropdown").classList.toggle("show");
-      } else {
-	changeActive("dropdown_1", div);
-        document.getElementById(search).focus();
-        document.getElementById("my_dropdown").classList.toggle("show");
-      }
-   }
+    dropdown.classList.toggle("show");
 }
 
-function hideSelected(search, select, dropdown) {
+function hideSelected(search, select, section, dropdown) {
   document.getElementById(search).classList.toggle("hide");
   document.getElementById(search).focus();
-  if (document.getElementById("my_dropdown").classList.contains("show") === false) {
-    document.getElementById("my_dropdown").classList.toggle("show");
+  if (document.getElementById(dropdown).classList.contains("show") === false) {
+    document.getElementById(dropdown).classList.toggle("show");
   }
   document.getElementById(select).classList.toggle("show-selected");
-  clearSelected(dropdown);
-  if (dropdown === "dropdown_1") {
-    changeActive("dropdown_1", "dropdown_2");
-  } else {
-    changeActive("dropdown_2", "dropdown_1");
-  }
-}
-
-// hide network dropdown
-function hideThis(target) {
-  document.getElementById(target).classList.toggle("show");
+  clearSelected(section);
 }
 
 // clear both selected coins
@@ -78,10 +52,14 @@ function clearSelected(dropdown) {
     document.getElementById("selected_img_1").src="";
     document.getElementById("symbol_wrapper_1").innerHTML = "";
     document.getElementById("mc_wrapper_1").innerHTML = "";
-  } else {
+  } else if (dropdown === "dropdown_2") {
     document.getElementById("selected_img_2").src="";
     document.getElementById("symbol_wrapper_2").innerHTML = "";
     document.getElementById("mc_wrapper_2").innerHTML = "";
+  } else {
+    document.getElementById("selected_img_3").src="";
+    document.getElementById("symbol_wrapper_3").innerHTML = "";
+    document.getElementById("mc_wrapper_3").innerHTML = "";
   }
 }
 
@@ -89,8 +67,8 @@ function clearSelected(dropdown) {
 function displayResult() {
   // only update if both boxes are showing selected isntead of the search box
   if (document.getElementById('selected_box_1').classList.contains("show-selected") === true && (document.getElementById('selected_box_2').classList.contains("show-selected") === true)) {
-    fdvPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['fdv']) / parseFloat(selectedCoinA['fdv']))
-    mcPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['marketCap']) / parseFloat(selectedCoinA['marketCap']))
+    fdvPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['fdv']) / parseFloat(selectedCoinA['fdv']));
+    mcPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['marketCap']) / parseFloat(selectedCoinA['marketCap']));
     priceText = `Current Price of ${selectedCoinA['name']}:`;
     fdvText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s fully diluted market cap:`;
     mcText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
@@ -107,27 +85,17 @@ function displayResult() {
   }
 }
 
-function moveDropdown(destination) {
-    dropdown = document.getElementById("my_dropdown");
-    document.getElementById(destination).appendChild(dropdown);
-    if (destination === "dropdown_1") {
-        filterFunction(document.getElementById("search_input_1"));
-    } else {
-        filterFunction(document.getElementById("search_input_2"));
-    }
-}
-
 let isLoading = false;  // To track loading state
 let nextPageUrl = null;  // To handle pagination
 
-async function filterFunction(inputElement) {
+async function filterFunction(inputElement, dropdown) {
 
-  if (document.getElementById("my_dropdown").classList.contains("show") === false) {
-    document.getElementById("my_dropdown").classList.toggle("show");
+  if (document.getElementById(dropdown).classList.contains("show") === false) {
+    document.getElementById(dropdown).classList.toggle("show");
   }
 
   let query = inputElement.value.trim();  // Get the search query from input
-  const dropdownMenu = document.getElementById("my_dropdown");
+  const dropdownMenu = document.getElementById(dropdown);
 
   if (query.length === 0) {
     query = "";
@@ -160,7 +128,7 @@ async function fetchResults(url, dropdownMenu) {
       item.setAttribute("data-network", coin.network);
 
       item.innerHTML = `<strong>${coin.name}</strong> (${coin.network})`;
-      item.onclick = () => coinSelect(coin);  // Handle coin selection
+      item.onclick = () => coinSelect(coin, dropdownMenu);  // Handle coin selection
       dropdownMenu.appendChild(item);
     });
 
@@ -173,7 +141,7 @@ async function fetchResults(url, dropdownMenu) {
   }
 }
 
-function coinSelect(coin) {
+function coinSelect(coin, dropdown) {
 
   const coinName = coin.name;
   const coinSymbol = coin.symbol;
@@ -184,21 +152,40 @@ function coinSelect(coin) {
   const fdv = coin.fdv;
   const circSupply = coin.circulating_supply;
 
-  if (document.getElementById("dropdown_1").classList.contains("active") === true) {
+  if (dropdown === document.getElementById("my_dropdown_1")) {
     selectedCoinA = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
-    select("dropdown_1", selectedCoinA, "selected_img_1", "symbol_wrapper_1", "mc_wrapper_1", "search_input_1", "selected_box_1", "search_input_2", "selected_box_2", "symbol_wrapper_2");
-  } else if (document.getElementById("dropdown_2").classList.contains("active") === true) {
+    select(selectedCoinA, "selected_img_1", "symbol_wrapper_1", "mc_wrapper_1", "search_input_1", "selected_box_1", dropdown);
+  } else if (dropdown === document.getElementById("my_dropdown_2")) {
     selectedCoinB = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
-    select("dropdown_2", selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", "search_input_1", "selected_box_1", "symbol_wrapper_1");
+    select(selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", dropdown);
+  }  else if (dropdown === document.getElementById("my_dropdown_3")) {
+    selectedCoinC = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
+    select(selectedCoinC, "selected_img_3", "symbol_wrapper_3", "mc_wrapper_3", "search_input_3", "selected_box_3", dropdown);
   }
   displayResult();
 }
 
 document.addEventListener('click', e => {
-  if (!document.getElementById("my_dropdown").contains(e.target) && !document.getElementById("dropdown_1").contains(e.target) && !document.getElementById("dropdown_2").contains(e.target)) {
-    console.log(e.target)
-    if (document.getElementById("my_dropdown").classList.contains("show") === true) {
-      document.getElementById("my_dropdown").classList.toggle("show");
+  if (!document.getElementById("my_dropdown_1").contains(e.target) && !document.getElementById("dropdown_1").contains(e.target)) {
+    if (document.getElementById("my_dropdown_1").classList.contains("show") === true) {
+      document.getElementById("my_dropdown_1").classList.toggle("show");
     }
   }
 })
+
+document.addEventListener('click', e => {
+  if (!document.getElementById("my_dropdown_2").contains(e.target) && !document.getElementById("dropdown_2").contains(e.target)) {
+    if (document.getElementById("my_dropdown_2").classList.contains("show") === true) {
+      document.getElementById("my_dropdown_2").classList.toggle("show");
+    }
+  }
+})
+
+document.addEventListener('click', e => {
+  if (!document.getElementById("my_dropdown_3").contains(e.target) && !document.getElementById("dropdown_3").contains(e.target)) {
+    if (document.getElementById("my_dropdown_3").classList.contains("show") === true) {
+      document.getElementById("my_dropdown_3").classList.toggle("show");
+    }
+  }
+})
+
