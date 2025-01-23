@@ -15,19 +15,8 @@ function dropSearch(section, dropdown, input) {
   filterFunction(input, dropdown);
 }
 
-// change the active search
-function changeActive(to, from) {
-  if (document.getElementById(from).classList.contains("active") === true) {
-    document.getElementById(from).classList.toggle("active");
-    document.getElementById(to).classList.toggle("active");
-  } else if (document.getElementById(from).classList.contains("active") === false && document.getElementById(to).classList.contains("active") === false) {
-    document.getElementById(to).classList.toggle("active");
-  }
-  moveDropdown(to);
-}
-
+// select coin, hide search and show selected box 
 function select(coin, img, symbol, MC, search, selectedBox, dropdown) {
-    console.log(coin, img, symbol, MC, search, selectedBox, dropdown);
     document.getElementById(img).src=coin["imageLink"];
     document.getElementById(symbol).innerHTML = coin["symbol"];
     document.getElementById(MC).innerHTML = "$" + String(coin["marketCap"] * 1);
@@ -36,6 +25,7 @@ function select(coin, img, symbol, MC, search, selectedBox, dropdown) {
     dropdown.classList.toggle("show");
 }
 
+// hide selected box, show search and dropdown and focus search
 function hideSelected(search, select, section, dropdown) {
   document.getElementById(search).classList.toggle("hide");
   document.getElementById(search).focus();
@@ -43,6 +33,7 @@ function hideSelected(search, select, section, dropdown) {
     document.getElementById(dropdown).classList.toggle("show");
   }
   document.getElementById(select).classList.toggle("show-selected");
+  // clears the data in the selected box
   clearSelected(section);
 }
 
@@ -89,14 +80,16 @@ let isLoading = false;  // To track loading state
 let nextPageUrl = null;  // To handle pagination
 
 async function filterFunction(inputElement, dropdown) {
-
+  // display dropdown if not displayed
   if (document.getElementById(dropdown).classList.contains("show") === false) {
     document.getElementById(dropdown).classList.toggle("show");
   }
 
+  // set query and get dropdown dom object
   let query = inputElement.value.trim();  // Get the search query from input
   const dropdownMenu = document.getElementById(dropdown);
 
+  // if not query select top 50
   if (query.length === 0) {
     query = "";
   }
@@ -114,6 +107,7 @@ async function fetchResults(url, dropdownMenu) {
   if (isLoading) return;
   isLoading = true;
 
+  // try to get coins from api and populate the dropdown
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -141,8 +135,10 @@ async function fetchResults(url, dropdownMenu) {
   }
 }
 
+// select and save coin
 function coinSelect(coin, dropdown) {
 
+  // assign coin variables
   const coinName = coin.name;
   const coinSymbol = coin.symbol;
   const coinImage = coin.image_link;
@@ -152,6 +148,7 @@ function coinSelect(coin, dropdown) {
   const fdv = coin.fdv;
   const circSupply = coin.circulating_supply;
 
+  // save coin to proper list and call select to display on selected box
   if (dropdown === document.getElementById("my_dropdown_1")) {
     selectedCoinA = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
     select(selectedCoinA, "selected_img_1", "symbol_wrapper_1", "mc_wrapper_1", "search_input_1", "selected_box_1", dropdown);
@@ -162,9 +159,28 @@ function coinSelect(coin, dropdown) {
     selectedCoinC = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
     select(selectedCoinC, "selected_img_3", "symbol_wrapper_3", "mc_wrapper_3", "search_input_3", "selected_box_3", dropdown);
   }
+  // check if results can be displayed
   displayResult();
 }
 
+// show network dropdown
+function netDrop(dropdown) {
+  document.getElementById(dropdown).classList.toggle("show");
+}
+
+// select the network
+function selectNetwork(input) {
+  document.getElementById('network_box').value = input.innerHTML;
+  document.getElementById("network_dropdown").classList.toggle("show");
+}
+
+function showSubmit(contract, div, button) {
+  document.getElementById(contract).classList.toggle("flex");
+  document.getElementById(div).classList.toggle("flex");
+  document.getElementById(button).classList.toggle("flex"); 
+}
+
+// event listener for closing each dropdown
 document.addEventListener('click', e => {
   if (!document.getElementById("my_dropdown_1").contains(e.target) && !document.getElementById("dropdown_1").contains(e.target)) {
     if (document.getElementById("my_dropdown_1").classList.contains("show") === true) {
@@ -185,6 +201,14 @@ document.addEventListener('click', e => {
   if (!document.getElementById("my_dropdown_3").contains(e.target) && !document.getElementById("dropdown_3").contains(e.target)) {
     if (document.getElementById("my_dropdown_3").classList.contains("show") === true) {
       document.getElementById("my_dropdown_3").classList.toggle("show");
+    }
+  }
+})
+
+document.addEventListener('click', e => {
+  if (!document.getElementById("network_dropdown").contains(e.target) && !document.getElementById("network_box").contains(e.target)) {
+    if (document.getElementById("network_dropdown").classList.contains("show") === true) {
+      document.getElementById("network_dropdown").classList.toggle("show");
     }
   }
 })

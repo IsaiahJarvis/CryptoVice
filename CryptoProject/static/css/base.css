@@ -1,6 +1,7 @@
 .result-wrapper {
   display: none;
-  margin: 50px 100px;
+  margin: 0px 100px;
+  margin-top: 50px;
 }
 
 .result-div .show {
@@ -49,11 +50,12 @@
 .body-wrapper {
   display: flex;
   flex-wrap: wrap;
+  margin-top: 15px;
 }
 
 .tool-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   flex-direction: column;
   flex-wrap: wrap;
@@ -64,7 +66,18 @@
   flex: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
+}
+
+.submit-wrapper {
+  display: flex;
+  margin-top: 50px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.submit {
+  margin: 5px;
 }
 
 .symbol-wrapper {
@@ -124,12 +137,21 @@
 
 .selected-box {
   display: none;
+}
 
+.hidden {
+  display: none;
 }
 
 .dropdown a:hover {background-color: #ddd;}
 
 .show {display: block;}
+
+.flex {display: flex;}
+
+.submit-wrapper .flex {
+  flex-wrap: wrap;
+}
 
 .container {
   max-width: 100%;

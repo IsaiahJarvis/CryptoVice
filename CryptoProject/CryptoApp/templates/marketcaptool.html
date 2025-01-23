@@ -40,6 +40,22 @@
         <div id="result_mc"></div>
       </div>
     </div>
+
+    <div class="submit-wrapper">
+      <h4 onclick="showSubmit('hide_submit')">Submit Coin</h4>
+      <div class="hidden " id="hide_submit">
+        <input class="search submit" type="text" placeholder="Enter contract address" id="submit_contract">
+        <div class="submit" id="network_div">
+          <input class="search" onclick="netDrop('network_dropdown')" placeholder="Select a network" id="network_box" readonly>
+          <div class="dropdown-content" id="network_dropdown">
+            <a class="dropdown-item" onclick="selectNetwork(this)">Arbitrum</a>
+            <a class="dropdown-item" onclick="selectNetwork(this)">Base</a>
+            <a class="dropdown-item" onclick="selectNetwork(this)">Solana</a>
+          </div>
+        </div>
+        <button class="submit" onclick="submitCoin('submit_contract', 'network_box')" id="submit_coin_button">Submit</button>
+      </div>
+    </div>
   </div>
 
   <div class="holder-wrapper">
