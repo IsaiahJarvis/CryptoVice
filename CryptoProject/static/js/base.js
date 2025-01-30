@@ -174,10 +174,37 @@ function selectNetwork(input) {
   document.getElementById("network_dropdown").classList.toggle("show");
 }
 
-function showSubmit(contract, div, button) {
-  document.getElementById(contract).classList.toggle("flex");
+function showSubmit(div) {
   document.getElementById(div).classList.toggle("flex");
-  document.getElementById(button).classList.toggle("flex"); 
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("hide_submit").addEventListener("submit", function(event){
+    event.preventDefault();
+
+    let contract = document.getElementById("submit_contract").value;
+    let network = document.getElementById("network_box").value;
+  
+    fetch("/call-python/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken()
+      },
+      body: JSON.stringify({ contract: contract, network: network })  // Send JSON data
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert("Response: " + data.message);
+      console.log(data.message)
+    })
+    .catch(error => console.error("Error:", error));
+  });
+});
+
+function getCSRFToken() {
+    let csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+    return csrfToken;
 }
 
 // event listener for closing each dropdown

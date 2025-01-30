@@ -43,18 +43,19 @@
 
     <div class="submit-wrapper">
       <h4 onclick="showSubmit('hide_submit')">Submit Coin</h4>
-      <div class="hidden " id="hide_submit">
-        <input class="search submit" type="text" placeholder="Enter contract address" id="submit_contract">
+      <form class="hidden" id="hide_submit">
+	{% csrf_token %}
+        <input class="search submit" type="text" placeholder="Enter contract address" id="submit_contract" name="contract">
         <div class="submit" id="network_div">
-          <input class="search" onclick="netDrop('network_dropdown')" placeholder="Select a network" id="network_box" readonly>
+          <input class="search" onclick="netDrop('network_dropdown')" placeholder="Select a network" id="network_box" readonly name="network">
           <div class="dropdown-content" id="network_dropdown">
             <a class="dropdown-item" onclick="selectNetwork(this)">Arbitrum</a>
             <a class="dropdown-item" onclick="selectNetwork(this)">Base</a>
             <a class="dropdown-item" onclick="selectNetwork(this)">Solana</a>
           </div>
         </div>
-        <button class="submit" onclick="submitCoin('submit_contract', 'network_box')" id="submit_coin_button">Submit</button>
-      </div>
+        <button class="submit" type="submit" id="submit_coin_button">Submit</button>
+      </form>
     </div>
   </div>
 
