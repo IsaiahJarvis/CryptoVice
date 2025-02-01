@@ -9,6 +9,7 @@ def marketcaptool(request):
     items = Coin.objects.all().order_by('-market_cap')
     return render(request, "marketcaptool.html", {"coins": items})
 
+# NOT USED
 def user_submission(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -25,6 +26,7 @@ def user_submission(request):
             return JsonResponse({'message': f'This coin already exists'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+# NOT USED
 def check_for_dupes(contract):
    model1 = apps.get_model('CryptoApp', 'Coin')
    model2 = apps.get_model('CryptoApp', 'User_Coin')

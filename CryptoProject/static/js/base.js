@@ -60,9 +60,9 @@ function displayResult() {
   if (document.getElementById('selected_box_1').classList.contains("show-selected") === true && (document.getElementById('selected_box_2').classList.contains("show-selected") === true)) {
     fdvPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['fdv']) / parseFloat(selectedCoinA['fdv']));
     mcPrice = parseFloat(selectedCoinA['price']) * (parseFloat(selectedCoinB['marketCap']) / parseFloat(selectedCoinA['marketCap']));
-    priceText = `Current Price of ${selectedCoinA['name']}:`;
-    fdvText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s fully diluted market cap:`;
-    mcText = `Price of ${selectedCoinA['name']} with ${selectedCoinB['name']}'s market cap:`;
+    priceText = `Current Price of ${selectedCoinA['symbol']}:`;
+    fdvText = `Price of ${selectedCoinA['symbol']} with ${selectedCoinB['symbol']}'s fully diluted market cap:`;
+    mcText = `Price of ${selectedCoinA['symbol']} with ${selectedCoinB['symbol']}'s market cap:`;
 
     document.getElementById("price_text").innerHTML = priceText;
     document.getElementById("price_of_a").innerHTML = "$" + String(selectedCoinA['price'] * 1);
@@ -157,13 +157,13 @@ function coinSelect(coin, dropdown) {
 
   // save coin to proper list and call select to display on selected box
   if (dropdown === document.getElementById("my_dropdown_1")) {
-    selectedCoinA = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
+    selectedCoinA = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
     select(selectedCoinA, "selected_img_1", "symbol_wrapper_1", "mc_wrapper_1", "search_input_1", "selected_box_1", dropdown);
   } else if (dropdown === document.getElementById("my_dropdown_2")) {
-    selectedCoinB = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
+    selectedCoinB = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
     select(selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", dropdown);
   }  else if (dropdown === document.getElementById("my_dropdown_3")) {
-    selectedCoinC = {'name': coinName, 'symbol': coinSymbol, 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
+    selectedCoinC = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
     select(selectedCoinC, "selected_img_3", "symbol_wrapper_3", "mc_wrapper_3", "search_input_3", "selected_box_3", dropdown);
   }
   // check if results can be displayed
@@ -171,6 +171,7 @@ function coinSelect(coin, dropdown) {
 }
 
 // show network dropdown
+/*
 function netDrop(dropdown) {
   document.getElementById(dropdown).classList.toggle("show");
 }
@@ -180,7 +181,7 @@ function selectNetwork(input) {
   document.getElementById('network_box').value = input.innerHTML;
   document.getElementById("network_dropdown").classList.toggle("show");
 }
-
+*/
 function showSubmit(div) {
   document.getElementById(div).classList.toggle("flex");
 }
@@ -189,9 +190,22 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("hide_submit").addEventListener("submit", function(event){
     event.preventDefault();
 
-    let contract = document.getElementById("submit_contract").value;
-    let network = document.getElementById("network_box").value;
-  
+    let symbol = document.getElementById("submit_symbol").value;
+    let price = document.getElementById("submit_price").value;
+    let FDV = document.getElementById("submit_FDV").value;
+    let marketCap = document.getElementById("submit_market_cap").value;
+    
+    if (document.getElementById("my_dropdown_1").classList.contains("show")) {
+      selectedCoinA = {'name': 'N/A', 'symbol': symbol.toUpperCase(), 'imageLink': 'N/A', 'id': 'N/A', 'marketCap': marketCap, 'fdv': FDV, 'price': price};
+      select(selectedCoinA, "selected_img_1", "symbol_wrapper_1", "mc_wrapper_1", "search_input_1", "selected_box_1", document.getElementById("my_dropdown_1"));
+      console.log(selectedCoinA)
+    } else if (document.getElementById("my_dropdown_2").classList.contains("show")) {
+      selectedCoinB = {'name': 'N/A', 'symbol': symbol.toUpperCase(), 'imageLink': 'N/A', 'id': 'N/A', 'marketCap': marketCap, 'fdv': FDV, 'price': price};
+      select(selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", document.getElementById("my_dropdown_2"));
+    }
+    displayResult();
+    
+/*
     fetch("/call-python/", {
       method: "POST",
       headers: {
@@ -206,6 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log(data.message)
     })
     .catch(error => console.error("Error:", error));
+*/  
   });
 });
 

@@ -12,9 +12,9 @@
 	<div id="my_dropdown_1" class="dropdown-content">
 	</div>
         <div onclick="hideSelected('search_input_1', 'selected_box_1', 'dropdown_1', 'my_dropdown_1')" class="selected-box" id="selected_box_1">
-	  <div class="img-wrapper" id="img_wrapper_1"><img class="selected-img" id="selected_img_1"src="" alt="N/A"></div>
-	  <div class="symbol-wrapper" id="symbol_wrapper_1"></div>
-	  <div class="mc-wrapper" id="mc_wrapper_1"></div>
+	  <div class="selected-item-wrapper" id="img_wrapper_1"><img class="selected-img" id="selected_img_1"src="" alt="N/A"></div>
+	  <div class="selected-item-wrapper" id="symbol_wrapper_1"></div>
+	  <div class="selected-item-wrapper" id="mc_wrapper_1"></div>
         </div>
       </div>
 
@@ -23,9 +23,9 @@
 	<div id="my_dropdown_2" class="dropdown-content">
         </div>
         <div onclick="hideSelected('search_input_2', 'selected_box_2', 'dropdown_2', 'my_dropdown_2')" class="selected-box" id="selected_box_2">
-          <div class="img-wrapper" id="img_wrapper_2"><img class="selected-img" id="selected_img_2"src="" alt="N/A"></div>
-          <div class="symbol-wrapper" id="symbol_wrapper_2"></div>
-          <div class="mc-wrapper" id="mc_wrapper_2"></div>
+          <div class="selected-item-wrapper" id="img_wrapper_2"><img class="selected-img" id="selected_img_2"src="" alt="N/A"></div>
+          <div class="selected-item-wrapper" id="symbol_wrapper_2"></div>
+          <div class="selected-item-wrapper" id="mc_wrapper_2"></div>
         </div>
       </div>
     </div>
@@ -59,9 +59,9 @@
       <div id="my_dropdown_3" class="dropdown-content">
       </div>
       <div onclick="hideSelected('search_input_3', 'selected_box_3', 'dropdown_3', 'my_dropdown_3')" class="selected-box" id="selected_box_3">
-        <div class="img-wrapper" id="img_wrapper_3"><img class="selected-img" id="selected_img_3"src="" alt="N/A"></div>
-        <div class="symbol-wrapper" id="symbol_wrapper_3"></div>
-        <div class="mc-wrapper" id="mc_wrapper_3"></div>
+        <div class="selected-item-wrapper" id="img_wrapper_3"><img class="selected-img" id="selected_img_3"src="" alt="N/A"></div>
+        <div class="selected-item-wrapper" id="symbol_wrapper_3"></div>
+        <div class="selected-item-wrapper" id="mc_wrapper_3"></div>
       </div>
     </div>
   </div>
@@ -71,8 +71,10 @@
       <h4 class="submit">Submit Coin</h4>
       <form id="hide_submit">
         {% csrf_token %}
-        <input class="submit" type="text" placeholder="Enter contract address" id="submit_contract" name="contract">
-        <input class="submit" type="text" placeholder="Enter network name" id="network_box"  name="network">
+        <input class="submit" type="text" placeholder="Enter coin symbol" id="submit_symbol">
+        <input class="submit" type="text" placeholder="Enter coin price" id="submit_price">
+	<input class="submit" type="text" placeholder="Enter coin FDV" id="submit_FDV">
+        <input class="submit" type="text" placeholder="Enter coin market cap" id="submit_market_cap">
         <button class="submit" type="submit" id="submit_coin_button">Submit</button>
       </form>
     </div>

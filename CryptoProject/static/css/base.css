@@ -43,8 +43,12 @@
 }
 
 .search {
-  width: 230px;
+  width: 250px;
   height: 40px;
+}
+
+.selected-item-wrapper {
+  margin: 2px 5px;  
 }
 
 .body-wrapper {
@@ -103,7 +107,7 @@
   display: none;
   position: absolute;
   background-color: #f6f6f6;
-  width: 230px;
+  width: 250px;
   height: auto;
   overflow: auto;
   overflow-x: hidden;
@@ -163,7 +167,7 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 230px;
+  width: 250px;
   height: 40px;
   border-style: solid;
   border-width: 2px;
