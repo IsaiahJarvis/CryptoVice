@@ -77,6 +77,8 @@
 }
 
 .submit {
+  width: auto;
+  height: 40px;
   margin: 5px;
 }
 

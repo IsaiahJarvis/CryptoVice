@@ -94,6 +94,9 @@ async function filterFunction(inputElement, dropdown) {
     query = "";
   }
   // Clear previous dropdown results
+  if (!document.getElementById("hidden_storage").contains(document.getElementById("submit_wrapper"))) {
+    document.getElementById("hidden_storage").appendChild(document.getElementById("submit_wrapper"));
+  }  // add function to clear data
   dropdownMenu.innerHTML = "";
   nextPageUrl = null;
 
@@ -111,8 +114,13 @@ async function fetchResults(url, dropdownMenu) {
   try {
     const response = await fetch(url);
     const data = await response.json();
-
-    // Populate the dropdown with results
+    const submit = document.getElementById("submit_wrapper");
+    
+    if (!data.results || data.results.length === 0) {
+      dropdownMenu.appendChild(submit);
+      return;
+    }
+	    // Populate the dropdown with results
     data.results.forEach((coin) => {
       const item = document.createElement("div");
       item.classList.add("dropdown-item");
@@ -121,11 +129,10 @@ async function fetchResults(url, dropdownMenu) {
       item.setAttribute("data-id", coin.crypto_id);
       item.setAttribute("data-network", coin.network);
 
-      item.innerHTML = `<strong>${coin.name}</strong> (${coin.network})`;
+      item.innerHTML = `<strong>${coin.name}</strong>`;
       item.onclick = () => coinSelect(coin, dropdownMenu);  // Handle coin selection
       dropdownMenu.appendChild(item);
     });
-
     // Update next page URL for pagination
     nextPageUrl = data.next;
   } catch (error) {

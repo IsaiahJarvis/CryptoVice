@@ -10,7 +10,7 @@
       <div class="dropdown" id="dropdown_1">
         <input onclick="dropSearch('dropdown_1', 'my_dropdown_1', this)" type="text" placeholder="Enter name or contract address" id="search_input_1" onkeyup="filterFunction(this, 'my_dropdown_1')" class="search">
 	<div id="my_dropdown_1" class="dropdown-content">
-        </div>
+	</div>
         <div onclick="hideSelected('search_input_1', 'selected_box_1', 'dropdown_1', 'my_dropdown_1')" class="selected-box" id="selected_box_1">
 	  <div class="img-wrapper" id="img_wrapper_1"><img class="selected-img" id="selected_img_1"src="" alt="N/A"></div>
 	  <div class="symbol-wrapper" id="symbol_wrapper_1"></div>
@@ -40,23 +40,16 @@
         <div id="result_mc"></div>
       </div>
     </div>
-
-    <div class="submit-wrapper">
-      <h4 onclick="showSubmit('hide_submit')">Submit Coin</h4>
-      <form class="hidden" id="hide_submit">
+    <!--
+    <div class="submit-wrapper" id="submit_wrapper">
+      <h4 class="submit">Submit Coin</h4>
+      <form id="hide_submit">
 	{% csrf_token %}
-        <input class="search submit" type="text" placeholder="Enter contract address" id="submit_contract" name="contract">
-        <div class="submit" id="network_div">
-          <input class="search" onclick="netDrop('network_dropdown')" placeholder="Select a network" id="network_box" readonly name="network">
-          <div class="dropdown-content" id="network_dropdown">
-            <a class="dropdown-item" onclick="selectNetwork(this)">Arbitrum</a>
-            <a class="dropdown-item" onclick="selectNetwork(this)">Base</a>
-            <a class="dropdown-item" onclick="selectNetwork(this)">Solana</a>
-          </div>
-        </div>
+        <input class="submit" type="text" placeholder="Enter contract address" id="submit_contract" name="contract">
+        <input class="submit" type="text" placeholder="Enter network name" id="network_box"  name="network">
         <button class="submit" type="submit" id="submit_coin_button">Submit</button>
       </form>
-    </div>
+      </div>--!>
   </div>
 
   <div class="holder-wrapper">
@@ -73,5 +66,16 @@
     </div>
   </div>
 
+  <div class="hidden" id="hidden_storage">
+    <div class="submit-wrapper" id="submit_wrapper">
+      <h4 class="submit">Submit Coin</h4>
+      <form id="hide_submit">
+        {% csrf_token %}
+        <input class="submit" type="text" placeholder="Enter contract address" id="submit_contract" name="contract">
+        <input class="submit" type="text" placeholder="Enter network name" id="network_box"  name="network">
+        <button class="submit" type="submit" id="submit_coin_button">Submit</button>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}

@@ -6,12 +6,12 @@ import json
 
 def get_token(contract_address, networkId):
     network_names = {'1399811149': 'Solana', '8453': 'Base', '42161': 'Arbitrum'}
-
+    codex_key = settings.API_KEYS.get('codex_api')
     url = "https://graph.codex.io/graphql"
     token = str(contract_address) + ":" + str(networkId)
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "9f436aa47fa4d649d9344893ad3ad8b1d71a92c9"
+        "Authorization": codex_key
     }
 
     query = """

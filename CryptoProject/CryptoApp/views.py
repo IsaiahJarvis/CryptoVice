@@ -14,8 +14,11 @@ def user_submission(request):
         data = json.loads(request.body)
         contract = data.get('contract')
         network = data.get('network')
+
         if check_for_dupes(contract) == False:
             network_names = {'Solana': '1399811149', 'Base': '8453', 'Arbitrum': '42161'}
+            if network not in network_names:
+                return JsonResponse({'message': f'{network} is not a supported network'})
             run(contract, network_names[network])
             return JsonResponse({'message': f'you entered: {contract}, {network}'})
         else:
