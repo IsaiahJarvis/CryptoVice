@@ -35,6 +35,11 @@
   padding-right: 25px;
 }
 
+.filter-box,
+.filter-drop {
+  max-width: 125px;
+}
+
 .page-title {
   margin: 0px auto;
   position: absolute;
@@ -139,6 +144,7 @@
 .selected-img {
   height: auto;
   width: 30px;
+  border-radius: 50%;
 }
 
 .selected-box {
@@ -161,6 +167,13 @@
 
 .container {
   max-width: 100%;
+}
+
+.filter-box {
+  height: 24px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: rgb(118, 118, 118)
 }
 
 .show-selected {

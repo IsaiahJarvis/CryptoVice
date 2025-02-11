@@ -11,9 +11,24 @@ class CoinPagination(PageNumberPagination):
 @api_view(['GET'])
 def searchCoins(request):
     query = request.GET.get('q', '')
+    is_third_menu = request.GET.get("excludeCoingecko", "false").lower() == "true"
     paginator = CoinPagination()
-    if query:
-        coins = Coin.objects.filter(Q(name__icontains=query) | Q(contract_address__icontains=query) | Q(symbol__icontains=query)).order_by('-market_cap')
+    if query and is_third_menu:
+        coins = Coin.objects.filter(
+            Q(name__icontains=query) |
+            Q(contract_address__exact=query) | 
+            Q(symbol__icontains=query)
+        ).exclude(contract_address="coingecko").order_by('-market_cap')
+        results = paginator.paginate_queryset(coins, request)
+        serializer = CoinSerializer(results, many=True)
+        return paginator.get_paginated_response(serializer.data)
+    elif query:
+        coins = Coin.objects.filter(Q(name__icontains=query) | Q(contract_address__exact=query) | Q(symbol__icontains=query)).order_by('-market_cap')
+        results = paginator.paginate_queryset(coins, request)
+        serializer = CoinSerializer(results, many=True)
+        return paginator.get_paginated_response(serializer.data)
+    elif is_third_menu: 
+        coins = Coin.objects.all().exclude(contract_address="coingecko").order_by('-market_cap')
         results = paginator.paginate_queryset(coins, request)
         serializer = CoinSerializer(results, many=True)
         return paginator.get_paginated_response(serializer.data)

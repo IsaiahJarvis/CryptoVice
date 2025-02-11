@@ -1,4 +1,8 @@
 {% extends "base.html" %} {% block content %}
+{% load static %}
+<script>
+  const defaultImage = "{% static '../../static/files/REDIMG.png' %}";
+</script>
 
 <div class="body-wrapper">
   <div class="news-wrapper">
@@ -63,6 +67,24 @@
         <div class="selected-item-wrapper" id="symbol_wrapper_3"></div>
         <div class="selected-item-wrapper" id="mc_wrapper_3"></div>
       </div>
+      <div id="filter_wrapper" class="filter-wrapper">
+        <input onclick="isChecked('filter_dropdown')" type="checkbox" id="filter_check" name="filter_check">Turn on filters</input>
+	<div id="filter_dropdown" class="hide">
+	  <div onclick="showDropdown('my_dropdown_4')" id="filter_box" class="filter-box">Total</div>
+	  <div id="my_dropdown_4" class="dropdown-content filter-drop">
+	    <a onclick="changeFilter(this)" id="total_filter" class="dropdown-item hide" data-target="filterTotal">Total</a>
+	    <a onclick="changeFilter(this)" id="filter_1" class="dropdown-item hide" data-target="filter1">Over $10</a>
+            <a onclick="changeFilter(this)" id="filter_2" class="dropdown-item hide" data-target="filter2">Over $50</a>
+            <a onclick="changeFilter(this)" id="filter_3" class="dropdown-item hide" data-target="filter3">Over $100</a>
+	    <a onclick="changeFilter(this)" id="filter_4" class="dropdown-item hide" data-target="filter4">Over $500</a>
+            <a onclick="changeFilter(this)" id="filter_5" class="dropdown-item hide" data-target="filter5">Over $1000</a>
+            <a onclick="changeFilter(this)" id="filter_6" class="dropdown-item hide" data-target="filter6">Over $2500</a>
+	  </div>
+	</div>
+      </div>
+      <div class="holder-results-wrapper" id="holder_results">
+        <div id="holder_count"></div>
+      </div>
     </div>
   </div>
 
@@ -71,10 +93,10 @@
       <h4 class="submit">Submit Coin</h4>
       <form id="hide_submit">
         {% csrf_token %}
-        <input class="submit" type="text" placeholder="Enter coin symbol" id="submit_symbol">
-        <input class="submit" type="text" placeholder="Enter coin price" id="submit_price">
-	<input class="submit" type="text" placeholder="Enter coin FDV" id="submit_FDV">
-        <input class="submit" type="text" placeholder="Enter coin market cap" id="submit_market_cap">
+        <input class="submit" type="text" placeholder="Enter coin symbol" id="submit_symbol" required>
+        <input class="submit" type="number" placeholder="Enter coin price" id="submit_price" step="any" required>
+	<input class="submit" type="number" placeholder="Enter coin FDV" id="submit_FDV" step="any">
+        <input class="submit" type="number" placeholder="Enter coin market cap" id="submit_market_cap" step="any">
         <button class="submit" type="submit" id="submit_coin_button">Submit</button>
       </form>
     </div>

@@ -1,4 +1,3 @@
-from CryptoApp.models import User_Coin
 from django.conf import settings
 import requests
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects

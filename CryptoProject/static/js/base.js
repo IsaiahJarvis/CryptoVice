@@ -17,7 +17,9 @@ function dropSearch(section, dropdown, input) {
 
 // select coin, hide search and show selected box 
 function select(coin, img, symbol, MC, search, selectedBox, dropdown) {
-    document.getElementById(img).src=coin["imageLink"];
+    const imageSrc = (coin["imageLink"] && coin["imageLink"] !== "N/A") ? coin["imageLink"] : defaultImage;
+    
+    document.getElementById(img).src = imageSrc;
     document.getElementById(symbol).innerHTML = coin["symbol"];
     document.getElementById(MC).innerHTML = "$" + String(coin["marketCap"] * 1);
     document.getElementById(search).classList.toggle("hide");
@@ -109,18 +111,26 @@ async function fetchResults(url, dropdownMenu) {
   // Prevent multiple simultaneous requests
   if (isLoading) return;
   isLoading = true;
+  let excludeCoingecko = false
 
+  if (dropdownMenu === document.getElementById("my_dropdown_3")) {
+    excludeCoingecko = true
+  } 
+  const fullUrl = `${url}&excludeCoingecko=${excludeCoingecko}`
+  console.log(fullUrl)
   // try to get coins from api and populate the dropdown
   try {
-    const response = await fetch(url);
+    const response = await fetch(fullUrl);
     const data = await response.json();
     const submit = document.getElementById("submit_wrapper");
     
-    if (!data.results || data.results.length === 0) {
-      dropdownMenu.appendChild(submit);
-      return;
+    if (dropdownMenu != document.getElementById("my_dropdown_3")) {
+      if (!data.results || data.results.length === 0) {
+        dropdownMenu.appendChild(submit);
+        return;
+      }
     }
-	    // Populate the dropdown with results
+	  // Populate the dropdown with results
     data.results.forEach((coin) => {
       const item = document.createElement("div");
       item.classList.add("dropdown-item");
@@ -140,6 +150,14 @@ async function fetchResults(url, dropdownMenu) {
   } finally {
     isLoading = false;
   }
+}
+
+function showDropdown(dropdown) {
+  document.getElementById(dropdown).classList.toggle("show");
+}
+
+function isChecked(filter) {
+  document.getElementById(filter).classList.toggle("hide");
 }
 
 // select and save coin
@@ -163,25 +181,17 @@ function coinSelect(coin, dropdown) {
     selectedCoinB = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
     select(selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", dropdown);
   }  else if (dropdown === document.getElementById("my_dropdown_3")) {
-    selectedCoinC = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
+    const network = coin.network;
+    const address = coin.contract_address;
+    let uniqueId = address + ":" + network
+    selectedCoinC = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap};
     select(selectedCoinC, "selected_img_3", "symbol_wrapper_3", "mc_wrapper_3", "search_input_3", "selected_box_3", dropdown);
+    getHolders(uniqueId);
   }
   // check if results can be displayed
   displayResult();
 }
 
-// show network dropdown
-/*
-function netDrop(dropdown) {
-  document.getElementById(dropdown).classList.toggle("show");
-}
-
-// select the network
-function selectNetwork(input) {
-  document.getElementById('network_box').value = input.innerHTML;
-  document.getElementById("network_dropdown").classList.toggle("show");
-}
-*/
 function showSubmit(div) {
   document.getElementById(div).classList.toggle("flex");
 }
@@ -198,7 +208,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (document.getElementById("my_dropdown_1").classList.contains("show")) {
       selectedCoinA = {'name': 'N/A', 'symbol': symbol.toUpperCase(), 'imageLink': 'N/A', 'id': 'N/A', 'marketCap': marketCap, 'fdv': FDV, 'price': price};
       select(selectedCoinA, "selected_img_1", "symbol_wrapper_1", "mc_wrapper_1", "search_input_1", "selected_box_1", document.getElementById("my_dropdown_1"));
-      console.log(selectedCoinA)
     } else if (document.getElementById("my_dropdown_2").classList.contains("show")) {
       selectedCoinB = {'name': 'N/A', 'symbol': symbol.toUpperCase(), 'imageLink': 'N/A', 'id': 'N/A', 'marketCap': marketCap, 'fdv': FDV, 'price': price};
       select(selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", document.getElementById("my_dropdown_2"));
@@ -229,6 +238,65 @@ function getCSRFToken() {
     return csrfToken;
 }
 
+function getHolders(uniqueId) {
+    let call = "/call-python/"
+    if (document.getElementById("filter_check").checked) {
+      call = "/call-python-filter/"
+    }
+
+    fetch(call, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken()
+      },
+      body: JSON.stringify({ "uniqueId": uniqueId })  // Send JSON data
+    })
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("holder_count").innerHTML = ""
+      if (document.getElementById("filter_check").checked) {
+        format_filters(data.result);
+      } else {
+	item = document.createElement("div")
+        item.innerHTML = data.result;
+	document.getElementById("holder_count").appendChild(item);
+      }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+function format_filters(results) {
+  let filters = ["Total Count: ", "Over $10: ", "Over $50: ", "Over $100: ", "Over $500: ", "Over $1000: ", "Over $2500: "];
+  let targets = ["filterTotal", "filter1", "filter2", "filter3", "filter4", "filter5", "filter6"];
+  let i = 0;
+  while (i < results.length) {
+    const item = document.createElement("div");
+    item.innerHTML = filters[i] + String(results[i]);
+    item.setAttribute("data-target", targets[i]);
+    document.getElementById("holder_count").appendChild(item);
+    if (i != 0) {
+      item.classList.toggle("hide");
+    }
+    i++;
+  }
+}
+
+function changeFilter(filter) {
+  document.getElementById("filter_box").innerHTML = filter.innerHTML;
+  var parentDiv = document.getElementById("holder_count");
+  console.log(filter)
+  for (var i = 0; i < parentDiv.children.length; i++) {
+    var child = parentDiv.children[i];
+    console.log(child)
+    if (child.dataset.target === filter.dataset.target && filter.classList.contains("hide")) {
+      child.classList.toggle("hide");
+    } else if (!child.classList.contains("hide")) {
+      child.classList.toggle("hide")
+    }
+  }
+}
+
 // event listener for closing each dropdown
 document.addEventListener('click', e => {
   if (!document.getElementById("my_dropdown_1").contains(e.target) && !document.getElementById("dropdown_1").contains(e.target)) {
@@ -255,9 +323,9 @@ document.addEventListener('click', e => {
 })
 
 document.addEventListener('click', e => {
-  if (!document.getElementById("network_dropdown").contains(e.target) && !document.getElementById("network_box").contains(e.target)) {
-    if (document.getElementById("network_dropdown").classList.contains("show") === true) {
-      document.getElementById("network_dropdown").classList.toggle("show");
+  if (!document.getElementById("my_dropdown_4").contains(e.target) && !document.getElementById("filter_dropdown").contains(e.target)) {
+    if (document.getElementById("my_dropdown_4").classList.contains("show") === true) {
+      document.getElementById("my_dropdown_4").classList.toggle("show");
     }
   }
 })

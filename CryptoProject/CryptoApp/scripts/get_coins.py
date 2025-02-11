@@ -144,7 +144,7 @@ def get_tokens_codex(network):
                            'fdv': fdv,
                            'circ_supply': circulatingSupply,
                            'price': price,
-                           'network': network_names[str(token.get("token", {}).get("networkId", "N/A"))]})
+                           'network': str(token.get("token", {}).get("networkId", "N/A"))})
     print("BREAK")
     print(counter)
     return final_list
