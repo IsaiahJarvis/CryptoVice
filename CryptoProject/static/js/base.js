@@ -184,6 +184,7 @@ function coinSelect(coin, dropdown) {
     const network = coin.network;
     const address = coin.contract_address;
     let uniqueId = address + ":" + network
+    console.log(uniqueId);
     selectedCoinC = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap};
     select(selectedCoinC, "selected_img_3", "symbol_wrapper_3", "mc_wrapper_3", "search_input_3", "selected_box_3", dropdown);
     getHolders(uniqueId);

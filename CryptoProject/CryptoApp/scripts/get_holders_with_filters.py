@@ -100,9 +100,7 @@ def getHolders(uniqueId):
                    total_holders_over500,
                    total_holders_over1000,
                    total_holders_over2500]
-    print(holder_data)
     return holder_data
-    #saveHolders(holder_data)
 
 def run(uniqueId):
     return getHolders(uniqueId)

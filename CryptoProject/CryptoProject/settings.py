@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'bootstrap5',
     'rest_framework',
     'accounts',
+    'django_celery_beat',
 ]
 
 CRONJOBS = [
@@ -141,6 +142,16 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_BEAT_SCHEDULE = {
+    'purge-task': {
+        'task': 'CryptoApp.tasks.clean_old_holder_data',
+        'schedule': 60.0,  # Every 60 seconds
+    },
+}
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 import os
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')

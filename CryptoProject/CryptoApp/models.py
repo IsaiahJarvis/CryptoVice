@@ -19,16 +19,17 @@ class Coin(models.Model):
 #    unique_id = models.CharField(max_length=255, unique=True)
 #    added_on = models.DateTimeField(auto_now_add=True)
 
-#class HolderData(models.Model):
-#    coin = models.ForeignKey(TrackedCoin, on_delete=models.CASCADE, related_name="holder_Data")
-#    timestamp = models.DateTimeField(auto_now_add=True)
-#    total_holders = models.IntegerField()
-#    holders_over_10 = models.IntegerField()
-#    holders_over_50 = models.IntegerField()
-#    holders_over_100 = models.IntegerField()
-#    holders_over_500 = models.IntegerField()
-#    holders_over_1000 = models.IntegerField()
-#    holders_over_2500 = models.IntegerField()
-#    
-#    class Meta:
-#        ordering = ["-timestamp"]
+class HolderData(models.Model):
+    unique_id = models.CharField(max_length=255, unique=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    total_holders = models.IntegerField()
+    holders_over_10 = models.IntegerField()
+    holders_over_50 = models.IntegerField()
+    holders_over_100 = models.IntegerField()
+    holders_over_500 = models.IntegerField()
+    holders_over_1000 = models.IntegerField()
+    holders_over_2500 = models.IntegerField()
+    
+    def delete_old_data():
+        expiration = now() - timedelta(minutes=10)
+        cls.objects.filter(timestamp__lt=expiration).delete()
