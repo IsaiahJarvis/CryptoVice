@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    ('0 */12 * * *', 'CryptoApp.tasks.update_coins'),
+    ('*/30 * * * *', 'CryptoApp.tasks.update_coins'),
 ]
 
 MIDDLEWARE = [
@@ -154,6 +154,21 @@ CELERY_BEAT_SCHEDULE = {
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 import os
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+}
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'

@@ -257,7 +257,11 @@ function getHolders(uniqueId) {
     .then(data => {
       document.getElementById("holder_count").innerHTML = ""
       if (document.getElementById("filter_check").checked) {
-        format_filters(data.result);
+        if (data.message != "FOUND") {
+	  pollTaskStatus(data.task_id);
+	} else {
+          formatFilters(data.result);
+	}
       } else {
 	item = document.createElement("div")
         item.innerHTML = data.result;
@@ -267,7 +271,33 @@ function getHolders(uniqueId) {
     .catch(error => console.error("Error:", error));
 }
 
-function format_filters(results) {
+function pollTaskStatus(taskId) {
+    console.log("polling")
+    document.getElementById("loading").style.display = "block";
+    fetch(`/check_task_status/${taskId}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "SUCCESS") {
+                // Update the page with the result data
+		document.getElementById("loading").style.display = "none"; // Hide loader on error
+		console.log(JSON.stringify(data.result))
+                formatFilters(data.result)
+            } else if (data.status === "FAILURE") {
+		document.getElementById("loading").style.display = "none"; // Hide loader on error
+		document.getElementById("holder_count").innerHTML = "Error retrieving this tokens data from API"
+                console.error(data.error);
+            } else {
+                // Task is still running; check again in 5 seconds
+                setTimeout(() => pollTaskStatus(taskId), 5000);
+            }
+        })
+        .catch(error => {
+	    console.error("Error checking task status:", error)
+	    document.getElementById("loading").style.display = "none";
+	});
+}
+
+function formatFilters(results) {
   let filters = ["Total Count: ", "Over $10: ", "Over $50: ", "Over $100: ", "Over $500: ", "Over $1000: ", "Over $2500: "];
   let targets = ["filterTotal", "filter1", "filter2", "filter3", "filter4", "filter5", "filter6"];
   let i = 0;

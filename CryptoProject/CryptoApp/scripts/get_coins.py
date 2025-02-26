@@ -8,7 +8,6 @@ def call_cg_api():
     page = 1
     all_coins_data = []
     cg_key = settings.API_KEYS.get('coingecko_api')
-    codex_key = settings.API_KEYS.get('codex_api')
 
     while True:
         try:
@@ -52,10 +51,11 @@ def call_cg_api():
 def get_tokens_codex(network):
     network_names = {'1399811149': 'Solana', '8453': 'Base', '42161': 'Arbitrum'}
     url = "https://graph.codex.io/graphql"
+    codex_key = settings.API_KEYS.get('codex_api')
 
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "9f436aa47fa4d649d9344893ad3ad8b1d71a92c9"
+        "Authorization": codex_key
     }
 
     query = """
@@ -89,7 +89,7 @@ def get_tokens_codex(network):
 
     # Define the filter to exclude tokens with no marketCap
     filters = {
-        "marketCap": {"gt": 20000, "lt": 250000000},  # Only include tokens where marketCap > 0
+        "marketCap": {"gt": 20000, "lt": 15000000000},  # Only include tokens where marketCap > 0
         "liquidity": {"gt": 20000},
         "network": [network]
     }

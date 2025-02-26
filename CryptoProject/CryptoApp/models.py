@@ -15,9 +15,10 @@ class Coin(models.Model):
     network = models.CharField(null=True, blank=True)
     #unique_id = models.CharField(max_length=255, unique=True)
 
-#class TrackedCoin(models.Model):
-#    unique_id = models.CharField(max_length=255, unique=True)
-#    added_on = models.DateTimeField(auto_now_add=True)
+class TrackedCoin(models.Model):
+    unique_id = models.CharField(max_length=255, unique=True)
+    added_on = models.DateTimeField(auto_now_add=True)
+    last_used = models.DateTimeField(auto_now_add=True)
 
 class HolderData(models.Model):
     unique_id = models.CharField(max_length=255, unique=True)

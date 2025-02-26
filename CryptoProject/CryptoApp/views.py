@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.apps import apps
 from .models import Coin, HolderData
 from .scripts import get_holders, get_holders_with_filters
+from .tasks import getHolders
+from celery.result import AsyncResult
 import json
 # Create your views here.
 def marketcaptool(request):
@@ -33,20 +35,35 @@ def get_holders_filter(request):
                 values_tuples = matches.values_list(*FIELDS_TO_RETRIEVE)
                 result_array = [list(item) for item in values_tuples]
                 result = result_array[0]
-                return JsonResponse({"result": result})
+                return JsonResponse({"message": "FOUND", "result": result})
             else:
-                result = get_holders_with_filters.run(input_string)
-                if (result):
-                    save_holders(result, input_string)
-                    return JsonResponse({"result": result})
-                else:
-                    return JsonResponse({"error": "No Results"}, status=400)
+                result_task = getHolders.apply_async(args=[input_string])
+                return JsonResponse({"message": "Task started", "task_id": result_task.id})
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+def check_task_status(request, task_id):
+    task = AsyncResult(task_id)
+    if task.ready():
+        result_dict = task.info or {}
+
+        if not isinstance(result_dict, dict):
+            return JsonResponse({"status": "FAILURE", "error": "No Data", "input_string": None, "data": None})
+
+        input_string = result_dict.get("input_string")
+        result_data = result_dict.get("data")
+        if result_data:
+            save_holders(result_data, input_string)
+            return JsonResponse({"status": "SUCCESS", "result": result_data})
+        else:
+            print("TASK", task_id, "FAILED")
+            return JsonResponse({"status": "FAILURE", "error": "No Results"}, status=400)
+    else:
+        return JsonResponse({"task_id": task_id, "status": task.status, "result": None})
 
 def save_holders(results, uniqueId):
+    print("Saving: ", results, uniqueId)
     if results and len(results) >= 7:
         c = HolderData(unique_id = uniqueId,
                        total_holders = results[0],
@@ -57,3 +74,4 @@ def save_holders(results, uniqueId):
                        holders_over_1000 = results[5],
                        holders_over_2500 = results[6])
         c.save()
+    
