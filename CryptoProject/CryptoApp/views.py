@@ -29,6 +29,9 @@ def get_holders_filter(request):
             input_string = data.get("uniqueId", "")
             if HolderData.objects.filter(unique_id=input_string).exists():
                 matches = HolderData.objects.filter(unique_id=input_string)
+
+                #update last added 
+
                 FIELDS_TO_RETRIEVE = ['total_holders', 'holders_over_10', 'holders_over_50', 
                                       'holders_over_100', 'holders_over_500', 'holders_over_1000', 
                                       'holders_over_2500']

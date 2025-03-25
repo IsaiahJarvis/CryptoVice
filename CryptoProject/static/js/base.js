@@ -315,11 +315,10 @@ function formatFilters(results) {
 
 function changeFilter(filter) {
   document.getElementById("filter_box").innerHTML = filter.innerHTML;
+  document.getElementById("my_dropdown_4").classList.toggle("show");
   var parentDiv = document.getElementById("holder_count");
-  console.log(filter)
   for (var i = 0; i < parentDiv.children.length; i++) {
     var child = parentDiv.children[i];
-    console.log(child)
     if (child.dataset.target === filter.dataset.target && filter.classList.contains("hide")) {
       child.classList.toggle("hide");
     } else if (!child.classList.contains("hide")) {

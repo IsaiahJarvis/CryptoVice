@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    ('*/30 * * * *', 'CryptoApp.tasks.update_coins'),
+    ('0 */6 * * *', 'CryptoApp.tasks.update_coins'),
 ]
 
 MIDDLEWARE = [
@@ -147,8 +147,8 @@ CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
 CELERY_BEAT_SCHEDULE = {
     'purge-task': {
-        'task': 'CryptoApp.tasks.clean_old_holder_data',
-        'schedule': 60.0,  # Every 60 seconds
+        'task': 'CryptoApp.tasks.checkHolders',
+        'schedule': 3600.0,  # Every 60 seconds
     },
 }
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

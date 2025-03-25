@@ -3,9 +3,9 @@ from django.db import models
 # Create your models here.
 
 class Coin(models.Model):
-    name = models.CharField(max_length=100)
-    crypto_id = models.CharField(max_length=100)
-    symbol = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
+    crypto_id = models.CharField(max_length=255)
+    symbol = models.CharField(max_length=255)
     image_link = models.URLField(null=True, blank=True, max_length=2000)
     fdv = models.DecimalField(null=True, blank=True, max_digits=100, decimal_places=10)
     market_cap = models.DecimalField(null=True, blank=True, max_digits=100, decimal_places=10)
@@ -14,11 +14,6 @@ class Coin(models.Model):
     contract_address = models.CharField(null=True, blank=True)
     network = models.CharField(null=True, blank=True)
     #unique_id = models.CharField(max_length=255, unique=True)
-
-class TrackedCoin(models.Model):
-    unique_id = models.CharField(max_length=255, unique=True)
-    added_on = models.DateTimeField(auto_now_add=True)
-    last_used = models.DateTimeField(auto_now_add=True)
 
 class HolderData(models.Model):
     unique_id = models.CharField(max_length=255, unique=True)
@@ -30,7 +25,4 @@ class HolderData(models.Model):
     holders_over_500 = models.IntegerField()
     holders_over_1000 = models.IntegerField()
     holders_over_2500 = models.IntegerField()
-    
-    def delete_old_data():
-        expiration = now() - timedelta(minutes=10)
-        cls.objects.filter(timestamp__lt=expiration).delete()
+    last_accessed = models.DateTimeField(auto_now_add=True)

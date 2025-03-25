@@ -91,6 +91,7 @@ def get_tokens_codex(network):
     filters = {
         "marketCap": {"gt": 20000, "lt": 15000000000},  # Only include tokens where marketCap > 0
         "liquidity": {"gt": 20000},
+        "holders": {"gt": 0},
         "network": [network]
     }
 
@@ -158,15 +159,15 @@ def call_codex_api():
 
 def run():
     coin_data = call_codex_api()
-    coin_data.extend(call_cg_api())
+    #coin_data.extend(call_cg_api())
     address_list = []
-
+    
     if coin_data:
         Coin.objects.all().delete()
         for item in coin_data:
-            cat_name = item['name']
-            cat_id = item['crypto_id']
-            cat_symbol = item['symbol']
+            cat_name = item['name'].replace("\x00", "")
+            cat_id = item['crypto_id'].replace("\x00", "")
+            cat_symbol = item['symbol'].replace("\x00", "")
             cat_image_link = item['image_link']
             cat_market_cap = item['market_cap']
             cat_FDV = item['fdv']
@@ -174,6 +175,12 @@ def run():
             cat_price = item['price']
             cat_address = item['contract_address']
             cat_networkId = item['network']
+
+            mixed_list = [cat_name, cat_id, cat_symbol, cat_image_link, cat_market_cap, cat_FDV, cat_circ_supp, cat_price, cat_address, cat_networkId]
+            for item in mixed_list:
+                if isinstance(item, str) and "\x00" in item:
+                    print(mixed_list)
+                    item = item.replace("\x00", "")
 
             if cat_address not in address_list and cat_address != "coingecko":
                 c = Coin(name = cat_name,
