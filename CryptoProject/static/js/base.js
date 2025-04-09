@@ -2,6 +2,8 @@ let selectedCoinA = null;
 let selectedCoinB = null;
 let selectedCoinC = null;
 let USD = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'});
+let numFormat = new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+let asPercent = (num) => `${numFormat.format(num)}%`;
 
 // changes the dropdown menu and focus to the clicked searchbox
 function dropSearch(section, dropdown, input) {
@@ -156,10 +158,6 @@ function showDropdown(dropdown) {
   document.getElementById(dropdown).classList.toggle("show");
 }
 
-function isChecked(filter) {
-  document.getElementById(filter).classList.toggle("hide");
-}
-
 // select and save coin
 function coinSelect(coin, dropdown) {
 
@@ -185,9 +183,14 @@ function coinSelect(coin, dropdown) {
     const address = coin.contract_address;
     let uniqueId = address + ":" + network
     console.log(uniqueId);
+    
+    if (document.getElementById("filter_dropdown").classList.contains("hide")) {
+    	document.getElementById("filter_dropdown").classList.toggle("hide")
+    }
+
     selectedCoinC = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap};
     select(selectedCoinC, "selected_img_3", "symbol_wrapper_3", "mc_wrapper_3", "search_input_3", "selected_box_3", dropdown);
-    getHolders(uniqueId);
+    getInfo(uniqueId);
   }
   // check if results can be displayed
   displayResult();
@@ -239,11 +242,8 @@ function getCSRFToken() {
     return csrfToken;
 }
 
-function getHolders(uniqueId) {
+function getInfo(uniqueId) {
     let call = "/call-python/"
-    if (document.getElementById("filter_check").checked) {
-      call = "/call-python-filter/"
-    }
 
     fetch(call, {
       method: "POST",
@@ -256,16 +256,10 @@ function getHolders(uniqueId) {
     .then(response => response.json())
     .then(data => {
       document.getElementById("holder_count").innerHTML = ""
-      if (document.getElementById("filter_check").checked) {
-        if (data.message != "FOUND") {
-	  pollTaskStatus(data.task_id);
-	} else {
-          formatFilters(data.result);
-	}
+      if (data.message != "FOUND") {
+	pollTaskStatus(data.task_id);
       } else {
-	item = document.createElement("div")
-        item.innerHTML = data.result;
-	document.getElementById("holder_count").appendChild(item);
+        formatFilters(data.result);
       }
     })
     .catch(error => console.error("Error:", error));
@@ -288,7 +282,7 @@ function pollTaskStatus(taskId) {
                 console.error(data.error);
             } else {
                 // Task is still running; check again in 5 seconds
-                setTimeout(() => pollTaskStatus(taskId), 5000);
+                setTimeout(() => pollTaskStatus(taskId), 1000);
             }
         })
         .catch(error => {
@@ -298,18 +292,29 @@ function pollTaskStatus(taskId) {
 }
 
 function formatFilters(results) {
-  let filters = ["Total Count: ", "Over $10: ", "Over $50: ", "Over $100: ", "Over $500: ", "Over $1000: ", "Over $2500: "];
-  let targets = ["filterTotal", "filter1", "filter2", "filter3", "filter4", "filter5", "filter6"];
-  let i = 0;
-  while (i < results.length) {
+  const names = ["filter5m", "filter1", "filter4", "filter12", "filter24"];
+  for (var i = 0; i < names.length; i++) {
     const item = document.createElement("div");
-    item.innerHTML = filters[i] + String(results[i]);
-    item.setAttribute("data-target", targets[i]);
+    let filter = results[names[i]];
+    let metrics = {"Average Buy Order (in $)": numFormat.format(filter["avgBuy"]),
+	          "Average Sell Order (in $)": numFormat.format(filter["avgSell"]),
+	          "Unique Buyer Ratio": numFormat.format(filter["uBuySell"]),
+	          "Buyer Retention Rate": asPercent(filter["retention"]),
+	          "Net Buy vs Net Sells": asPercent(filter["nBuySell"]),
+	    	  "Buy/Sell Ratio": asPercent(filter["buySellRatio"])};
+    item.setAttribute("data-target", names[i]);
+    
+    for (const [key, value] of Object.entries(metrics)) {
+      const metricItem = document.createElement("div");
+      metricItem.className = "metric-item";
+      metricItem.innerHTML = `${key}: ${value}`;
+      item.appendChild(metricItem);
+    }
+
     document.getElementById("holder_count").appendChild(item);
-    if (i != 0) {
+    if (i != 1) {
       item.classList.toggle("hide");
     }
-    i++;
   }
 }
 

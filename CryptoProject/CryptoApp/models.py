@@ -14,15 +14,3 @@ class Coin(models.Model):
     contract_address = models.CharField(null=True, blank=True)
     network = models.CharField(null=True, blank=True)
     #unique_id = models.CharField(max_length=255, unique=True)
-
-class HolderData(models.Model):
-    unique_id = models.CharField(max_length=255, unique=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    total_holders = models.IntegerField()
-    holders_over_10 = models.IntegerField()
-    holders_over_50 = models.IntegerField()
-    holders_over_100 = models.IntegerField()
-    holders_over_500 = models.IntegerField()
-    holders_over_1000 = models.IntegerField()
-    holders_over_2500 = models.IntegerField()
-    last_accessed = models.DateTimeField(auto_now_add=True)
