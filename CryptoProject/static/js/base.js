@@ -300,8 +300,7 @@ function formatFilters(results) {
 	          "Average Sell Order (in $)": numFormat.format(filter["avgSell"]),
 	          "Unique Buyer Ratio": numFormat.format(filter["uBuySell"]),
 	          "Buyer Retention Rate": asPercent(filter["retention"]),
-	          "Net Buy vs Net Sells": asPercent(filter["nBuySell"]),
-	    	  "Buy/Sell Ratio": asPercent(filter["buySellRatio"])};
+	          "Net Buy vs Net Sells": asPercent(filter["nBuySell"])};
     item.setAttribute("data-target", names[i]);
     
     for (const [key, value] of Object.entries(metrics)) {
@@ -312,7 +311,7 @@ function formatFilters(results) {
     }
 
     document.getElementById("holder_count").appendChild(item);
-    if (i != 1) {
+    if (i != 4) {
       item.classList.toggle("hide");
     }
   }

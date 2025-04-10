@@ -55,42 +55,42 @@
   </div>
 
   <div class="holder-wrapper">
-    <h3>Buy/Sell Data</h3>
-    <div class="dropdown" id="dropdown_3">
-      <input onclick="dropSearch('dropdown_3', 'my_dropdown_3', this)" type="text" placeholder="Enter name or contract address" id="search_input_3" onkeyup="filterFunction(this, 'my_dropdown_3')" class="search">
-      <div id="my_dropdown_3" class="dropdown-content">
-      </div>
-      <div onclick="hideSelected('search_input_3', 'selected_box_3', 'dropdown_3', 'my_dropdown_3')" class="selected-box" id="selected_box_3">
-        <div class="selected-item-wrapper" id="img_wrapper_3"><img class="selected-img" id="selected_img_3"src="" alt="N/A"></div>
-        <div class="selected-item-wrapper" id="symbol_wrapper_3"></div>
-        <div class="selected-item-wrapper" id="mc_wrapper_3"></div>
-      </div>
-      <div id="filter_wrapper" class="filter-wrapper">
-	<div id="filter_dropdown" class="hide">
-	  <div onclick="showDropdown('my_dropdown_4')" id="filter_box" class="filter-box">1 Hour</div>
-	  <div id="my_dropdown_4" class="dropdown-content filter-drop">
-	    <a onclick="changeFilter(this)" id="filter_5m" class="dropdown-item hide" data-target="filter5m">5 Minutes</a>
-	    <a onclick="changeFilter(this)" id="filter_1" class="dropdown-item hide" data-target="filter1">1 Hour</a>
-            <a onclick="changeFilter(this)" id="filter_4" class="dropdown-item hide" data-target="filter4">4 Hours</a>
-            <a onclick="changeFilter(this)" id="filter_12" class="dropdown-item hide" data-target="filter12">12 Hours</a>
-	    <a onclick="changeFilter(this)" id="filter_24" class="dropdown-item hide" data-target="filter24">24 Hours</a>
+    <div class="buy-sell">
+      <h3 class="buy-sell-header">Buy/Sell Data</h3>
+      <div class="dropdown" id="dropdown_3">
+        <input onclick="dropSearch('dropdown_3', 'my_dropdown_3', this)" type="text" placeholder="Enter name or contract address" id="search_input_3" onkeyup="filterFunction(this, 'my_dropdown_3')" class="search">
+        <div id="my_dropdown_3" class="dropdown-content">
+        </div>
+        <div onclick="hideSelected('search_input_3', 'selected_box_3', 'dropdown_3', 'my_dropdown_3')" class="selected-box" id="selected_box_3">
+          <div class="selected-item-wrapper" id="img_wrapper_3"><img class="selected-img" id="selected_img_3"src="" alt="N/A"></div>
+          <div class="selected-item-wrapper" id="symbol_wrapper_3"></div>
+          <div class="selected-item-wrapper" id="mc_wrapper_3"></div>
+        </div>
+        <div id="filter_wrapper" class="filter-wrapper">
+	  <div id="filter_dropdown" class="hide">
+	    <div onclick="showDropdown('my_dropdown_4')" id="filter_box" class="filter-box">Last 24 Hours</div>
+	    <div id="my_dropdown_4" class="dropdown-content filter-drop">
+	      <a onclick="changeFilter(this)" id="filter_5m" class="dropdown-item hide" data-target="filter5m">Last 5 Minutes</a>
+	      <a onclick="changeFilter(this)" id="filter_1" class="dropdown-item hide" data-target="filter1">Last Hour</a>
+              <a onclick="changeFilter(this)" id="filter_4" class="dropdown-item hide" data-target="filter4">Last 4 Hours</a>
+              <a onclick="changeFilter(this)" id="filter_12" class="dropdown-item hide" data-target="filter12">Last 12 Hours</a>
+	      <a onclick="changeFilter(this)" id="filter_24" class="dropdown-item hide" data-target="filter24">Last 24 Hours</a>
+	    </div>
 	  </div>
-	</div>
-      </div>
-      <div class="holder-results-wrapper" id="holder_results">
-        <div id="holder_count"></div>
-      </div>
-      <div id="loading" class="spinner-border text-primary" role="status" style="display: none;">
-        <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="holder-results-wrapper" id="holder_results">
+          <div id="holder_count"></div>
+        </div>
+        <div id="loading" class="spinner-border text-primary" role="status" style="display: none;">
+          <span class="visually-hidden">Loading...</span>
+        </div>
       </div>
     </div>
     <div class="metric-info-wrapper">
-      <p class="metric-info"><em>Average Buy Order / Average Sell Order (in $)</em> – Shows how much, on average, traders are spending per buy or sell in USD. A lower average order suggest smaller buyers are driving the market and a higher average spend suggests whales are getting involved.</p>
-      <p class="metric-info"><em>Unique Buyer Ratio</em> - Compares the number of unique wallets buying vs unique wallets selling. Above 1 and more unique wallets are buying, which indicates potential demand and interest. Below 1 and more unique wallets are selling, which indicates the development of bearish sentiment.</p>
-      <p class="metric-info"><em>Buyer Retention Rate</em> – Shows what % of buyers make repeat transactions, a higher % suggests higher holder confidence and long-term interest, which can help price remain stable.</p>
-      <p class="metric-info"><em>Net Buys vs Net Sells</em> – Shows if buyers or sellers are dominating transaction volume. Above 50% buyers are in control, below 50% sellers are more active.
-</p>
-      <p class="metric-info"><em>Buy/Sell Ratio</em> - Shows the relative market activity between buying and selling. If the ratio is above 50%, buying activity is stronger than selling, indicating buyers are in control. If the ratio is below 50%, selling activity is stronger than buying, suggesting sellers are in control.</p>
+      <p class="metric-info"><b>Average Buy Order / Average Sell Order (in $)</b> – This metric shows the average amount spent per buy or sell order in $. By focusing on order size instead of trade volume, you can get a little insight into the behavior of different market participants. Larger orders can suggest institutional, or “whale” activity and smaller orders can indicate retail involvement. However, it’s important to make these assumptions cautiously. Order size doesn’t directly tell you who is behind these orders.</p>
+      <p class="metric-info"><b>Unique Buyer Ratio</b> – You can use this ratio to give yourself some context on current participation. Unlike volume-based indicators, this ratio focuses on the number of participants instead of the size of their trades. A ratio above 1 tells you more buyers are entering the market while a ratio below 1 tells you more sellers are entering the market. While shifts in the ratio can hint at changes in sentiment or momentum, it should be interpreted alongside other metrics, as this metric doesn’t account for transaction size or the intent behind trades.</p>
+      <p class="metric-info"><b>Buyer Retention Rate</b> – What % of buyers are coming back for more? This metric looks at ongoing behavior by comparing total buys to unique buyers, showing what people are doing after their initial purchase. While high retention alone can suggest sustained interest, it doesn’t necessarily indicate conviction as it can be influenced by short-term trading behavior or market conditions. You can use this metric to gauge ongoing buyer engagement</p>
+      <p class="metric-info"><b>Net Buys vs Net Sells</b> – This volume based metric compares the total value of buy orders to sell orders. You can use this metric to identify short-term market dominance. If the net dominance is above 50% buyers are in control, below 50% sellers are more active. You can use this metric to identify trends but keep in mind, short term fluctuations can muddle long term sentiment.</p>
     </div>
   </div>
 

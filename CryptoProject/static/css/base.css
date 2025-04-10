@@ -38,8 +38,7 @@
 .dropdown {
   position: relative;
   display: inline-block;
-  padding-left: 25px;
-  padding-right: 25px;
+  padding: 10px 25px;
 }
 
 .filter-box,
@@ -81,6 +80,15 @@
   justify-content: space-around;
 }
 
+.buy-sell {
+  display: flex;
+  flex-direction: column;
+}
+
+.buy-sell-header {
+  text-align: center;
+}
+
 .tool-wrapper {
   display: flex;
   width: 50%;
@@ -95,7 +103,8 @@
   width: 50%;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
+  min-height: calc(100vh - 100px);
 }
 
 .submit-wrapper {
@@ -117,15 +126,8 @@
 
 .selector-wrapper {
   display: flex;
-  flex: 1;
   justify-content: center;
   flex-wrap: wrap;
-}
-
-.news-wrapper {
-  display: flex;
-  flex: 1;
-  justify-content: center;
 }
 
 .dropdown-content {
@@ -187,13 +189,16 @@
 
 .container {
   max-width: 100%;
+  min-height: calc(100vh - 100px);
 }
 
 .filter-box {
   height: 24px;
+  width: 250px;
   border-style: solid;
   border-width: 2px;
-  border-color: rgb(118, 118, 118)
+  border-color: rgb(118, 118, 118);
+  border-top: none;
 }
 
 .show-selected {

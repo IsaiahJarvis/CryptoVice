@@ -39,13 +39,7 @@ def calculate_metrics(entry):
             except (ZeroDivisionError, ValueError, TypeError):
                 netBuySell = "N/A"
 
-            try:
-                buySell = entry[x]["buyCount"] / (entry[x]["buyCount"] + entry[x]["sellCount"]) * 100
-            except (ZeroDivisionError, ValueError, TypeError):
-                buySell = "N/A"
-                
-
-            results = {"avgBuy": averageBuySize, "avgSell": averageSellSize, "uBuySell": uniqueBuySell, "retention": retention, "nBuySell": netBuySell, "buySellRatio": buySell}
+            results = {"avgBuy": averageBuySize, "avgSell": averageSellSize, "uBuySell": uniqueBuySell, "retention": retention, "nBuySell": netBuySell}
 
             final[str(x)] = results
 
