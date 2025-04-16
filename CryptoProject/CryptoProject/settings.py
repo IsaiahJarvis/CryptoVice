@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    ('0 */12 * * *', 'CryptoApp.tasks.update_coins'),
+    ('0 */2 * * *', 'CryptoApp.tasks.update_coins'),
 ]
 
 MIDDLEWARE = [

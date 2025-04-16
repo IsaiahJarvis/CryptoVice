@@ -131,6 +131,8 @@ def get_tokens_codex(network):
     counter = 0
     final_list = []
     for token in all_tokens:
+        if token.get("token", {}).get("address", "N/A") == "AF3g85eVMgLt4KiANZu66cT24v94Za1RJQWGg6Vbpump":
+            print("found")
         counter += 1
         fdv = float(token.get("marketCap", "N/A"))
         price = float(token.get("priceUSD", "N/A"))

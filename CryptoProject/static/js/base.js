@@ -1,10 +1,17 @@
 let selectedCoinA = null;
 let selectedCoinB = null;
 let selectedCoinC = null;
+let selectedCoinD = null;
 let USD = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'});
 let numFormat = new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-let asPercent = (num) => `${numFormat.format(num)}%`;
 
+let asNum =  (num) => {
+  return isNaN(num) ? num : numFormat.format(num);
+};
+
+let asPercent = (num) => {
+  return isNaN(num) ? num : `${numFormat.format(num)}%`;
+};
 // changes the dropdown menu and focus to the clicked searchbox
 function dropSearch(section, dropdown, input) {
   if (document.getElementById(dropdown).classList.contains("show") === true) {
@@ -51,10 +58,14 @@ function clearSelected(dropdown) {
     document.getElementById("selected_img_2").src="";
     document.getElementById("symbol_wrapper_2").innerHTML = "";
     document.getElementById("mc_wrapper_2").innerHTML = "";
-  } else {
+  } else if (dropdown === "dropdown_3") {
     document.getElementById("selected_img_3").src="";
     document.getElementById("symbol_wrapper_3").innerHTML = "";
     document.getElementById("mc_wrapper_3").innerHTML = "";
+  } else if (dropdown ==="dropdown_4") {
+    document.getElementById("selected_img_4").src="";
+    document.getElementById("symbol_wrapper_4").innerHTML = "";
+    document.getElementById("mc_wrapper_4").innerHTML = "";
   }
 }
 
@@ -115,7 +126,7 @@ async function fetchResults(url, dropdownMenu) {
   isLoading = true;
   let excludeCoingecko = false
 
-  if (dropdownMenu === document.getElementById("my_dropdown_3")) {
+  if (dropdownMenu === document.getElementById("my_dropdown_3") || dropdownMenu === document.getElementById("my_dropdown_4")) {
     excludeCoingecko = true
   } 
   const fullUrl = `${url}&excludeCoingecko=${excludeCoingecko}`
@@ -126,7 +137,7 @@ async function fetchResults(url, dropdownMenu) {
     const data = await response.json();
     const submit = document.getElementById("submit_wrapper");
     
-    if (dropdownMenu != document.getElementById("my_dropdown_3")) {
+    if (dropdownMenu != document.getElementById("my_dropdown_3") || dropdownMenu != document.getElementById("my_dropdown_4")) {
       if (!data.results || data.results.length === 0) {
         dropdownMenu.appendChild(submit);
         return;
@@ -178,19 +189,32 @@ function coinSelect(coin, dropdown) {
   } else if (dropdown === document.getElementById("my_dropdown_2")) {
     selectedCoinB = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
     select(selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", dropdown);
-  }  else if (dropdown === document.getElementById("my_dropdown_3")) {
+  } else if (dropdown === document.getElementById("my_dropdown_3")) {
     const network = coin.network;
     const address = coin.contract_address;
     let uniqueId = address + ":" + network
     console.log(uniqueId);
     
-    if (document.getElementById("filter_dropdown").classList.contains("hide")) {
-    	document.getElementById("filter_dropdown").classList.toggle("hide")
+    if (document.getElementById("filter_wrapper_3").classList.contains("hide")) {
+    	document.getElementById("filter_wrapper_3").classList.toggle("hide");
     }
 
     selectedCoinC = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap};
     select(selectedCoinC, "selected_img_3", "symbol_wrapper_3", "mc_wrapper_3", "search_input_3", "selected_box_3", dropdown);
-    getInfo(uniqueId);
+    getInfo(uniqueId, dropdown);
+  } else if (dropdown === document.getElementById("my_dropdown_4")) {
+    const network = coin.network;
+    const address = coin.contract_address;
+    let uniqueId = address + ":" + network
+    console.log(uniqueId);
+
+    if (document.getElementById("filter_wrapper_4").classList.contains("hide")) {
+        document.getElementById("filter_wrapper_4").classList.toggle("hide");
+    }
+
+    selectedCoinD = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap};
+    select(selectedCoinD, "selected_img_4", "symbol_wrapper_4", "mc_wrapper_4", "search_input_4", "selected_box_4", dropdown);
+    getInfo(uniqueId, dropdown);
   }
   // check if results can be displayed
   displayResult();
@@ -217,23 +241,6 @@ document.addEventListener("DOMContentLoaded", function () {
       select(selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", document.getElementById("my_dropdown_2"));
     }
     displayResult();
-    
-/*
-    fetch("/call-python/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": getCSRFToken()
-      },
-      body: JSON.stringify({ contract: contract, network: network })  // Send JSON data
-    })
-    .then(response => response.json())
-    .then(data => {
-      alert("Response: " + data.message);
-      console.log(data.message)
-    })
-    .catch(error => console.error("Error:", error));
-*/  
   });
 });
 
@@ -242,7 +249,7 @@ function getCSRFToken() {
     return csrfToken;
 }
 
-function getInfo(uniqueId) {
+function getInfo(uniqueId, dropdown) {
     let call = "/call-python/"
 
     fetch(call, {
@@ -255,78 +262,139 @@ function getInfo(uniqueId) {
     })
     .then(response => response.json())
     .then(data => {
-      document.getElementById("holder_count").innerHTML = ""
-      if (data.message != "FOUND") {
-	pollTaskStatus(data.task_id);
+      if (dropdown === document.getElementById("my_dropdown_3")) {
+      	document.getElementById("buy_sell_results_3").innerHTML = ""
       } else {
-        formatFilters(data.result);
+        document.getElementById("buy_sell_results_4").innerHTML = ""
+      }
+      if (data.message != "FOUND") {
+	pollTaskStatus(data.task_id, dropdown);
+      } else {
+        formatFilters(data.result, dropdown);
       }
     })
     .catch(error => console.error("Error:", error));
 }
 
-function pollTaskStatus(taskId) {
+function pollTaskStatus(taskId, dropdown) {
     console.log("polling")
-    document.getElementById("loading").style.display = "block";
+    let loading, section;
+    if (dropdown === document.getElementById("my_dropdown_3")) {
+        loading = document.getElementById("loading_3");
+	section = document.getElementById("buy_sell_results_3");
+    } else {
+        loading = document.getElementById("loading_4");
+	section = document.getElementById("buy_sell_results_4");
+    }
+    loading.style.display = "block";
     fetch(`/check_task_status/${taskId}/`)
         .then(response => response.json())
         .then(data => {
             if (data.status === "SUCCESS") {
                 // Update the page with the result data
-		document.getElementById("loading").style.display = "none"; // Hide loader on error
-		console.log(JSON.stringify(data.result))
-                formatFilters(data.result)
+		loading.style.display = "none"; // Hide loader on error
+		console.log(JSON.stringify(data.result));
+                formatFilters(data.result, dropdown);
             } else if (data.status === "FAILURE") {
-		document.getElementById("loading").style.display = "none"; // Hide loader on error
-		document.getElementById("holder_count").innerHTML = "Error retrieving this tokens data from API"
+		loading.style.display = "none"; // Hide loader on error
+		section.innerHTML = "Error retrieving this tokens data from API";
                 console.error(data.error);
             } else {
                 // Task is still running; check again in 5 seconds
-                setTimeout(() => pollTaskStatus(taskId), 1000);
+                setTimeout(() => pollTaskStatus(taskId, dropdown), 1000);
             }
         })
         .catch(error => {
-	    console.error("Error checking task status:", error)
-	    document.getElementById("loading").style.display = "none";
+	    console.error("Error checking task status:", error);
+	    loading.style.display = "none";
 	});
 }
 
-function formatFilters(results) {
+function formatFilters(results, dropdown) {
+  let section;
+  if (dropdown === document.getElementById("my_dropdown_3")) {
+    section = document.getElementById("buy_sell_results_3");
+    document.getElementById("filter_24").classList.toggle("active");
+  } else {
+    section = document.getElementById("buy_sell_results_4");
+    document.getElementById("filter_24_4").classList.toggle("active");
+  }
+
   const names = ["filter5m", "filter1", "filter4", "filter12", "filter24"];
   for (var i = 0; i < names.length; i++) {
     const item = document.createElement("div");
+    item.classList.add("filter-item");
     let filter = results[names[i]];
-    let metrics = {"Average Buy Order (in $)": numFormat.format(filter["avgBuy"]),
-	          "Average Sell Order (in $)": numFormat.format(filter["avgSell"]),
-	          "Unique Buyer Ratio": numFormat.format(filter["uBuySell"]),
+    let metrics = {"Average Buy Order (in $)": asNum(filter["avgBuy"]),
+	          "Average Sell Order (in $)": asNum(filter["avgSell"]),
+	          "Average Buy/Sell Delta (in $)": asNum(filter["avgBuySellDelta"]),
+	    	  "Volume": filter["volume"],
+	    	  "Volume Delta": asNum(filter["volumeChange"]),
+	          "Unique Buyer Ratio": asNum(filter["uBuySell"]),
 	          "Buyer Retention Rate": asPercent(filter["retention"]),
 	          "Net Buy vs Net Sells": asPercent(filter["nBuySell"])};
     item.setAttribute("data-target", names[i]);
     
     for (const [key, value] of Object.entries(metrics)) {
+      const metricTitle = document.createElement("div");
       const metricItem = document.createElement("div");
+      metricTitle.className = "metric-item";
       metricItem.className = "metric-item";
-      metricItem.innerHTML = `${key}: ${value}`;
+
+      const tooltipIcon = document.createElement("span");
+      tooltipIcon.className = "tooltip-icon";
+      tooltipIcon.innerHTML = "?";
+      tooltipIcon.title = getTooltipText(key);
+
+      metricItem.appendChild(tooltipIcon);
+      metricItem.innerHTML += `${key}: `;
+      metricTitle.innerHTML = value;
+
       item.appendChild(metricItem);
+      item.appendChild(metricTitle);
     }
 
-    document.getElementById("holder_count").appendChild(item);
+    section.appendChild(item);
     if (i != 4) {
       item.classList.toggle("hide");
     }
   }
 }
 
-function changeFilter(filter) {
-  document.getElementById("filter_box").innerHTML = filter.innerHTML;
-  document.getElementById("my_dropdown_4").classList.toggle("show");
-  var parentDiv = document.getElementById("holder_count");
+function getTooltipText(metricName) {
+  const tooltips = {
+    "Average Buy Order (in $)":"Average Buy Order / Average Sell Order (in $) – This metric shows the average amount spent per buy or sell order in $. By focusing on order size instead of trade volume, you can get a little insight into the behavior of different market participants. Larger orders can suggest institutional, or “whale” activity and smaller orders can indicate retail involvement. However, it’s important to make these assumptions cautiously. Order size doesn’t directly tell you who is behind these orders.",
+    "Average Sell Order (in $)":"Average Buy Order / Average Sell Order (in $) – This metric shows the average amount spent per buy or sell order in $. By focusing on order size instead of trade volume, you can get a little insight into the behavior of different market participants. Larger orders can suggest institutional, or “whale” activity and smaller orders can indicate retail involvement. However, it’s important to make these assumptions cautiously. Order size doesn’t directly tell you who is behind these orders.",
+    "Unique Buyer Ratio":"Unique Buyer Ratio – You can use this ratio to give yourself some context on current participation. Unlike volume-based indicators, this ratio focuses on the number of participants instead of the size of their trades. A ratio above 1 tells you more buyers are entering the market while a ratio below 1 tells you more sellers are entering the market. While shifts in the ratio can hint at changes in sentiment or momentum, it should be interpreted alongside other metrics, as this metric doesn’t account for transaction size or the intent behind trades.",
+    "Buyer Retention Rate":"Buyer Retention Rate – What % of buyers are coming back for more? This metric looks at ongoing behavior by comparing total buys to unique buyers, showing what people are doing after their initial purchase. While high retention alone can suggest sustained interest, it doesn’t necessarily indicate conviction as it can be influenced by short-term trading behavior or market conditions. You can use this metric to gauge ongoing buyer engagement",
+    "Net Buy vs Net Sells":"Net Buys vs Net Sells – This volume based metric compares the total value of buy orders to sell orders. You can use this metric to identify short-term market dominance. If the net dominance is above 50% buyers are in control, below 50% sellers are more active. You can use this metric to identify trends but keep in mind, short term fluctuations can muddle long term sentiment.",
+  }
+  return tooltips[metricName] || "";
+}
+
+function changeFilter(filter, dropdown) {
+  if (dropdown === "my_dropdown_3") {
+    parentDiv = document.getElementById("buy_sell_results_3");
+    filterDiv = document.getElementById("my_dropdown_3_filter");
+  } else {
+    parentDiv = document.getElementById("buy_sell_results_4");
+    filterDiv = document.getElementById("my_dropdown_4_filter");
+  }
+
+  for (var i = 0; i < filterDiv.children.length; i++) {
+    var child = filterDiv.children[i];
+	if (child.classList.contains("active")) {
+      child.classList.toggle("active");
+	}
+  }
+
   for (var i = 0; i < parentDiv.children.length; i++) {
     var child = parentDiv.children[i];
-    if (child.dataset.target === filter.dataset.target && filter.classList.contains("hide")) {
+    if (child.dataset.target === filter.dataset.target && child.classList.contains("hide")) {
       child.classList.toggle("hide");
+      filter.classList.toggle("active");
     } else if (!child.classList.contains("hide")) {
-      child.classList.toggle("hide")
+      child.classList.toggle("hide");
     }
   }
 }
@@ -357,9 +425,25 @@ document.addEventListener('click', e => {
 })
 
 document.addEventListener('click', e => {
-  if (!document.getElementById("my_dropdown_4").contains(e.target) && !document.getElementById("filter_dropdown").contains(e.target)) {
+  if (!document.getElementById("my_dropdown_4").contains(e.target) && !document.getElementById("dropdown_4").contains(e.target)) {
     if (document.getElementById("my_dropdown_4").classList.contains("show") === true) {
       document.getElementById("my_dropdown_4").classList.toggle("show");
+    }
+  }
+})
+
+document.addEventListener('click', e => {
+  if (!document.getElementById("my_dropdown_3_filter").contains(e.target) && !document.getElementById("filter_dropdown_3").contains(e.target)) {
+    if (document.getElementById("my_dropdown_3_filter").classList.contains("show") === true) {
+      document.getElementById("my_dropdown_3_filter").classList.toggle("show");
+    }
+  }
+})
+
+document.addEventListener('click', e => {
+  if (!document.getElementById("my_dropdown_4_filter").contains(e.target) && !document.getElementById("filter_dropdown_4").contains(e.target)) {
+    if (document.getElementById("my_dropdown_4_filter").classList.contains("show") === true) {
+      document.getElementById("my_dropdown_4_filter").classList.toggle("show");
     }
   }
 })

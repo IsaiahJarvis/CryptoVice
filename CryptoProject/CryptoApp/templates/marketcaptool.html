@@ -7,7 +7,7 @@
 <div class="body-wrapper">
 
   <div class="tool-wrapper">
-    <h3>Temp</h3>
+    <h3>Market Cap Calculator</h3>
     <div class="selector-wrapper">
       <div class="dropdown" id="dropdown_1">
         <input onclick="dropSearch('dropdown_1', 'my_dropdown_1', this)" type="text" placeholder="Enter name or contract address" id="search_input_1" onkeyup="filterFunction(this, 'my_dropdown_1')" class="search">
@@ -42,55 +42,74 @@
         <div id="result_mc"></div>
       </div>
     </div>
-    <!--
-    <div class="submit-wrapper" id="submit_wrapper">
-      <h4 class="submit">Submit Coin</h4>
-      <form id="hide_submit">
-	{% csrf_token %}
-        <input class="submit" type="text" placeholder="Enter contract address" id="submit_contract" name="contract">
-        <input class="submit" type="text" placeholder="Enter network name" id="network_box"  name="network">
-        <button class="submit" type="submit" id="submit_coin_button">Submit</button>
-      </form>
-      </div>--!>
   </div>
 
   <div class="holder-wrapper">
     <div class="buy-sell">
-      <h3 class="buy-sell-header">Buy/Sell Data</h3>
-      <div class="dropdown" id="dropdown_3">
-        <input onclick="dropSearch('dropdown_3', 'my_dropdown_3', this)" type="text" placeholder="Enter name or contract address" id="search_input_3" onkeyup="filterFunction(this, 'my_dropdown_3')" class="search">
-        <div id="my_dropdown_3" class="dropdown-content">
-        </div>
-        <div onclick="hideSelected('search_input_3', 'selected_box_3', 'dropdown_3', 'my_dropdown_3')" class="selected-box" id="selected_box_3">
-          <div class="selected-item-wrapper" id="img_wrapper_3"><img class="selected-img" id="selected_img_3"src="" alt="N/A"></div>
-          <div class="selected-item-wrapper" id="symbol_wrapper_3"></div>
-          <div class="selected-item-wrapper" id="mc_wrapper_3"></div>
-        </div>
-        <div id="filter_wrapper" class="filter-wrapper">
-	  <div id="filter_dropdown" class="hide">
-	    <div onclick="showDropdown('my_dropdown_4')" id="filter_box" class="filter-box">Last 24 Hours</div>
-	    <div id="my_dropdown_4" class="dropdown-content filter-drop">
-	      <a onclick="changeFilter(this)" id="filter_5m" class="dropdown-item hide" data-target="filter5m">Last 5 Minutes</a>
-	      <a onclick="changeFilter(this)" id="filter_1" class="dropdown-item hide" data-target="filter1">Last Hour</a>
-              <a onclick="changeFilter(this)" id="filter_4" class="dropdown-item hide" data-target="filter4">Last 4 Hours</a>
-              <a onclick="changeFilter(this)" id="filter_12" class="dropdown-item hide" data-target="filter12">Last 12 Hours</a>
-	      <a onclick="changeFilter(this)" id="filter_24" class="dropdown-item hide" data-target="filter24">Last 24 Hours</a>
+      <h3 class="buy-sell-header">Buy/Sell Stats</h3>
+      <div class="buy-sell-wrapper">
+      	<div class="dropdown" id="dropdown_3">
+          <input onclick="dropSearch('dropdown_3', 'my_dropdown_3', this)" type="text" placeholder="Enter name or contract address" id="search_input_3" onkeyup="filterFunction(this, 'my_dropdown_3')" class="search">
+          <div id="my_dropdown_3" class="dropdown-content">
+          </div>
+          <div onclick="hideSelected('search_input_3', 'selected_box_3', 'dropdown_3', 'my_dropdown_3')" class="selected-box" id="selected_box_3">
+            <div class="selected-item-wrapper" id="img_wrapper_3"><img class="selected-img" id="selected_img_3"src="" alt="N/A"></div>
+            <div class="selected-item-wrapper" id="symbol_wrapper_3"></div>
+            <div class="selected-item-wrapper" id="mc_wrapper_3"></div>
+          </div>
+          <div id="filter_wrapper_3" class="filter-wrapper hide">
+	    <div id="filter_dropdown_3">
+	      <div id="my_dropdown_3_filter" class="filter-group">
+	        <button onclick="changeFilter(this, 'my_dropdown_3')" id="filter_5m" class="group-item" data-target="filter5m">5Min</button>
+	        <button onclick="changeFilter(this, 'my_dropdown_3')" id="filter_1" class="group-item" data-target="filter1">1H</button>
+                <button onclick="changeFilter(this, 'my_dropdown_3')" id="filter_4" class="group-item" data-target="filter4">4H</button>
+                <button onclick="changeFilter(this, 'my_dropdown_3')" id="filter_12" class="group-item" data-target="filter12">12H</button>
+	        <button onclick="changeFilter(this, 'my_dropdown_3')" id="filter_24" class="group-item" data-target="filter24">24H</button>
+	      </div>
 	    </div>
-	  </div>
+          </div>
+          <div class="holder-results-wrapper" id="buy_sell_results_wrapper_3">
+            <div id="buy_sell_results_3"></div>
+          </div>
+          <div id="loading_3" class="spinner-border text-primary" role="status" style="display: none;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
-        <div class="holder-results-wrapper" id="holder_results">
-          <div id="holder_count"></div>
-        </div>
-        <div id="loading" class="spinner-border text-primary" role="status" style="display: none;">
-          <span class="visually-hidden">Loading...</span>
+
+	<div class="popout-wrapper">
+	  <span class="popout">View Order Flow Guide</span>
+	  <div class="floating-img"><img src="static/files/moonmath_popup_v1.png" alt="Order Flow Guide"></div>
+	</div>
+
+        <div class="dropdown" id="dropdown_4">
+          <input onclick="dropSearch('dropdown_4', 'my_dropdown_4', this)" type="text" placeholder="Enter name or contract address" id="search_input_4" onkeyup="filterFunction(this, 'my_dropdown_4')" class="search">
+          <div id="my_dropdown_4" class="dropdown-content">
+          </div>
+          <div onclick="hideSelected('search_input_4', 'selected_box_4', 'dropdown_4', 'my_dropdown_4')" class="selected-box" id="selected_box_4">
+            <div class="selected-item-wrapper" id="img_wrapper_4"><img class="selected-img" id="selected_img_4"src="" alt="N/A"></div>
+            <div class="selected-item-wrapper" id="symbol_wrapper_4"></div>
+            <div class="selected-item-wrapper" id="mc_wrapper_4"></div>
+          </div>
+          <div id="filter_wrapper_4" class="filter-wrapper hide">
+            <div id="filter_dropdown_4">
+              <div id="my_dropdown_4_filter" class="filter-group">
+                <button onclick="changeFilter(this, 'my_dropdown_4')" id="filter_5m_4" class="group-item" data-target="filter5m">5Min</button>
+                <button onclick="changeFilter(this, 'my_dropdown_4')" id="filter_1_4" class="group-item" data-target="filter1">1H</button>
+                <button onclick="changeFilter(this, 'my_dropdown_4')" id="filter_4_4" class="group-item" data-target="filter4">4H</button>
+                <button onclick="changeFilter(this, 'my_dropdown_4')" id="filter_12_4" class="group-item" data-target="filter12">12H</button>
+                <button onclick="changeFilter(this, 'my_dropdown_4')" id="filter_24_4" class="group-item" data-target="filter24">24H</button>
+              </div>
+            </div>
+          </div>
+          <div class="holder-results-wrapper" id="buy_sell_results_wrapper_4">
+            <div id="buy_sell_results_4"></div>
+          </div>
+          <div id="loading_4" class="spinner-border text-primary" role="status" style="display: none;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="metric-info-wrapper">
-      <p class="metric-info"><b>Average Buy Order / Average Sell Order (in $)</b> – This metric shows the average amount spent per buy or sell order in $. By focusing on order size instead of trade volume, you can get a little insight into the behavior of different market participants. Larger orders can suggest institutional, or “whale” activity and smaller orders can indicate retail involvement. However, it’s important to make these assumptions cautiously. Order size doesn’t directly tell you who is behind these orders.</p>
-      <p class="metric-info"><b>Unique Buyer Ratio</b> – You can use this ratio to give yourself some context on current participation. Unlike volume-based indicators, this ratio focuses on the number of participants instead of the size of their trades. A ratio above 1 tells you more buyers are entering the market while a ratio below 1 tells you more sellers are entering the market. While shifts in the ratio can hint at changes in sentiment or momentum, it should be interpreted alongside other metrics, as this metric doesn’t account for transaction size or the intent behind trades.</p>
-      <p class="metric-info"><b>Buyer Retention Rate</b> – What % of buyers are coming back for more? This metric looks at ongoing behavior by comparing total buys to unique buyers, showing what people are doing after their initial purchase. While high retention alone can suggest sustained interest, it doesn’t necessarily indicate conviction as it can be influenced by short-term trading behavior or market conditions. You can use this metric to gauge ongoing buyer engagement</p>
-      <p class="metric-info"><b>Net Buys vs Net Sells</b> – This volume based metric compares the total value of buy orders to sell orders. You can use this metric to identify short-term market dominance. If the net dominance is above 50% buyers are in control, below 50% sellers are more active. You can use this metric to identify trends but keep in mind, short term fluctuations can muddle long term sentiment.</p>
+
     </div>
   </div>
 

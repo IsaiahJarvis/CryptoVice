@@ -82,6 +82,11 @@ def getInfo(uniqueId):
                     low5m
                     low12
                     low24
+                    volumeChange1
+                    volumeChange4
+                    volumeChange5m
+                    volumeChange12
+                    volumeChange24
                     priceUSD
                 }
             }
