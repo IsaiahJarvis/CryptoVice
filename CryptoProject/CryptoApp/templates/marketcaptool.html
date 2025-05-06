@@ -2,12 +2,13 @@
 {% load static %}
 <script>
   const defaultImage = "{% static '../../static/files/REDIMG.png' %}";
+  const logo = "{% static '../../static/files/moonmath_logo_zoomed.png' %}";
 </script>
 
 <div class="body-wrapper">
 
   <div class="tool-wrapper">
-    <h3>Market Cap Calculator</h3>
+    <img class="logo" src="../../static/files/moonmath_logo_zoomed.png">
     <div class="selector-wrapper">
       <div class="dropdown" id="dropdown_1">
         <input onclick="dropSearch('dropdown_1', 'my_dropdown_1', this)" type="text" placeholder="Enter name or contract address" id="search_input_1" onkeyup="filterFunction(this, 'my_dropdown_1')" class="search">
@@ -45,10 +46,9 @@
   </div>
 
   <div class="holder-wrapper">
-    <div class="buy-sell">
-      <h3 class="buy-sell-header">Buy/Sell Stats</h3>
+    <div class="extend">
       <div class="buy-sell-wrapper">
-      	<div class="dropdown" id="dropdown_3">
+      	<div class="dropdown buy-sell" id="dropdown_3">
           <input onclick="dropSearch('dropdown_3', 'my_dropdown_3', this)" type="text" placeholder="Enter name or contract address" id="search_input_3" onkeyup="filterFunction(this, 'my_dropdown_3')" class="search">
           <div id="my_dropdown_3" class="dropdown-content">
           </div>
@@ -68,7 +68,7 @@
 	      </div>
 	    </div>
           </div>
-          <div class="holder-results-wrapper" id="buy_sell_results_wrapper_3">
+          <div class="buy-sell-results-wrapper" id="buy_sell_results_wrapper_3">
             <div id="buy_sell_results_3"></div>
           </div>
           <div id="loading_3" class="spinner-border text-primary" role="status" style="display: none;">
@@ -76,12 +76,13 @@
           </div>
         </div>
 
-	<div class="popout-wrapper">
-	  <span class="popout">View Order Flow Guide</span>
-	  <div class="floating-img"><img src="static/files/moonmath_popup_v1.png" alt="Order Flow Guide"></div>
+	<div id="myPopup" class="popout-wrapper">
+          <p class="remove-bottom-margin">Hover Over Metrics For Explanation</p>
+	  <a href="{% url 'image_page' %}" target="_blank" class="popout remove-bottom-margin">View Order Flow Guide</a>
+	  <img src="../../static/files/moonmath_popup_v2.png" alt="preview" class="floating-img">
 	</div>
 
-        <div class="dropdown" id="dropdown_4">
+        <div class="dropdown buy-sell border-bot" id="dropdown_4">
           <input onclick="dropSearch('dropdown_4', 'my_dropdown_4', this)" type="text" placeholder="Enter name or contract address" id="search_input_4" onkeyup="filterFunction(this, 'my_dropdown_4')" class="search">
           <div id="my_dropdown_4" class="dropdown-content">
           </div>
@@ -101,7 +102,7 @@
               </div>
             </div>
           </div>
-          <div class="holder-results-wrapper" id="buy_sell_results_wrapper_4">
+          <div class="buy-sell-results-wrapper" id="buy_sell_results_wrapper_4">
             <div id="buy_sell_results_4"></div>
           </div>
           <div id="loading_4" class="spinner-border text-primary" role="status" style="display: none;">

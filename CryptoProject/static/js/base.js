@@ -12,6 +12,7 @@ let asNum =  (num) => {
 let asPercent = (num) => {
   return isNaN(num) ? num : `${numFormat.format(num)}%`;
 };
+
 // changes the dropdown menu and focus to the clicked searchbox
 function dropSearch(section, dropdown, input) {
   if (document.getElementById(dropdown).classList.contains("show") === true) {
@@ -79,12 +80,12 @@ function displayResult() {
     fdvText = `Price of ${selectedCoinA['symbol']} with ${selectedCoinB['symbol']}'s fully diluted market cap:`;
     mcText = `Price of ${selectedCoinA['symbol']} with ${selectedCoinB['symbol']}'s market cap:`;
 
-    document.getElementById("price_text").innerHTML = priceText;
-    document.getElementById("price_of_a").innerHTML = "$" + String(selectedCoinA['price'] * 1);
-    document.getElementById("result_fdv_text").innerHTML = fdvText;
-    document.getElementById("result_fdv").innerHTML = "$" + String(fdvPrice * 1);
-    document.getElementById("result_mc_text").innerHTML = mcText;
-    document.getElementById("result_mc").innerHTML = "$" + String(mcPrice * 1);
+    document.getElementById("price_text").innerHTML = priceText + " $" + String(selectedCoinA['price'] * 1);
+    //document.getElementById("price_of_a").innerHTML = "$" + String(selectedCoinA['price'] * 1);
+    document.getElementById("result_fdv_text").innerHTML = fdvText + " $" + String(fdvPrice * 1);
+    //document.getElementById("result_fdv").innerHTML = "$" + String(fdvPrice * 1);
+    document.getElementById("result_mc_text").innerHTML = mcText + " $" + String(mcPrice * 1);
+    //document.getElementById("result_mc").innerHTML = "$" + String(mcPrice * 1);
     if (document.getElementById("results").classList.contains("show") != true) {
       document.getElementById("results").classList.toggle("show");
     }
@@ -325,37 +326,48 @@ function formatFilters(results, dropdown) {
     const item = document.createElement("div");
     item.classList.add("filter-item");
     let filter = results[names[i]];
-    let metrics = {"Average Buy Order (in $)": asNum(filter["avgBuy"]),
-	          "Average Sell Order (in $)": asNum(filter["avgSell"]),
-	          "Average Buy/Sell Delta (in $)": asNum(filter["avgBuySellDelta"]),
-	    	  "Volume": filter["volume"],
-	    	  "Volume Delta": asNum(filter["volumeChange"]),
-	          "Unique Buyer Ratio": asNum(filter["uBuySell"]),
-	          "Buyer Retention Rate": asPercent(filter["retention"]),
-	          "Net Buy vs Net Sells": asPercent(filter["nBuySell"])};
     item.setAttribute("data-target", names[i]);
-    
-    for (const [key, value] of Object.entries(metrics)) {
-      const metricTitle = document.createElement("div");
-      const metricItem = document.createElement("div");
-      metricTitle.className = "metric-item";
-      metricItem.className = "metric-item";
 
-      const tooltipIcon = document.createElement("span");
-      tooltipIcon.className = "tooltip-icon";
-      tooltipIcon.innerHTML = "?";
-      tooltipIcon.title = getTooltipText(key);
+    // Define metric groups
+    const metricGroups = {
+      "Order Flow :": {
+        "Average Trade Size (in $)": asNum(filter["avgBuy"]),
+        "Buy Volume Dominance": asPercent(filter["buyVolumeDom"]),
+      },
+      "Behavior 👥:": {
+        "Unique Buyer Ratio": asNum(filter["uBuySell"]),
+        "Buyer Repeat Activity Rate": asPercent(filter["retention"]),
+	"New Wallet Percent": asPercent(filter["walletsUnder1Day"])
+      }
+    };
 
-      metricItem.appendChild(tooltipIcon);
-      metricItem.innerHTML += `${key}: `;
-      metricTitle.innerHTML = value;
+    // Loop through groups and metrics
+    for (const [groupTitle, metrics] of Object.entries(metricGroups)) {
+      const groupHeader = document.createElement("div");
+      groupHeader.className = "metric-group";
+      groupHeader.innerText = groupTitle;
+      item.appendChild(groupHeader);
 
-      item.appendChild(metricItem);
-      item.appendChild(metricTitle);
+      for (const [key, value] of Object.entries(metrics)) {
+        const metricRow = document.createElement("div");
+	const metricItem = document.createElement("div");
+	const metricText = document.createElement("div");
+        metricRow.className = "metric-row";
+        metricItem.className = "metric-item";
+	metricText.className = "metric-item";
+	metricRow.classList.add("fake-bullet");
+
+	metricText.title = getTooltipText(key);
+	metricText.innerHTML += ` ${key}: `;
+	metricItem.innerHTML = value;
+	metricRow.appendChild(metricText);
+	metricRow.appendChild(metricItem);
+        groupHeader.appendChild(metricRow);
+      }
     }
 
     section.appendChild(item);
-    if (i != 4) {
+    if (i !== 4) {
       item.classList.toggle("hide");
     }
   }
@@ -363,11 +375,13 @@ function formatFilters(results, dropdown) {
 
 function getTooltipText(metricName) {
   const tooltips = {
-    "Average Buy Order (in $)":"Average Buy Order / Average Sell Order (in $) – This metric shows the average amount spent per buy or sell order in $. By focusing on order size instead of trade volume, you can get a little insight into the behavior of different market participants. Larger orders can suggest institutional, or “whale” activity and smaller orders can indicate retail involvement. However, it’s important to make these assumptions cautiously. Order size doesn’t directly tell you who is behind these orders.",
+    "Average Trade Size (in $)":"Average Trade Size – use this to gauge whether a market-structure break is driven by whale-sized orders or by small retail trades.",
     "Average Sell Order (in $)":"Average Buy Order / Average Sell Order (in $) – This metric shows the average amount spent per buy or sell order in $. By focusing on order size instead of trade volume, you can get a little insight into the behavior of different market participants. Larger orders can suggest institutional, or “whale” activity and smaller orders can indicate retail involvement. However, it’s important to make these assumptions cautiously. Order size doesn’t directly tell you who is behind these orders.",
-    "Unique Buyer Ratio":"Unique Buyer Ratio – You can use this ratio to give yourself some context on current participation. Unlike volume-based indicators, this ratio focuses on the number of participants instead of the size of their trades. A ratio above 1 tells you more buyers are entering the market while a ratio below 1 tells you more sellers are entering the market. While shifts in the ratio can hint at changes in sentiment or momentum, it should be interpreted alongside other metrics, as this metric doesn’t account for transaction size or the intent behind trades.",
-    "Buyer Retention Rate":"Buyer Retention Rate – What % of buyers are coming back for more? This metric looks at ongoing behavior by comparing total buys to unique buyers, showing what people are doing after their initial purchase. While high retention alone can suggest sustained interest, it doesn’t necessarily indicate conviction as it can be influenced by short-term trading behavior or market conditions. You can use this metric to gauge ongoing buyer engagement",
-    "Net Buy vs Net Sells":"Net Buys vs Net Sells – This volume based metric compares the total value of buy orders to sell orders. You can use this metric to identify short-term market dominance. If the net dominance is above 50% buyers are in control, below 50% sellers are more active. You can use this metric to identify trends but keep in mind, short term fluctuations can muddle long term sentiment.",
+    "Unique Buyer Ratio":"Unique-Buyer Ratio – Compares the number of distinct wallets that bought with those that sold; values above 1 indicate broader buying participation (bullish breadth), while values below 1 indicate broader selling participation (bearish breadth). Use it to judge whether a structure break is backed by many traders or merely a few outsized orders—but pair it with a volume metric to see how much capital each side is actually deploying.",
+    "Buyer Repeat Activity Rate":"Buyer Repeat-Activity Rate – The average number of extra buys each wallet makes. A value near 0 suggests most wallets bought only once (momentum from new entrants); a value of 1 means the average wallet bought twice (one reload); values above 1 show that buyers are returning multiple times.",
+    "New Wallet Percent":"New Wallet Percent - % of buyers in the last 24h that used wallets created within the past day",
+    "Buy Volume Dominance":"Buy Volume Dominance - Percentage showing how much of the total trading volume in a given period came from market buys, rather than market sells.",
+    "Average Buy/Sell Delta":"Average Buy/Sell Delta - Shows the difference between average buy and sell orders—when paired with market structure, it gives you a snapshot of how traders are currently feeling and behaving."
   }
   return tooltips[metricName] || "";
 }
@@ -397,6 +411,46 @@ function changeFilter(filter, dropdown) {
       child.classList.toggle("hide");
     }
   }
+}
+
+/*
+dragElement(document.getElementById("popup_img"));
+
+function dragElement(elmnt) {
+  let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  elmnt.onmousedown = dragMouseDown;
+
+  function dragMouseDown(e) {
+    e.preventDefault();
+    // Get initial cursor position
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e.preventDefault();
+    // Calculate new cursor position
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // Set element's new position
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // Stop moving
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+*/
+
+function showInfo() {
+  document.getElementById("popup_img").classList.toggle("hide");
 }
 
 // event listener for closing each dropdown

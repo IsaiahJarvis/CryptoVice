@@ -10,6 +10,9 @@ def marketcaptool(request):
     items = Coin.objects.all().order_by('-market_cap')
     return render(request, "marketcaptool.html", {"coins": items})
 
+def image_page(request):
+    return render(request, "tooltippage.html")
+
 def get_info_filter(request):
     if request.method == "POST":
         try:

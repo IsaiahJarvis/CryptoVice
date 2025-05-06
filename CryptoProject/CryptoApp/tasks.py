@@ -82,12 +82,8 @@ def getInfo(uniqueId):
                     low5m
                     low12
                     low24
-                    volumeChange1
-                    volumeChange4
-                    volumeChange5m
-                    volumeChange12
-                    volumeChange24
                     priceUSD
+                    swapPct1dOldWallet
                 }
             }
         }
@@ -115,7 +111,7 @@ def getInfo(uniqueId):
             return {"input_string": None, "data": None}
 
         for key, value in token_info[0].items():
-            if key == "priceUSD":
+            if key == "priceUSD" or key == "swapPct1dOldWallet":
                 grouped_data[key] = value
             else:
                 suffix_start = len(key.rstrip('0123456789m'))

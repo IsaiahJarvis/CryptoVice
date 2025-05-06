@@ -1,7 +1,17 @@
 .result-wrapper {
   display: none;
-  margin: 0px 100px;
-  margin-top: 50px;
+  margin: 0px 100px;	
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #d3d3d3; /* your gray color */
+}
+
+.border-bot {
+  border-bottom: solid;
 }
 
 .result-div .show {
@@ -64,6 +74,8 @@
 .buy-sell-wrapper {
   display: flex;
   justify-content: start;
+  flex-direction: column;
+  border-right: solid;
 }
 
 .filter-group {
@@ -83,6 +95,7 @@
 .search {
   width: 260px;
   height: 40px;
+  display: flex;
 }
 
 .selected-item-wrapper {
@@ -95,21 +108,34 @@
   width: 90%;
 }
 
-.metric-info {
-  font-size: 11px;
+.metric-item {
+  margin-right: 3px;
+  font-size: 22px;
+}
 
+.metric-row {
+  display: flex;
+  align-items: center;
+}
+
+.metric-group {
+  background-color: #000435;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px;
+  color: white;
+  font-size: 25px;
 }
 
 .body-wrapper {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 30px;
+  flex-direction: column;
   justify-content: space-around;
 }
 
 .buy-sell {
-  display: flex;
-  flex-direction: column;
+  min-height: 300px;
 }
 
 .buy-sell-header {
@@ -117,21 +143,21 @@
 }
 
 .tool-wrapper {
+  position: relative;
   display: flex;
-  width: 50%;
   justify-content: start;
   align-items: center;
   flex-direction: column;
   flex-wrap: wrap;
+  border-bottom: solid;
+  min-height: 200px;
 }
 
 .holder-wrapper {
   display: flex;
-  width: 50%;
-  flex-direction: column;
+  width: 65%;
   align-items: center;
   justify-content: space-between;
-  min-height: calc(100vh - 100px);
 }
 
 .submit-wrapper {
@@ -170,6 +196,13 @@
   z-index: 1;
 }
 
+.logo {
+  position: absolute;
+  top: -90px;
+  left: -60px;
+  width: 300px;
+}
+
 .log-button {
   margin: 5px;
 }
@@ -197,6 +230,7 @@
 }
 
 .selected-box {
+  background-color: white;
   display: none;
 }
 
@@ -215,8 +249,8 @@
 }
 
 .container {
+  background-color: #D3D3D3;
   max-width: 100%;
-  min-height: calc(100vh - 100px);
 }
 
 .filter-box {
@@ -238,9 +272,14 @@
 
 .filter-item {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+}
+
+.buy-sell-results-wrapper {
+  display: flex;
+  justify-content: start;
 }
 
 .tooltip-icon {
@@ -249,7 +288,23 @@
 
 .popout-wrapper {
   position: relative;
-  display: inline-block;
+  display: flex;
+  justify-content: space-between;
+}
+
+.fake-bullet {
+  position: relative;
+  padding-left: 1em;
+  margin-bottom: 5px;
+}
+
+.fake-bullet::before {
+  content: "\2022 "; /* This is the bullet */
+  position: absolute;
+  left: 0;
+  color: white; /* or whatever color you want */
+  font-size: 1em;
+  line-height: 1;
 }
 
 .popout {
@@ -257,20 +312,28 @@
   cursor: pointer;
   color: #2563eb;
   font-weight: 600;
+  margin-right: 10px;
 }
 
 .floating-img {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
   display: none;
-  position: absolute; /* or absolute relative to body */
-  top: 50px;
-  left: -150%;
-  width: 510px;
+  max-width: 600px;
   border: 1px solid #ccc;
-  background: #fff;
-  padding: 4px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  z-index: 9999;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+.remove-bottom-margin {
+  margin-bottom: 0px;
+}
+
+.metric-group-header {
+  font-weight: bold;
 }
 
 .popout:hover + .floating-img {
@@ -304,22 +367,52 @@
 .log-in-out {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
   margin-left: auto;
 }
 
-@media screen and (max-width: 1250px) {
+.extend {
+  width: 100%;
+}
+
+#popup_img {
+  position: fixed;
+  cursor: move;
+  z-index: 9999;
+}
+
+#dropdown_4 {
+  border-top: solid;
+}
+
+@media screen and (max-width: 950px) {
   .tool-wrapper {
     width: 100%;
   }
 
-  .holder-wrapper {
-    width: 100%;
+  .result-wrapper {
+    margin-left: 0px;
+    margin-right: 0px;
+    text-wrap: auto;
+    text-align: center;
   }
 
-  .metric-info-wrapper {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+  .holder-wrapper {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .buy-sell-wrapper{
+    border-right: none;
+  }
+
+  .logo {
+    position: relative;
+    left: 0px;
+    top: 0px;
+  }
+
+  #dropdown_4 {
+    border-bottom: solid;
   }
 }

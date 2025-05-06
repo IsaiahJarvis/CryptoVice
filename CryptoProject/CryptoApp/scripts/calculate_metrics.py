@@ -3,7 +3,7 @@ def calculate_metrics(entry):
     final = {}
 
     for x in entry:
-        if x != "priceUSD":
+        if x != "priceUSD" and x != "swapPct1dOldWallet":
             try:
                 high = float(entry[x]["high"])
                 low = float(entry[x]["low"])
@@ -15,15 +15,10 @@ def calculate_metrics(entry):
             sellVolume = entry[x]["uniqueSells"] * (high + low) / 2
 
             try:
-                averageBuySize = float(entry[x]["volume"]) / entry[x]["buyCount"]
+                averageBuySize = float(entry[x]["volume"]) / entry[x]["txnCount"]
             except (ZeroDivisionError, ValueError, TypeError):
                 averageBuySize = "N/A"
                 
-            try:
-                averageSellSize = float(entry[x]["volume"]) / entry[x]["sellCount"]
-            except (ZeroDivisionError, ValueError, TypeError):
-                averageSellSize = "N/A"
-
             try:
                 averageBuySellDelta = averageBuySize - averageSellSize
             except (ZeroDivisionError, ValueError, TypeError):
@@ -40,21 +35,19 @@ def calculate_metrics(entry):
                 retention = "N/A"
 
             try:
-                netBuySell = buyVolume / (buyVolume + sellVolume) * 100
+                buyVolumeDom = (buyVolume / (buyVolume + sellVolume)) * 100
             except (ZeroDivisionError, ValueError, TypeError):
-                netBuySell = "N/A"
+                buyVolumeDom = "N/A"
 
-            volume = float(entry[x]["volume"])
-            volumeChange = float(entry[x]["volumeChange"])
+            #volume = float(entry[x]["volume"])
+            #volumeChange = float(entry[x]["volumeChange"])
 
             results = {"avgBuy": averageBuySize,
-                       "avgSell": averageSellSize,
                        "avgBuySellDelta": averageBuySellDelta,
-                       "volume": volume,
-                       "volumeChange": volumeChange,
+                       "buyVolumeDom": buyVolumeDom,
                        "uBuySell": uniqueBuySell,
                        "retention": retention,
-                       "nBuySell": netBuySell}
+                       "walletsUnder1Day": entry["swapPct1dOldWallet"]}
 
             final[str(x)] = results
 
