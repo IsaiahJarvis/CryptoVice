@@ -332,6 +332,10 @@ html, body {
   margin-bottom: 0px;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .metric-group-header {
   font-weight: bold;
 }
