@@ -1,4 +1,4 @@
-from CryptoApp.scripts.get_coins import run
+from CryptoApp.scripts.get_coins_temp import main as get_coins
 from CryptoApp.scripts.calculate_metrics import calculate_metrics
 from celery import group, shared_task, current_task
 from celery.exceptions import SoftTimeLimitExceeded
@@ -142,9 +142,9 @@ def getInfo(uniqueId):
         )
         return {"status": "FAILURE", "error": str(e), "input_string": None, "data": None}
 
-def update_coins():
-    if run() == True:
+@shared_task
+def get_tokens():
+    if get_coins():
         print('Database updated')
     else:
         print('Database not updated')
-    

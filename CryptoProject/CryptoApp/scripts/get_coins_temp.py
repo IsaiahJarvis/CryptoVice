@@ -3,10 +3,11 @@ from django.conf import settings
 import requests
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
-
-API_URL = "http://45.141.233.150:8000/data"
+from decouple import config
+import os
 
 def main():
+    API_URL = config('MY_API')
     try:
         response = requests.get(API_URL)
         response.raise_for_status()  # Raises HTTPError if the request returned an unsuccessful status code

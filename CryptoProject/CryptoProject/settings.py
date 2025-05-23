@@ -146,9 +146,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
 CELERY_BEAT_SCHEDULE = {
-    'purge-task': {
-        'task': 'CryptoApp.tasks.checkHolders',
-        'schedule': 3600.0,  # Every 60 seconds
+    'get_token_task': {
+        'task': 'CryptoApp.tasks.get_tokens',
+        'schedule': 43200.0,
     },
 }
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
