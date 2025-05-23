@@ -11,10 +11,12 @@ from django.utils.timezone import now
 from datetime import timedelta
 import requests
 import json
+from decouple import config
 
+user_queue = config('USER_QUEUE')
 logger = get_task_logger(__name__)
 
-@shared_task(soft_time_limit=1200, time_limit=1500, queue='user_queue')
+@shared_task(soft_time_limit=1200, time_limit=1500, queue=user_queue)
 def getInfo(uniqueId):
     try:
         start_time = datetime.now()
