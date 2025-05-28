@@ -14,6 +14,7 @@ import json
 from decouple import config
 
 user_queue = config('USER_QUEUE')
+sched_queue = config('SCHED_QUEUE')
 logger = get_task_logger(__name__)
 
 @shared_task(soft_time_limit=1200, time_limit=1500, queue=user_queue)
@@ -142,7 +143,7 @@ def getInfo(uniqueId):
         )
         return {"status": "FAILURE", "error": str(e), "input_string": None, "data": None}
 
-@shared_task
+@shared_task(queue=sched_queue)
 def get_tokens():
     if get_coins():
         print('Database updated')
