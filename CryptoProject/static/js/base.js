@@ -315,10 +315,8 @@ function formatFilters(results, dropdown) {
   let section;
   if (dropdown === document.getElementById("my_dropdown_3")) {
     section = document.getElementById("buy_sell_results_3");
-    document.getElementById("filter_24").classList.toggle("active");
   } else {
     section = document.getElementById("buy_sell_results_4");
-    document.getElementById("filter_24_4").classList.toggle("active");
   }
 
   const names = ["filter5m", "filter1", "filter4", "filter12", "filter24"];
@@ -365,13 +363,31 @@ function formatFilters(results, dropdown) {
         groupHeader.appendChild(metricRow);
       }
     }
-
+	
+    clearFilter(section)
     section.appendChild(item);
     if (i !== 4) {
       item.classList.toggle("hide");
     }
   }
 }
+
+function clearFilter(section) {
+        let filters = []
+        if (section.id === "buy_sell_results_3") {
+            filters = ["filter_5m","filter_1","filter_4","filter_12","filter_24"]
+        } else {
+            filters = ["filter_5m_4","filter_1_4","filter_4_4","filter_12_4","filter_24_4"]
+        }
+
+        for (var i = 0; i < filters.length; i++) {
+            if (document.getElementById(filters[i]).classList.contains("active")) {
+                document.getElementById(filters[i]).classList.toggle("active");
+        }
+        document.getElementById(filters[4]).classList.toggle("active");
+    }
+}
+
 
 function getTooltipText(metricName) {
   const tooltips = {
