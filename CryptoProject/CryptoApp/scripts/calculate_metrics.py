@@ -19,10 +19,10 @@ def calculate_metrics(entry):
             except (ZeroDivisionError, ValueError, TypeError):
                 averageBuySize = "N/A"
                 
-            try:
-                averageBuySellDelta = averageBuySize - averageSellSize
-            except (ZeroDivisionError, ValueError, TypeError):
-                averageBuySellDelta = "N/A"
+            #try:
+            #    averageBuySellDelta = averageBuySize - averageSellSize
+            #except (ZeroDivisionError, ValueError, TypeError):
+            #    averageBuySellDelta = "N/A"
 
             try:
                 uniqueBuySell = entry[x]["uniqueBuys"] / entry[x]["uniqueSells"]
@@ -43,7 +43,7 @@ def calculate_metrics(entry):
             #volumeChange = float(entry[x]["volumeChange"])
 
             results = {"avgBuy": averageBuySize,
-                       "avgBuySellDelta": averageBuySellDelta,
+                       #"avgBuySellDelta": averageBuySellDelta,
                        "buyVolumeDom": buyVolumeDom,
                        "uBuySell": uniqueBuySell,
                        "retention": retention,
