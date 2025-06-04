@@ -429,6 +429,7 @@ function changeFilter(filter, dropdown) {
   }
 }
 
+
 /*
 dragElement(document.getElementById("popup_img"));
 
