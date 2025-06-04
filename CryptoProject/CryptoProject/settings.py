@@ -148,7 +148,7 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379"
 CELERY_BEAT_SCHEDULE = {
     'get_token_task': {
         'task': 'CryptoApp.tasks.get_tokens',
-        'schedule': 43200.0,
+        'schedule': 3600.0,
     },
 }
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
