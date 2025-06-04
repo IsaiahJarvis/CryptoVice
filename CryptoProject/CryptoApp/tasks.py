@@ -1,4 +1,4 @@
-from CryptoApp.scripts.get_coins_temp import main as get_coins
+from CryptoApp.scripts.get_coins import run as get_coins
 from CryptoApp.scripts.calculate_metrics import calculate_metrics
 from celery import group, shared_task, current_task
 from celery.exceptions import SoftTimeLimitExceeded
