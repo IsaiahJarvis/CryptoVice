@@ -87,6 +87,7 @@ def getInfo(uniqueId):
                     low24
                     priceUSD
                     swapPct1dOldWallet
+                    isScam
                 }
             }
         }
@@ -114,7 +115,7 @@ def getInfo(uniqueId):
             return {"input_string": None, "data": None}
 
         for key, value in token_info[0].items():
-            if key == "priceUSD" or key == "swapPct1dOldWallet":
+            if key == "priceUSD" or key == "swapPct1dOldWallet" or key == "isScam":
                 grouped_data[key] = value
             else:
                 suffix_start = len(key.rstrip('0123456789m'))

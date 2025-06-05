@@ -331,6 +331,8 @@ function formatFilters(results, dropdown) {
       "Order Flow :": {
         "Average Trade Size (in $)": asNum(filter["avgBuy"]),
         "Buy Volume Dominance": asPercent(filter["buyVolumeDom"]),
+	"Net Flow Imbalance": asPercent(filter["netFlowImbalance"]),
+	"Risk" : filter["risk"]
       },
       "Behavior 👥:": {
         "Unique Buyer Ratio": asNum(filter["uBuySell"]),
@@ -397,7 +399,9 @@ function getTooltipText(metricName) {
     "Buyer Repeat Activity Rate":"Buyer Repeat-Activity Rate – The average number of extra buys each wallet makes. A value near 0 suggests most wallets bought only once (momentum from new entrants); a value of 1 means the average wallet bought twice (one reload); values above 1 show that buyers are returning multiple times.",
     "New Wallet Percent":"New Wallet Percent - % of buyers in the last 24h that used wallets created within the past day",
     "Buy Volume Dominance":"Buy Volume Dominance - Percentage showing how much of the total trading volume in a given period came from market buys, rather than market sells.",
-    "Average Buy/Sell Delta":"Average Buy/Sell Delta - Shows the difference between average buy and sell orders—when paired with market structure, it gives you a snapshot of how traders are currently feeling and behaving."
+    "Average Buy/Sell Delta":"Average Buy/Sell Delta - Shows the difference between average buy and sell orders—when paired with market structure, it gives you a snapshot of how traders are currently feeling and behaving.",
+    "Net Flow Imbalance":"",
+    "Risk":""
   }
   return tooltips[metricName] || "";
 }
