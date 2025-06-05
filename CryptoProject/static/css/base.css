@@ -78,6 +78,10 @@ html, body {
   border-right: solid;
 }
 
+.chart-wrapper {
+  width: 35%;
+}
+
 .filter-group {
   display: flex;
   flex-direction: row;
@@ -134,6 +138,11 @@ html, body {
   justify-content: space-around;
 }
 
+.body-subsection-wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
 .buy-sell {
   min-height: 300px;
 }
@@ -153,9 +162,9 @@ html, body {
   min-height: 200px;
 }
 
-.holder-wrapper {
+.market-flow-wrapper {
   display: flex;
-  width: 65%;
+  width: 35%;
   align-items: center;
   justify-content: space-between;
 }

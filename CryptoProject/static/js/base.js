@@ -200,9 +200,10 @@ function coinSelect(coin, dropdown) {
     	document.getElementById("filter_wrapper_3").classList.toggle("hide");
     }
 
-    selectedCoinC = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap};
+    selectedCoinC = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'network': coin.network, 'contract': coin.contract_address};
     select(selectedCoinC, "selected_img_3", "symbol_wrapper_3", "mc_wrapper_3", "search_input_3", "selected_box_3", dropdown);
     getInfo(uniqueId, dropdown);
+    getDexSrc();
   } else if (dropdown === document.getElementById("my_dropdown_4")) {
     const network = coin.network;
     const address = coin.contract_address;
@@ -248,6 +249,20 @@ document.addEventListener("DOMContentLoaded", function () {
 function getCSRFToken() {
     let csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
     return csrfToken;
+}
+
+function getDexSrc() {
+    if (document.getElementById("chart").classList.contains("hide")) {
+      document.getElementById("chart").classList.toggle("hide");
+    }
+
+    let networks = {"1399811149": "solana", "42161": "arbitrum", "8453": "base"}
+
+    networkTranslated = networks[String(selectedCoinC["network"])]
+
+    let networkToken = networkTranslated + "/" + selectedCoinC["contract"]
+
+    document.getElementById("dexscreener_src").src = "https://dexscreener.com/" + networkToken + "?embed=1&loadChartSettings=0&tabs=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
 }
 
 function getInfo(uniqueId, dropdown) {
