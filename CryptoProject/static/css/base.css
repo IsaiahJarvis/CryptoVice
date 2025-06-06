@@ -1,17 +1,23 @@
 .result-wrapper {
   display: none;
-  margin: 0px 100px;	
+  margin: 0px 100px;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background-color: #d3d3d3; /* your gray color */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #d3d3d3;
+  /* your gray color */
 }
 
 .border-bot {
   border-bottom: solid;
+}
+
+.section-header {
+  text-align: center;
 }
 
 .result-div .show {
@@ -36,13 +42,15 @@ html, body {
   border-bottom: 1px solid #ddd;
 }
 
-#myInput:focus {outline: 3px solid #ddd;}
+#myInput:focus {
+  outline: 3px solid #ddd;
+}
 
 #loading {
-    font-size: 18px;
-    text-align: center;
-    padding: 10px;
-    margin: 5px;
+  font-size: 18px;
+  text-align: center;
+  padding: 10px;
+  margin: 5px;
 }
 
 .dropdown {
@@ -79,6 +87,9 @@ html, body {
 }
 
 .chart-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 35%;
 }
 
@@ -103,7 +114,7 @@ html, body {
 }
 
 .selected-item-wrapper {
-  margin: 2px 5px;  
+  margin: 2px 5px;
 }
 
 .metric-info-wrapper {
@@ -140,6 +151,7 @@ html, body {
 
 .body-subsection-wrapper {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
 }
 
@@ -167,6 +179,11 @@ html, body {
   width: 35%;
   align-items: center;
   justify-content: space-between;
+}
+
+
+.holder-wrapper {
+  width: 30%;
 }
 
 .submit-wrapper {
@@ -208,7 +225,7 @@ html, body {
 .logo {
   position: absolute;
   top: -90px;
-  left: -60px;
+  left: -55px;
   width: 300px;
 }
 
@@ -247,11 +264,17 @@ html, body {
   display: none;
 }
 
-.dropdown a:hover {background-color: #ddd;}
+.dropdown a:hover {
+  background-color: #ddd;
+}
 
-.show {display: block;}
+.show {
+  display: block;
+}
 
-.flex {display: flex;}
+.flex {
+  display: flex;
+}
 
 .submit-wrapper .flex {
   flex-wrap: wrap;
@@ -260,6 +283,7 @@ html, body {
 .container {
   background-color: #D3D3D3;
   max-width: 100%;
+  padding: 0px;
 }
 
 .filter-box {
@@ -272,8 +296,10 @@ html, body {
 }
 
 .filter-wrapper {
-  border: 1px solid #d1d5db; /* light gray border */
-  border-radius: 6px;         /* slim curve */
+  border: 1px solid #d1d5db;
+  /* light gray border */
+  border-radius: 6px;
+  /* slim curve */
   padding: 4px;
   display: inline-flex;
   background-color: #f9fafb;
@@ -308,10 +334,12 @@ html, body {
 }
 
 .fake-bullet::before {
-  content: "\2022 "; /* This is the bullet */
+  content: "\2022 ";
+  /* This is the bullet */
   position: absolute;
   left: 0;
-  color: white; /* or whatever color you want */
+  color: white;
+  /* or whatever color you want */
   font-size: 1em;
   line-height: 1;
 }
@@ -333,7 +361,7 @@ html, body {
   max-width: 600px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 100;
 }
 
@@ -349,7 +377,7 @@ html, body {
   font-weight: bold;
 }
 
-.popout:hover + .floating-img {
+.popout:hover+.floating-img {
   display: block;
 }
 
@@ -368,7 +396,9 @@ html, body {
   border-color: rgb(118, 118, 118)
 }
 
-.hide {display: none;}
+.hide {
+  display: none;
+}
 
 .nav-wrapper {
   display: flex;
@@ -410,12 +440,23 @@ html, body {
     text-align: center;
   }
 
-  .holder-wrapper {
+
+  .buy-sell-search-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center
+  }
+
+  .chart-wrapper {
+    width: 100%;
+  }
+
+  .market-flow-wrapper {
     width: 100%;
     justify-content: center;
   }
 
-  .buy-sell-wrapper{
+  .buy-sell-wrapper {
     border-right: none;
   }
 

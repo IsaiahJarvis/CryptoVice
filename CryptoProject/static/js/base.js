@@ -262,7 +262,7 @@ function getDexSrc() {
 
     let networkToken = networkTranslated + "/" + selectedCoinC["contract"]
 
-    document.getElementById("dexscreener_src").src = "https://dexscreener.com/" + networkToken + "?embed=1&loadChartSettings=0&tabs=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
+    document.getElementById("dexscreener_src").src = "https://dexscreener.com/" + networkToken + "?embed=1&loadChartSettings=0&trades=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
 }
 
 function getInfo(uniqueId, dropdown) {
