@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from django.apps import apps
 from .models import Coin
-from .tasks import getInfo
+from .tasks import getInfo, getHolders
 from celery.result import AsyncResult
 import json
 # Create your views here.
@@ -20,6 +20,17 @@ def get_info_filter(request):
             input_string = data.get("uniqueId", "")
             result_task = getInfo.apply_async(args=[input_string])
             return JsonResponse({"message": "Task started", "task_id": result_task.id})
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+def get_holders(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            input_string = data.get("uniqueId", "")
+            result_task = getHolders.apply_async(args=[input_string])
+            return JsonResponse({"message": "Task Started", "task_id": result_task.id})
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
     return JsonResponse({"error": "Invalid request"}, status=400)

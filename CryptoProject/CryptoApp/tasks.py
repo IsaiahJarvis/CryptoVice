@@ -60,6 +60,16 @@ def getInfo(uniqueId):
                     volume5m
                     volume12
                     volume24
+                    buyVolume1
+                    buyVolume4
+                    buyVolume5m
+                    buyVolume12
+                    buyVolume24
+                    sellVolume1
+                    sellVolume4
+                    sellVolume5m
+                    sellVolume12
+                    sellVolume24
                     uniqueBuys1
                     uniqueBuys4
                     uniqueBuys5m
@@ -88,6 +98,7 @@ def getInfo(uniqueId):
                     priceUSD
                     swapPct1dOldWallet
                     isScam
+                    liquidity
                 }
             }
         }
@@ -115,7 +126,7 @@ def getInfo(uniqueId):
             return {"input_string": None, "data": None}
 
         for key, value in token_info[0].items():
-            if key == "priceUSD" or key == "swapPct1dOldWallet" or key == "isScam":
+            if key == "priceUSD" or key == "swapPct1dOldWallet" or key == "isScam" or key == "liquidity":
                 grouped_data[key] = value
             else:
                 suffix_start = len(key.rstrip('0123456789m'))
@@ -143,6 +154,41 @@ def getInfo(uniqueId):
             meta={"exc_type": exc_type, "exc_message": str(e)}
         )
         return {"status": "FAILURE", "error": str(e), "input_string": None, "data": None}
+
+@shared_task(queue=user_queue)
+def getHolders(uniqueId):
+    url = "https://graph.codex.io/graphql"
+
+    codex_key = settings.API_KEYS.get('codex_api')
+
+    headers = {
+      "content_type":"application/json",
+      "Authorization": codex_key
+    }
+
+    # Token ID for the query
+    token_id = uniqueId
+
+    all_holders = []
+    cursor = None  # Start with no cursor
+
+    query = f"""
+    query GetTokenHolders {{
+      holders(input: {{ tokenId: "{token_id}", cursor: {json.dumps(cursor)} }}) {{
+        count
+        top10HoldersPercent
+        cursor
+        status
+      }}
+    }}
+    """
+    # Make the request
+    response = requests.post(url, headers=headers, json={"query": query})
+    data = response.json()
+    print(data)
+    
+    # Extract holders
+    return data
 
 @shared_task(queue=sched_queue)
 def get_tokens():

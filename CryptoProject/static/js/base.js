@@ -2,10 +2,11 @@ let selectedCoinA = null;
 let selectedCoinB = null;
 let selectedCoinC = null;
 let selectedCoinD = null;
-let USD = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'});
-let numFormat = new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+let selectedCoinE = null;
+let USD = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+let numFormat = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-let asNum =  (num) => {
+let asNum = (num) => {
   return isNaN(num) ? num : numFormat.format(num);
 };
 
@@ -27,14 +28,14 @@ function dropSearch(section, dropdown, input) {
 
 // select coin, hide search and show selected box 
 function select(coin, img, symbol, MC, search, selectedBox, dropdown) {
-    const imageSrc = (coin["imageLink"] && coin["imageLink"] !== "N/A") ? coin["imageLink"] : defaultImage;
-    
-    document.getElementById(img).src = imageSrc;
-    document.getElementById(symbol).innerHTML = coin["symbol"];
-    document.getElementById(MC).innerHTML = "$" + String(coin["marketCap"] * 1);
-    document.getElementById(search).classList.toggle("hide");
-    document.getElementById(selectedBox).classList.toggle("show-selected");
-    dropdown.classList.toggle("show");
+  const imageSrc = (coin["imageLink"] && coin["imageLink"] !== "N/A") ? coin["imageLink"] : defaultImage;
+
+  document.getElementById(img).src = imageSrc;
+  document.getElementById(symbol).innerHTML = coin["symbol"];
+  document.getElementById(MC).innerHTML = "$" + String(coin["marketCap"] * 1);
+  document.getElementById(search).classList.toggle("hide");
+  document.getElementById(selectedBox).classList.toggle("show-selected");
+  dropdown.classList.toggle("show");
 }
 
 // hide selected box, show search and dropdown and focus search
@@ -52,19 +53,19 @@ function hideSelected(search, select, section, dropdown) {
 // clear both selected coins
 function clearSelected(dropdown) {
   if (dropdown === "dropdown_1") {
-    document.getElementById("selected_img_1").src="";
+    document.getElementById("selected_img_1").src = "";
     document.getElementById("symbol_wrapper_1").innerHTML = "";
     document.getElementById("mc_wrapper_1").innerHTML = "";
   } else if (dropdown === "dropdown_2") {
-    document.getElementById("selected_img_2").src="";
+    document.getElementById("selected_img_2").src = "";
     document.getElementById("symbol_wrapper_2").innerHTML = "";
     document.getElementById("mc_wrapper_2").innerHTML = "";
   } else if (dropdown === "dropdown_3") {
-    document.getElementById("selected_img_3").src="";
+    document.getElementById("selected_img_3").src = "";
     document.getElementById("symbol_wrapper_3").innerHTML = "";
     document.getElementById("mc_wrapper_3").innerHTML = "";
-  } else if (dropdown ==="dropdown_4") {
-    document.getElementById("selected_img_4").src="";
+  } else if (dropdown === "dropdown_4") {
+    document.getElementById("selected_img_4").src = "";
     document.getElementById("symbol_wrapper_4").innerHTML = "";
     document.getElementById("mc_wrapper_4").innerHTML = "";
   }
@@ -129,7 +130,7 @@ async function fetchResults(url, dropdownMenu) {
 
   if (dropdownMenu === document.getElementById("my_dropdown_3") || dropdownMenu === document.getElementById("my_dropdown_4")) {
     excludeCoingecko = true
-  } 
+  }
   const fullUrl = `${url}&excludeCoingecko=${excludeCoingecko}`
   console.log(fullUrl)
   // try to get coins from api and populate the dropdown
@@ -137,14 +138,14 @@ async function fetchResults(url, dropdownMenu) {
     const response = await fetch(fullUrl);
     const data = await response.json();
     const submit = document.getElementById("submit_wrapper");
-    
-    if (dropdownMenu != document.getElementById("my_dropdown_3") || dropdownMenu != document.getElementById("my_dropdown_4")) {
+
+    if (dropdownMenu != document.getElementById("my_dropdown_3") && dropdownMenu != document.getElementById("my_dropdown_4")) {
       if (!data.results || data.results.length === 0) {
         dropdownMenu.appendChild(submit);
         return;
       }
     }
-	  // Populate the dropdown with results
+    // Populate the dropdown with results
     data.results.forEach((coin) => {
       const item = document.createElement("div");
       item.classList.add("dropdown-item");
@@ -172,7 +173,6 @@ function showDropdown(dropdown) {
 
 // select and save coin
 function coinSelect(coin, dropdown) {
-
   // assign coin variables
   const coinName = coin.name;
   const coinSymbol = coin.symbol;
@@ -185,22 +185,22 @@ function coinSelect(coin, dropdown) {
 
   // save coin to proper list and call select to display on selected box
   if (dropdown === document.getElementById("my_dropdown_1")) {
-    selectedCoinA = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
+    selectedCoinA = { 'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price };
     select(selectedCoinA, "selected_img_1", "symbol_wrapper_1", "mc_wrapper_1", "search_input_1", "selected_box_1", dropdown);
   } else if (dropdown === document.getElementById("my_dropdown_2")) {
-    selectedCoinB = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price};
+    selectedCoinB = { 'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'fdv': fdv, 'price': price };
     select(selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", dropdown);
   } else if (dropdown === document.getElementById("my_dropdown_3")) {
     const network = coin.network;
     const address = coin.contract_address;
     let uniqueId = address + ":" + network
     console.log(uniqueId);
-    
+
     if (document.getElementById("filter_wrapper_3").classList.contains("hide")) {
-    	document.getElementById("filter_wrapper_3").classList.toggle("hide");
+      document.getElementById("filter_wrapper_3").classList.toggle("hide");
     }
 
-    selectedCoinC = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'network': coin.network, 'contract': coin.contract_address};
+    selectedCoinC = { 'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap, 'network': coin.network, 'contract': coin.contract_address };
     select(selectedCoinC, "selected_img_3", "symbol_wrapper_3", "mc_wrapper_3", "search_input_3", "selected_box_3", dropdown);
     getInfo(uniqueId, dropdown);
     getDexSrc();
@@ -211,12 +211,16 @@ function coinSelect(coin, dropdown) {
     console.log(uniqueId);
 
     if (document.getElementById("filter_wrapper_4").classList.contains("hide")) {
-        document.getElementById("filter_wrapper_4").classList.toggle("hide");
+      document.getElementById("filter_wrapper_4").classList.toggle("hide");
     }
 
-    selectedCoinD = {'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap};
+    selectedCoinD = { 'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap };
     select(selectedCoinD, "selected_img_4", "symbol_wrapper_4", "mc_wrapper_4", "search_input_4", "selected_box_4", dropdown);
     getInfo(uniqueId, dropdown);
+  } else if (dropdown === document.getElementById("my_dropdown_5")) {
+    selectedCoinE = { 'name': coinName, 'symbol': coinSymbol.toUpperCase(), 'imageLink': coinImage, 'id': coinId, 'marketCap': marketCap };
+    select(selectedCoinE, "selected_img_5", "symbol_wrapper_5", "mc_wrapper_5", "search_input_5", "selected_box_5", dropdown);
+    getHolders(coinId, dropdown);
   }
   // check if results can be displayed
   displayResult();
@@ -227,19 +231,19 @@ function showSubmit(div) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("hide_submit").addEventListener("submit", function(event){
+  document.getElementById("hide_submit").addEventListener("submit", function (event) {
     event.preventDefault();
 
     let symbol = document.getElementById("submit_symbol").value;
     let price = document.getElementById("submit_price").value;
     let FDV = document.getElementById("submit_FDV").value;
     let marketCap = document.getElementById("submit_market_cap").value;
-    
+
     if (document.getElementById("my_dropdown_1").classList.contains("show")) {
-      selectedCoinA = {'name': 'N/A', 'symbol': symbol.toUpperCase(), 'imageLink': 'N/A', 'id': 'N/A', 'marketCap': marketCap, 'fdv': FDV, 'price': price};
+      selectedCoinA = { 'name': 'N/A', 'symbol': symbol.toUpperCase(), 'imageLink': 'N/A', 'id': 'N/A', 'marketCap': marketCap, 'fdv': FDV, 'price': price };
       select(selectedCoinA, "selected_img_1", "symbol_wrapper_1", "mc_wrapper_1", "search_input_1", "selected_box_1", document.getElementById("my_dropdown_1"));
     } else if (document.getElementById("my_dropdown_2").classList.contains("show")) {
-      selectedCoinB = {'name': 'N/A', 'symbol': symbol.toUpperCase(), 'imageLink': 'N/A', 'id': 'N/A', 'marketCap': marketCap, 'fdv': FDV, 'price': price};
+      selectedCoinB = { 'name': 'N/A', 'symbol': symbol.toUpperCase(), 'imageLink': 'N/A', 'id': 'N/A', 'marketCap': marketCap, 'fdv': FDV, 'price': price };
       select(selectedCoinB, "selected_img_2", "symbol_wrapper_2", "mc_wrapper_2", "search_input_2", "selected_box_2", document.getElementById("my_dropdown_2"));
     }
     displayResult();
@@ -247,44 +251,66 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function getCSRFToken() {
-    let csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-    return csrfToken;
+  let csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+  return csrfToken;
 }
 
+// make the dexscreener src
 function getDexSrc() {
-    if (document.getElementById("chart").classList.contains("hide")) {
-      document.getElementById("chart").classList.toggle("hide");
-    }
+  if (document.getElementById("chart").classList.contains("hide")) {
+    document.getElementById("chart").classList.toggle("hide");
+  }
 
-    let networks = {"1399811149": "solana", "42161": "arbitrum", "8453": "base"}
+  let networks = { "1399811149": "solana", "42161": "arbitrum", "8453": "base" }
 
-    networkTranslated = networks[String(selectedCoinC["network"])]
+  networkTranslated = networks[String(selectedCoinC["network"])]
 
-    let networkToken = networkTranslated + "/" + selectedCoinC["contract"]
+  let networkToken = networkTranslated + "/" + selectedCoinC["contract"]
 
-    document.getElementById("dexscreener_src").src = "https://dexscreener.com/" + networkToken + "?embed=1&loadChartSettings=0&trades=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
+  document.getElementById("dexscreener_src").src = "https://dexscreener.com/" + networkToken + "?embed=1&loadChartSettings=0&trades=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
+}
+
+function getHolders(uniqueId, dropdown) {
+  let call = "/get-holders/"
+  fetch(call, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCSRFToken()
+    },
+    body: JSON.stringify({ "uniqueId": uniqueId })  // Send JSON data
+  })
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("holder_results").innerHTML = ""
+
+      if (data.message != "FOUND") {
+        pollTaskStatus(data.task_id, dropdown);
+      }
+    })
+    .catch(error => console.error("Error:", error));
 }
 
 function getInfo(uniqueId, dropdown) {
-    let call = "/call-python/"
+  let call = "/call-python/"
 
-    fetch(call, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": getCSRFToken()
-      },
-      body: JSON.stringify({ "uniqueId": uniqueId })  // Send JSON data
-    })
+  fetch(call, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCSRFToken()
+    },
+    body: JSON.stringify({ "uniqueId": uniqueId })  // Send JSON data
+  })
     .then(response => response.json())
     .then(data => {
       if (dropdown === document.getElementById("my_dropdown_3")) {
-      	document.getElementById("buy_sell_results_3").innerHTML = ""
+        document.getElementById("buy_sell_results_3").innerHTML = ""
       } else {
         document.getElementById("buy_sell_results_4").innerHTML = ""
       }
       if (data.message != "FOUND") {
-	pollTaskStatus(data.task_id, dropdown);
+        pollTaskStatus(data.task_id, dropdown);
       } else {
         formatFilters(data.result, dropdown);
       }
@@ -293,37 +319,74 @@ function getInfo(uniqueId, dropdown) {
 }
 
 function pollTaskStatus(taskId, dropdown) {
-    console.log("polling")
-    let loading, section;
-    if (dropdown === document.getElementById("my_dropdown_3")) {
-        loading = document.getElementById("loading_3");
-	section = document.getElementById("buy_sell_results_3");
-    } else {
-        loading = document.getElementById("loading_4");
-	section = document.getElementById("buy_sell_results_4");
-    }
-    loading.style.display = "block";
-    fetch(`/check_task_status/${taskId}/`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === "SUCCESS") {
-                // Update the page with the result data
-		loading.style.display = "none"; // Hide loader on error
-		console.log(JSON.stringify(data.result));
-                formatFilters(data.result, dropdown);
-            } else if (data.status === "FAILURE") {
-		loading.style.display = "none"; // Hide loader on error
-		section.innerHTML = "Error retrieving this tokens data from API";
-                console.error(data.error);
-            } else {
-                // Task is still running; check again in 5 seconds
-                setTimeout(() => pollTaskStatus(taskId, dropdown), 1000);
-            }
-        })
-        .catch(error => {
-	    console.error("Error checking task status:", error);
-	    loading.style.display = "none";
-	});
+  console.log("polling")
+  let loading, section;
+  if (dropdown === document.getElementById("my_dropdown_3")) {
+    loading = document.getElementById("loading_3");
+    section = document.getElementById("buy_sell_results_3");
+  } else if (dropdown === document.getElementById("my_dropdown_4")) {
+    loading = document.getElementById("loading_4");
+    section = document.getElementById("buy_sell_results_4");
+  } else if (dropdown === document.getElementById("my_dropdown_5")) {
+    section = document.getElementById("holder_results")
+  }
+  //loading.style.display = "block";
+  fetch(`/check_task_status/${taskId}/`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "SUCCESS") {
+        // Update the page with the result data
+        //loading.style.display = "none"; // Hide loader on error
+        console.log(JSON.stringify(data.result));
+        if (section === document.getElementById("buy_sell_results_3") || section === document.getElementById("buy_sell_results_4")) {
+          formatFilters(data.result, dropdown);
+        } else if (section === document.getElementById("holder_results")) {
+          formatHolders(data.result);
+        }
+      } else if (data.status === "FAILURE") {
+        //loading.style.display = "none"; // Hide loader on error
+        section.innerHTML = "Error retrieving this tokens data from API";
+        console.error(data.error);
+      } else {
+        // Task is still running; check again in 5 seconds
+        setTimeout(() => pollTaskStatus(taskId, dropdown), 1000);
+      }
+    })
+    .catch(error => {
+      console.error("Error checking task status:", error);
+      //loading.style.display = "none";
+    });
+}
+
+function formatHolders(results, dropdown) {
+  let section = document.getElementById("holder_results");
+  section.innerHTML = "";
+
+  const group = document.createElement("div");
+  const count = document.createElement("div");
+  const top10 = document.createElement("div");
+  const row1 = document.createElement("div");
+  const row2 = document.createElement("div");
+
+  group.classList.add("metric-group");
+
+  count.classList.add("metric-item");
+  count.innerText = "# Of Holders: " + results["holders"]["count"];
+
+  top10.classList.add("metric-item");
+  top10.innerText = "% Held By Top 10 Holders: " + asPercent(results["holders"]["top10HoldersPercent"]);
+
+  row1.classList.add("metric-row");
+  row1.classList.add("fake-bullet");
+
+  row2.classList.add("metric-row");
+  row2.classList.add("fake-bullet");
+  
+  row1.appendChild(count);
+  row2.appendChild(top10);
+  group.appendChild(row1);
+  group.appendChild(row2);
+  section.appendChild(group);
 }
 
 function formatFilters(results, dropdown) {
@@ -346,13 +409,12 @@ function formatFilters(results, dropdown) {
       "Order Flow :": {
         "Average Trade Size (in $)": asNum(filter["avgBuy"]),
         "Buy Volume Dominance": asPercent(filter["buyVolumeDom"]),
-	"Net Flow Imbalance": asPercent(filter["netFlowImbalance"]),
-	"Risk" : filter["risk"]
-      },
-      "Behavior 👥:": {
+        "Net Flow Imbalance": asPercent(filter["netFlowImbalance"]),
+        //"Risk" : filter["risk"]
         "Unique Buyer Ratio": asNum(filter["uBuySell"]),
         "Buyer Repeat Activity Rate": asPercent(filter["retention"]),
-	"New Wallet Percent": asPercent(filter["walletsUnder1Day"])
+        "liquidity": asNum(filter["liquidity"])
+        //"New Wallet Percent": asPercent(filter["walletsUnder1Day"])
       }
     };
 
@@ -365,22 +427,22 @@ function formatFilters(results, dropdown) {
 
       for (const [key, value] of Object.entries(metrics)) {
         const metricRow = document.createElement("div");
-	const metricItem = document.createElement("div");
-	const metricText = document.createElement("div");
+        const metricItem = document.createElement("div");
+        const metricText = document.createElement("div");
         metricRow.className = "metric-row";
         metricItem.className = "metric-item";
-	metricText.className = "metric-item";
-	metricRow.classList.add("fake-bullet");
+        metricText.className = "metric-item";
+        metricRow.classList.add("fake-bullet");
 
-	metricText.title = getTooltipText(key);
-	metricText.innerHTML += ` ${key}: `;
-	metricItem.innerHTML = value;
-	metricRow.appendChild(metricText);
-	metricRow.appendChild(metricItem);
+        metricText.title = getTooltipText(key);
+        metricText.innerHTML += ` ${key}: `;
+        metricItem.innerHTML = value;
+        metricRow.appendChild(metricText);
+        metricRow.appendChild(metricItem);
         groupHeader.appendChild(metricRow);
       }
     }
-	
+
     clearFilter(section)
     section.appendChild(item);
     if (i !== 4) {
@@ -390,33 +452,34 @@ function formatFilters(results, dropdown) {
 }
 
 function clearFilter(section) {
-        let filters = []
-        if (section.id === "buy_sell_results_3") {
-            filters = ["filter_5m","filter_1","filter_4","filter_12","filter_24"]
-        } else {
-            filters = ["filter_5m_4","filter_1_4","filter_4_4","filter_12_4","filter_24_4"]
-        }
+  let filters = []
+  if (section.id === "buy_sell_results_3") {
+    filters = ["filter_5m", "filter_1", "filter_4", "filter_12", "filter_24"]
+  } else {
+    filters = ["filter_5m_4", "filter_1_4", "filter_4_4", "filter_12_4", "filter_24_4"]
+  }
 
-        for (var i = 0; i < filters.length; i++) {
-            if (document.getElementById(filters[i]).classList.contains("active")) {
-                document.getElementById(filters[i]).classList.toggle("active");
-        }
-        document.getElementById(filters[4]).classList.toggle("active");
+  for (var i = 0; i < filters.length; i++) {
+    if (document.getElementById(filters[i]).classList.contains("active")) {
+      document.getElementById(filters[i]).classList.toggle("active");
     }
+    document.getElementById(filters[4]).classList.toggle("active");
+  }
 }
 
 
 function getTooltipText(metricName) {
   const tooltips = {
-    "Average Trade Size (in $)":"Average Trade Size – use this to gauge whether a market-structure break is driven by whale-sized orders or by small retail trades.",
-    "Average Sell Order (in $)":"Average Buy Order / Average Sell Order (in $) – This metric shows the average amount spent per buy or sell order in $. By focusing on order size instead of trade volume, you can get a little insight into the behavior of different market participants. Larger orders can suggest institutional, or “whale” activity and smaller orders can indicate retail involvement. However, it’s important to make these assumptions cautiously. Order size doesn’t directly tell you who is behind these orders.",
-    "Unique Buyer Ratio":"Unique-Buyer Ratio – Compares the number of distinct wallets that bought with those that sold; values above 1 indicate broader buying participation (bullish breadth), while values below 1 indicate broader selling participation (bearish breadth). Use it to judge whether a structure break is backed by many traders or merely a few outsized orders—but pair it with a volume metric to see how much capital each side is actually deploying.",
-    "Buyer Repeat Activity Rate":"Buyer Repeat-Activity Rate – The average number of extra buys each wallet makes. A value near 0 suggests most wallets bought only once (momentum from new entrants); a value of 1 means the average wallet bought twice (one reload); values above 1 show that buyers are returning multiple times.",
-    "New Wallet Percent":"New Wallet Percent - % of buyers in the last 24h that used wallets created within the past day",
-    "Buy Volume Dominance":"Buy Volume Dominance - Percentage showing how much of the total trading volume in a given period came from market buys, rather than market sells.",
-    "Average Buy/Sell Delta":"Average Buy/Sell Delta - Shows the difference between average buy and sell orders—when paired with market structure, it gives you a snapshot of how traders are currently feeling and behaving.",
-    "Net Flow Imbalance":"",
-    "Risk":""
+    "Average Trade Size (in $)": "Average Trade Size – use this to gauge whether a market-structure break is driven by whale-sized orders or by small retail trades.",
+    "Average Sell Order (in $)": "Average Buy Order / Average Sell Order (in $) – This metric shows the average amount spent per buy or sell order in $. By focusing on order size instead of trade volume, you can get a little insight into the behavior of different market participants. Larger orders can suggest institutional, or “whale” activity and smaller orders can indicate retail involvement. However, it’s important to make these assumptions cautiously. Order size doesn’t directly tell you who is behind these orders.",
+    "Unique Buyer Ratio": "Unique-Buyer Ratio – Compares the number of distinct wallets that bought with those that sold; values above 1 indicate broader buying participation (bullish breadth), while values below 1 indicate broader selling participation (bearish breadth). Use it to judge whether a structure break is backed by many traders or merely a few outsized orders—but pair it with a volume metric to see how much capital each side is actually deploying.",
+    "Buyer Repeat Activity Rate": "Buyer Repeat-Activity Rate – The average number of extra buys each wallet makes. A value near 0 suggests most wallets bought only once (momentum from new entrants); a value of 1 means the average wallet bought twice (one reload); values above 1 show that buyers are returning multiple times.",
+    "New Wallet Percent": "New Wallet Percent - % of buyers in the last 24h that used wallets created within the past day",
+    "Buy Volume Dominance": "Buy Volume Dominance - Percentage showing how much of the total trading volume in a given period came from market buys, rather than market sells.",
+    "Average Buy/Sell Delta": "Average Buy/Sell Delta - Shows the difference between average buy and sell orders—when paired with market structure, it gives you a snapshot of how traders are currently feeling and behaving.",
+    "Net Flow Imbalance": "",
+    "Risk": "",
+    "liquidity": ""
   }
   return tooltips[metricName] || "";
 }
@@ -432,9 +495,9 @@ function changeFilter(filter, dropdown) {
 
   for (var i = 0; i < filterDiv.children.length; i++) {
     var child = filterDiv.children[i];
-	if (child.classList.contains("active")) {
+    if (child.classList.contains("active")) {
       child.classList.toggle("active");
-	}
+    }
   }
 
   for (var i = 0; i < parentDiv.children.length; i++) {
@@ -523,6 +586,15 @@ document.addEventListener('click', e => {
 })
 
 document.addEventListener('click', e => {
+  if (!document.getElementById("my_dropdown_5").contains(e.target) && !document.getElementById("dropdown_5").contains(e.target)) {
+    if (document.getElementById("my_dropdown_5").classList.contains("show") === true) {
+      document.getElementById("my_dropdown_5").classList.toggle("show");
+    }
+  }
+})
+
+/*
+document.addEventListener('click', e => {
   if (!document.getElementById("my_dropdown_3_filter").contains(e.target) && !document.getElementById("filter_dropdown_3").contains(e.target)) {
     if (document.getElementById("my_dropdown_3_filter").classList.contains("show") === true) {
       document.getElementById("my_dropdown_3_filter").classList.toggle("show");
@@ -537,4 +609,4 @@ document.addEventListener('click', e => {
     }
   }
 })
-
+*/

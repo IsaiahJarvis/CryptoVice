@@ -20,6 +20,7 @@ def getHolders(uniqueId):
     query GetTokenHolders {{
       holders(input: {{ tokenId: "{token_id}", cursor: {json.dumps(cursor)} }}) {{
         count
+        top10HoldersPercent
         cursor
         status
       }}

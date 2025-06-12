@@ -148,6 +148,22 @@
 
     <div class="holder-wrapper">
       <h2 class="section-header">Holder Info</h2>
+      <div class="dropdown" id="dropdown_5">
+        <input onclick="dropSearch('dropdown_5', 'my_dropdown_5', this)" type="text"
+          placeholder="Enter name or contract address" id="search_input_5"
+          onkeyup="filterFunction(this, 'my_dropdown_5')" class="search">
+        <div id="my_dropdown_5" class="dropdown-content">
+        </div>
+        <div onclick="hideSelected('search_input_5', 'selected_box_5', 'dropdown_5', 'my_dropdown_5')"
+          class="selected-box" id="selected_box_5">
+          <div class="selected-item-wrapper" id="img_wrapper_5"><img class="selected-img" id="selected_img_5" src=""
+              alt="N/A"></div>
+          <div class="selected-item-wrapper" id="symbol_wrapper_5"></div>
+          <div class="selected-item-wrapper" id="mc_wrapper_5"></div>
+        </div>
+      </div>
+      <div class="holder-results" id="holder_results">
+      </div>
     </div>
 
     <div class="chart-wrapper hide" id="chart">

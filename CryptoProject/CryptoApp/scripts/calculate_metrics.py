@@ -1,18 +1,23 @@
 def calculate_metrics(entry):
 
     final = {}
+    print(entry)
 
     for x in entry:
-        if x != "priceUSD" and x != "swapPct1dOldWallet" and x != "isScam":
+        if x != "priceUSD" and x != "swapPct1dOldWallet" and x != "isScam" and x != "liquidity":
+            #try:
+            #    high = float(entry[x]["high"])
+            #    low = float(entry[x]["low"])
+            #except (TypeError, ValueError):
+            #    high = 0
+            #    low = 0
+            
             try:
-                high = float(entry[x]["high"])
-                low = float(entry[x]["low"])
-            except (TypeError, ValueError):
-                high = 0
-                low = 0
-
-            buyVolume = entry[x]["uniqueBuys"] * (high + low) / 2
-            sellVolume = entry[x]["uniqueSells"] * (high + low) / 2
+                buyVolume = float(entry[x]["buyVolume"])#entry[x]["uniqueBuys"] * (high + low) / 2
+                sellVolume = float(entry[x]["sellVolume"])#entry[x]["uniqueSells"] * (high + low) / 2
+            except (ZeroDivisionError, ValueError, TypeError):
+                buyVolume = 0
+                sellVolume = 0
 
             try:
                 averageBuySize = float(entry[x]["volume"]) / entry[x]["txnCount"]
@@ -57,9 +62,10 @@ def calculate_metrics(entry):
                        "buyVolumeDom": buyVolumeDom,
                        "uBuySell": uniqueBuySell,
                        "retention": retention,
-                       "walletsUnder1Day": entry["swapPct1dOldWallet"],
-                       "risk": scam,
-                       "netFlowImbalance": netFlowImbalance}
+                       #"walletsUnder1Day": entry["swapPct1dOldWallet"],
+                       #"risk": scam,
+                       "netFlowImbalance": netFlowImbalance,
+                       "liquidity": entry["liquidity"]}
 
             final[str(x)] = results
 
